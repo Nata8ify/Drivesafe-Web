@@ -14,7 +14,7 @@
     <body>
         <h1>Welcome to Drivesafe System!</h1><br/>
         <fieldset>
-            <legend>Login</legend>
+            <legend>Login ${msg}</legend>
             <form action="Login" method="POST">
                 Username : <input name="usrn" type="text" required=""/><br/><br/>
                 Password : <input name="pswd" type="password"  required=""/><br/><br/>

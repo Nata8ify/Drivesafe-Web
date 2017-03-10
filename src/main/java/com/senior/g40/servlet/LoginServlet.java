@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("pswd");
         char userType = request.getParameter("utyp").charAt(0);
         if (UserService.getInstance().login(username, password, userType)) {
+            request.setAttribute("msg", username);
             getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "main.jsp").forward(request, response);
 
         } else {
