@@ -5,6 +5,8 @@
  */
 package com.senior.g40.utils;
 
+import com.senior.g40.service.UserService;
+
 /**
  *
  * @author PNattawut
@@ -12,7 +14,6 @@ package com.senior.g40.utils;
 public class Area51 {
     // For test a thing.
     public static void main(String[] args) {
-        System.out.println("Hello World");
-        assert(false);
+        UserService.getInstance().login("root", "root", 'T');
     }
 }

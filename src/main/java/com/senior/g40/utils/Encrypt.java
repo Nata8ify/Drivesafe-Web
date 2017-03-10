@@ -13,4 +13,8 @@ public class Encrypt {
     public static String toMD5(String str){
         return "";
     }
+    
+    public static String toSHA1(String str){
+        return "";
+    }
 }

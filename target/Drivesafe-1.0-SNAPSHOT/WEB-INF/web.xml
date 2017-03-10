@@ -4,9 +4,25 @@
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>com.senior.g40.servlet.TestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ToServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.ToServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.LoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/Test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ToServlet</servlet-name>
+        <url-pattern>/To</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/Login</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
