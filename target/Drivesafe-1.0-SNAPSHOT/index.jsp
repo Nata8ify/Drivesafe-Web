@@ -18,9 +18,9 @@
             <form action="Login" method="POST">
                 Username : <input name="usrn" type="text" required=""/><br/><br/>
                 Password : <input name="pswd" type="password"  required=""/><br/><br/>
-                <input name="utyp" type="hidden"  value="T" required=""/>
+                <input name="utyp" type="hidden"  value="M" required=""/>
                 <input type="submit"/>&nbsp;&nbsp;<input type="reset"/><br/><br/>
-                <a href="#">Register for Driving User</a>&nbsp;&nbsp;
+                <a href="#regis">Register for Driving User</a>&nbsp;&nbsp;
                 <a href="#">Are you a Monitoring/Super User?</a>&nbsp;&nbsp;<br/><br/>
                 <a href="#">SKIP</a>
             </form>
@@ -37,15 +37,15 @@
                 Address 2 : <input name="addr2" type="text" /><br/><br/>
                 Age : <input name="age" type="number" required=""/><br/><br/>
                 Gender : <select name="sex">
-                    <option value="m">Male</option>
-                    <option value="f">Female</option>
-                    <option value="na">None of above</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">None of above</option>
                 </select><br/><br/>
                 <hr/>
                 <p>Define your Username and Password for next time Sign in into the System.</p>
                 Username : <input name="usrn" type="text" required=""/><br/><br/>
                 Password : <input name="pswd" type="password"  required=""/><br/><br/>
-                <input name="utyp" type="hidden"  value="T" required=""/>
+                <input name="utyp" type="hidden"  value="M" required=""/>
                 <input type="submit"/>&nbsp;&nbsp;<input type="reset"/><br/>
             </form>
         </fieldset>

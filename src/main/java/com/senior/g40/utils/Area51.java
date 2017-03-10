@@ -6,6 +6,7 @@
 package com.senior.g40.utils;
 
 import com.senior.g40.service.UserService;
+import java.sql.SQLException;
 
 /**
  *
@@ -13,7 +14,9 @@ import com.senior.g40.service.UserService;
  */
 public class Area51 {
     // For test a thing.
-    public static void main(String[] args) {
-        UserService.getInstance().login("root", "root", 'T');
+    public static void main(String[] args) throws SQLException {
+//        UserService.getInstance().login("root", "root", 'T');
+//          UserService.getInstance().createAccount("Tom", "Riddle", 1234567891011L, "+66845705977", "BLANK", "BLANK", 21, 'M', "user", "user", 'M');
+//        System.out.println(new UserService().getLatestUserId());
     }
 }

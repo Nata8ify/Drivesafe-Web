@@ -1,4 +1,8 @@
 com\senior\g40\model\User.class
+com\senior\g40\servlet\LoginServlet.class
+com\senior\g40\servlet\ToServlet.class
+com\senior\g40\servlet\SignupServlet.class
+com\senior\g40\utils\A$Attr.class
 com\senior\g40\model\Accident.class
 com\senior\g40\utils\ConnectionBuilder.class
 com\senior\g40\model\Profile.class
@@ -6,6 +10,4 @@ com\senior\g40\utils\Encrypt.class
 com\senior\g40\service\UserService.class
 com\senior\g40\utils\A.class
 com\senior\g40\utils\Area51.class
-com\senior\g40\servlet\LoginServlet.class
 com\senior\g40\utils\A$Path.class
-com\senior\g40\servlet\ToServlet.class

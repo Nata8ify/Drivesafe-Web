@@ -14,4 +14,7 @@ public class A { // A = App
         public static final String JSP_DIR = "/WEB-INF/jsp/"; 
         public static final String IMGS_DIR = "/WEB-INF/repo/imgs/"; 
     }
+    public class Attr{
+        public static final String MESSAGE = "msg"; 
+    }
 }

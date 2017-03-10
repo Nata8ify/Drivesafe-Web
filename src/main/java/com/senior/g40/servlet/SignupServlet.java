@@ -6,7 +6,6 @@
 package com.senior.g40.servlet;
 
 import com.senior.g40.service.UserService;
-import com.senior.g40.utils.A;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author PNattawut
  */
-public class LoginServlet extends HttpServlet {
+public class SignupServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +31,28 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        String firstName = request.getParameter("fname");
+        String lastName = request.getParameter("lname");
+        long personalId = Long.valueOf(request.getParameter("pid"));
+        String phoneNumber = request.getParameter("phone");
+        String address1 = request.getParameter("addr1");
+        String address2 = request.getParameter("addr2");
+        int age = Integer.valueOf(request.getParameter("age"));
+        char gender = request.getParameter("sex").charAt(0);
+
         String username = request.getParameter("usrn");
         String password = request.getParameter("pswd");
         char userType = request.getParameter("utyp").charAt(0);
-        if (UserService.getInstance().login(username, password, userType)) {
-            request.setAttribute("msg", username);
-            getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "main.jsp").forward(request, response);
-
+        if (UserService
+                .getInstance()
+                .createAccount(firstName, lastName, personalId, phoneNumber, address1, address2, age, gender,
+                        username, password, userType)) {
+            request.setAttribute("msg", "Account for " + username + " was created!.");
         } else {
-            request.setAttribute("msg", "<p style='color:red'>" + username + " is not found or incorrect password</p>");
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            request.setAttribute("msg", "Account for " + username + " wasn't created!. Maybe username is duplicated.");
         }
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
