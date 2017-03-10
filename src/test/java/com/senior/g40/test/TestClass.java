@@ -5,7 +5,6 @@
  */
 package com.senior.g40.test;
 
-import com.senior.g40.service.UserService;
 import org.junit.Test;
 
 /**
