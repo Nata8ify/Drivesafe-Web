@@ -25,6 +25,30 @@
                 <a href="#">SKIP</a>
             </form>
         </fieldset>
+        <br/><br/><br/>
+        <fieldset id="regis">
+            <legend>Driving User Sign up</legend>
+            <form action="Signup" method="POST">
+                First name : <input name="fname" type="text" required=""/><br/><br/>
+                Last name : <input name="lname" type="text"  required=""/><br/><br/>
+                Personal ID : <input name="pid" type="number" required=""/><br/><br/>
+                Phone : <input name="phone" type="number"  required=""/><br/><br/>
+                Address 1 : <input name="addr1" type="text" required=""/><br/><br/>
+                Address 2 : <input name="addr2" type="text" /><br/><br/>
+                Age : <input name="age" type="number" required=""/><br/><br/>
+                Gender : <select name="sex">
+                    <option value="m">Male</option>
+                    <option value="f">Female</option>
+                    <option value="na">None of above</option>
+                </select><br/><br/>
+                <hr/>
+                <p>Define your Username and Password for next time Sign in into the System.</p>
+                Username : <input name="usrn" type="text" required=""/><br/><br/>
+                Password : <input name="pswd" type="password"  required=""/><br/><br/>
+                <input name="utyp" type="hidden"  value="T" required=""/>
+                <input type="submit"/>&nbsp;&nbsp;<input type="reset"/><br/>
+            </form>
+        </fieldset>
     </body>
 </html>
 

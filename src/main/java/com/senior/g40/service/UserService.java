@@ -39,14 +39,44 @@ public class UserService {
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {//If there is account existed.
                 //TODO
+                conn.close();
                 return true;
-            } else { //Or else
-                //TODO
-                return false;
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         return false;
+    }
+
+    public boolean createAccount(String firstName, String lastName,
+            long personalId, int phoneNumber, String address1, String address2, int age, char gender) {
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "INSERT INTO `profile` "
+                    + "(`firstName`, `lastName`, `personalId`, `phone`, `address1`, `address2`, `age`, `gender`) "
+                    + "VALUES (?,  ?,  ?,  ?, ?, ?,  ?,  ?);";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm.setString(1, firstName);
+            pstm.setString(2, lastName);
+            pstm.setLong(3, personalId);
+            pstm.setInt(4, phoneNumber);
+            pstm.setString(5, address1);
+            pstm.setString(6, address2);
+            pstm.setInt(7, age);
+            pstm.setString(8, String.valueOf(gender));
+            if(pstm.executeUpdate() != 0){
+                conn.close();
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        return false;
+    }
+
+    private void createUser(String username, String password, char userType) {
+
     }
 }
