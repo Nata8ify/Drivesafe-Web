@@ -14,7 +14,7 @@ public class Profile {
     private String firstName;
     private String lastName;
     private long personalId;
-    private int phoneNumber;
+    private String phoneNumber;
     private String address1;
     private String address2;
     private int age;
@@ -60,11 +60,11 @@ public class Profile {
         this.personalId = personalId;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -99,6 +99,12 @@ public class Profile {
     public void setGender(char gender) {
         this.gender = gender;
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" + "userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", personalId=" + personalId + ", phoneNumber=" + phoneNumber + ", address1=" + address1 + ", address2=" + address2 + ", age=" + age + ", gender=" + gender + '}';
+    }
+
     
     
 }

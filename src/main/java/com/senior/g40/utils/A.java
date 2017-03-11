@@ -11,7 +11,8 @@ package com.senior.g40.utils;
  */
 public class A { // A = App
     public class Path{
-        public static final String JSP_DIR = "/WEB-INF/jsp/"; 
+        public static final String JSP_DIR = "/WEB-INF/jsp/";
+        public static final String JSP_RESULT_DIR = "/WEB-INF/jsp/result/";
         public static final String IMGS_DIR = "/WEB-INF/repo/imgs/"; 
     }
     public class Attr{

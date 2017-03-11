@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author PNattawut
  */
-public class ToServlet extends HttpServlet {
+public class DriverAppInServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,34 +28,17 @@ public class ToServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        this.request = request;
-        this.response = response;
         String option = request.getParameter("opt");
-
-        switch (option) {
-            case "main":
-                to(A.Path.JSP_DIR + "main.jsp");
+        switch(option){
+            case "login" : 
                 break;
-            case "index":
-                to("/index.jsp");
-                break;
-            case "stat":
-                to(A.Path.JSP_DIR+"stat.jsp");
-                break;
-            default:
-                return;
+            default : return;
         }
-
-    }
-
-    private void to(String destination) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher(destination).forward(request, response);
+        
+        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR+"result.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

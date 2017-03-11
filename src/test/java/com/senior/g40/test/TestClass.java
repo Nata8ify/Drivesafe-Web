@@ -20,4 +20,9 @@ public class TestClass {
     public void isRootLogin(){
 //        assert(UserService.getInstance().login("root", "root", 'T'));
     }
+    
+    @Test
+    public void isRootProfileExisted(){
+//        assert()
+    }
 }

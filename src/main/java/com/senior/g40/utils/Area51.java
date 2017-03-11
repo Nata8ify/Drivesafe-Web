@@ -13,10 +13,12 @@ import java.sql.SQLException;
  * @author PNattawut
  */
 public class Area51 {
+
     // For test a thing.
     public static void main(String[] args) throws SQLException {
 //        UserService.getInstance().login("root", "root", 'T');
 //          UserService.getInstance().createAccount("Tom", "Riddle", 1234567891011L, "+66845705977", "BLANK", "BLANK", 21, 'M', "user", "user", 'M');
 //        System.out.println(new UserService().getLatestUserId());
+        System.out.println(UserService.getProfileByUserId(10).toString());
     }
 }

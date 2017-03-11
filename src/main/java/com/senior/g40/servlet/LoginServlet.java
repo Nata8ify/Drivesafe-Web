@@ -5,6 +5,7 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.model.Profile;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.A;
 import java.io.IOException;
@@ -35,8 +36,11 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("usrn");
         String password = request.getParameter("pswd");
         char userType = request.getParameter("utyp").charAt(0);
-        if (UserService.getInstance().login(username, password, userType)) {
+        
+        Profile pf = UserService.getInstance().login(username, password, userType);
+        if (pf != null) {
             request.setAttribute("msg", username);
+            request.getSession().setAttribute("pf", pf);
             getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "main.jsp").forward(request, response);
 
         } else {

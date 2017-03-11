@@ -5,6 +5,8 @@
  */
 package com.senior.g40.service;
 
+import com.senior.g40.model.Profile;
+import com.senior.g40.model.User;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.Encrypt;
 import java.sql.Connection;
@@ -29,25 +31,27 @@ public class UserService {
         return userService;
     }
 
-    public boolean login(String username, String password, char userType) {
+    public Profile login(String username, String password, char userType) {
         try {
             Connection conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM drivesafe.user WHERE username = ? AND password = ? AND userType = ?;";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, username);
             pstm.setString(2, Encrypt.toMD5(password));
-            pstm.setInt(3, userType);
+            pstm.setString(3, String.valueOf(userType));
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {//If there is account existed.
                 //TODO
+                System.out.println("LOGIN!");
+                Profile pf = getProfileByUserId(rs.getLong("userId"));
                 conn.close();
-                return true;
+                return pf;
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-        return false;
+        return null;
     }
 
     public boolean createAccount(String firstName, String lastName,
@@ -89,21 +93,23 @@ public class UserService {
         pstm.setString(3, Encrypt.toMD5(password));
         pstm.setString(4, String.valueOf(userType));
         if (pstm.executeUpdate() != 0) {
-            conn.close();   
+            conn.close();
             return true;
         } else {
             return false;
         }
     }
-    
-    public boolean createAbsAccount(){return false;}
-    
-    private long getLatestUserId() throws SQLException{
+
+    public boolean createAbsAccount() {
+        return false;
+    }
+
+    private long getLatestUserId() throws SQLException {
         Connection conn = ConnectionBuilder.getConnection();
         String sqlCmd = "SELECT MAX(userId) AS latestId FROM `profile`;";
         PreparedStatement pstm = conn.prepareStatement(sqlCmd);
         ResultSet rs = pstm.executeQuery();
-        if(rs.next()){
+        if (rs.next()) {
             long latestId = rs.getLong("latestId");
             conn.close();
             return latestId;
@@ -111,5 +117,42 @@ public class UserService {
             conn.close();
             throw new SQLException("Latest userId is N/A.");
         }
+    }
+
+    public static Profile getProfileByUserId(long userId) throws SQLException {
+        Profile pf = null;
+        
+        Connection conn = ConnectionBuilder.getConnection();
+        String sqlCmd = "SELECT * FROM `profile` WHERE userId = ?;";
+        PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+        pstm.setLong(1, userId);
+        ResultSet rs = pstm.executeQuery();
+        
+        if(rs.next()){
+            pf = new Profile();
+            setProfile(rs, pf);
+            conn.close();
+            return pf;
+        }
+        return null;
+    }
+
+    private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
+        pf.setUserId(rs.getLong("userId"));
+        pf.setFirstName(rs.getString("firstName"));
+        pf.setLastName(rs.getString("lastName"));
+        pf.setPersonalId(rs.getLong("personalId"));
+        pf.setPhoneNumber(rs.getString("phone"));
+        pf.setAddress1(rs.getString("address1"));
+        pf.setAddress2(rs.getString("address2"));
+        pf.setAge(rs.getInt("age"));
+        pf.setGender(rs.getString("gender").charAt(0));
+    }
+
+    private static void setUser(ResultSet rs, User usr) throws SQLException {
+        usr.setUserId(rs.getLong(""));
+        usr.setUsername(rs.getString(""));
+        usr.setPassword(rs.getString(""));
+        usr.setUserType(rs.getString("").charAt(0));
     }
 }

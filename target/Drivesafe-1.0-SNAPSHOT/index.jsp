@@ -4,7 +4,9 @@
     Author     : PNattawut
 --%>
 
+<%@page import="com.senior.g40.utils.A"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% if(session.getAttribute("pf") != null) response.sendRedirect("To?opt=main"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,15 +16,13 @@
     <body>
         <h1>Welcome to Drivesafe System!</h1><br/>
         <fieldset>
-            <legend>Login ${msg}</legend>
+            <legend>Monitoring/Super User Login ${msg}</legend>
             <form action="Login" method="POST">
                 Username : <input name="usrn" type="text" required=""/><br/><br/>
                 Password : <input name="pswd" type="password"  required=""/><br/><br/>
-                <input name="utyp" type="hidden"  value="M" required=""/>
+                <input name="utyp" type="hidden"  value="T" required=""/>
                 <input type="submit"/>&nbsp;&nbsp;<input type="reset"/><br/><br/>
                 <a href="#regis">Register for Driving User</a>&nbsp;&nbsp;
-                <a href="#">Are you a Monitoring/Super User?</a>&nbsp;&nbsp;<br/><br/>
-                <a href="#">SKIP</a>
             </form>
         </fieldset>
         <br/><br/><br/>
