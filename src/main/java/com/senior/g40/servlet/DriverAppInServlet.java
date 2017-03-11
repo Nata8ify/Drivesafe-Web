@@ -5,13 +5,19 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.model.Profile;
+import com.senior.g40.service.UserService;
 import com.senior.g40.utils.A;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -28,14 +34,23 @@ public class DriverAppInServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private HttpServletRequest request;
+    private HttpServletResponse response;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        this.request = request;
+        this.response = response;
         String option = request.getParameter("opt");
         switch(option){
             case "login" : 
+                Profile pf = UserService.getInstance().login(
+                        request.getParameter("usrn"),
+                        request.getParameter("pswd"),
+                        request.getParameter("utyp").charAt(0));
+                System.out.println(UserService.getInstance().convertProfileToJSON(pf));
                 break;
-            default : return;
+            default : System.out.println("N/A");return;
         }
         
         getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR+"result.jsp").forward(request, response);

@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -121,14 +123,14 @@ public class UserService {
 
     public static Profile getProfileByUserId(long userId) throws SQLException {
         Profile pf = null;
-        
+
         Connection conn = ConnectionBuilder.getConnection();
         String sqlCmd = "SELECT * FROM `profile` WHERE userId = ?;";
         PreparedStatement pstm = conn.prepareStatement(sqlCmd);
         pstm.setLong(1, userId);
         ResultSet rs = pstm.executeQuery();
-        
-        if(rs.next()){
+
+        if (rs.next()) {
             pf = new Profile();
             setProfile(rs, pf);
             conn.close();
@@ -155,4 +157,43 @@ public class UserService {
         usr.setPassword(rs.getString(""));
         usr.setUserType(rs.getString("").charAt(0));
     }
+
+//    --------------------------------- Dealing with JSON
+    public JSONObject convertUserToJSON(User user) {
+        try {
+            if (user != null) {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("userId", user.getUserId());
+                jsonObj.put("username", user.getUsername());
+                jsonObj.put("password", user.getPassword());
+                jsonObj.put("userType", user.getUserType());
+                return jsonObj;
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public JSONObject convertProfileToJSON(Profile profile) {
+        try {
+            if (profile != null) {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("userId", profile.getUserId());
+                jsonObj.put("firstName", profile.getFirstName());
+                jsonObj.put("lastName", profile.getLastName());
+                jsonObj.put("personalId", profile.getPersonalId());
+                jsonObj.put("phoneNumber", profile.getPhoneNumber());
+                jsonObj.put("address1", profile.getAddress1());
+                jsonObj.put("address2", profile.getAddress2());
+                jsonObj.put("age", profile.getAge());
+                jsonObj.put("gender", profile.getGender());
+                return jsonObj;
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+//    --------------------------------- Dealing with JSON
 }
