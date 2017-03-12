@@ -78,7 +78,7 @@ public class UserService {
                 conn.close();
                 createUser(username, password, userType);
                 return true;
-            }
+            } conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -98,6 +98,7 @@ public class UserService {
             conn.close();
             return true;
         } else {
+            conn.close();
             return false;
         }
     }
@@ -135,7 +136,7 @@ public class UserService {
             setProfile(rs, pf);
             conn.close();
             return pf;
-        }
+        }conn.close();
         return null;
     }
 
