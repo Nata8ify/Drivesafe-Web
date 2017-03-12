@@ -1,5 +1,6 @@
 com\senior\g40\servlet\LogoutServlet.class
 com\senior\g40\model\User.class
+com\senior\g40\servlet\TestConnectServlet.class
 com\senior\g40\servlet\LoginServlet.class
 com\senior\g40\servlet\ToServlet.class
 com\senior\g40\servlet\SignupServlet.class

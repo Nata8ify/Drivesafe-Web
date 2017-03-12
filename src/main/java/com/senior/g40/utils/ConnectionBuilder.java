@@ -21,19 +21,19 @@ public class ConnectionBuilder {
 
         try { //Connect to (Real)Database on Server First.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
+            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8&serverTimezone=ICT";
             String user = "drvsafe";
             String pw = "@Qwerty69";
             Class.forName(dbDriver);
             con = DriverManager.getConnection(dbUrl, user, pw);
         } catch (Exception ex1) {
-//            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
+            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
             System.out.println("Try... Connected with Localhost. [อย่าตกใจ แค่เปลี่ยนเป็นเชื่อมต่อกับ Localhost MySQL]");
             //If-Failed -> Connect to Localhost Database.
                 String dbDriver = "com.mysql.jdbc.Driver";
-                String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
+                String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
                 String user = "root";
-                String pw = "";
+                String pw = "@Kar98Lambda";
             try {
                 Class.forName(dbDriver);
             } catch (ClassNotFoundException ex) {

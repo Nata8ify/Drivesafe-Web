@@ -30,7 +30,7 @@
             <legend>Driving User Sign up</legend>
             <form action="Signup" method="POST">
                 First name : <input name="fname" type="text" required=""/><br/><br/>
-                Last name : <input name="lname" type="text"  required=""/><br/><br/>
+                Last name  : <input name="lname" type="text"  required=""/><br/><br/>
                 Personal ID : <input name="pid" type="number" required=""/><br/><br/>
                 Phone : <input name="phone" type="number"  required=""/><br/><br/>
                 Address 1 : <input name="addr1" type="text" required=""/><br/><br/>
