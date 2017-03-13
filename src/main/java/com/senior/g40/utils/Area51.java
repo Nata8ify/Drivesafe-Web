@@ -21,8 +21,10 @@ public class Area51 {
 //        UserService.getInstance().login("root", "root", 'T');
 //          UserService.getInstance().createAccount("Tom", "Riddle", 1234567891011L, "+66845705977", "BLANK", "BLANK", 21, 'M', "user", "user", 'M');
 //        System.out.println(new UserService().getLatestUserId());
-        System.out.println(UserService.getProfileByUserId(10).toString());
-        JSONObject js = new JSONObject();
-        System.out.println(js);
+//        System.out.println(UserService.getProfileByUserId(10).toString());
+//        JSONObject js = new JSONObject();
+//        System.out.println(js);
+
+            
     }
 }

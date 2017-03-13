@@ -18,6 +18,15 @@ public class User {
 
     private static User user;
 
+    public User(String username, String password, char userType) {
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+    }
+
+    public User() {
+    }
+    
     public static User getInsatance() {
         if (user == null) {
             user = new User();

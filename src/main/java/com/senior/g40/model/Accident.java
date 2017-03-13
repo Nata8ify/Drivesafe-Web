@@ -12,24 +12,44 @@ import java.sql.Date;
  * @author PNattawut
  */
 public class Accident {
-    private int userId;
+
+    private long userId;
     private Date date;
     private String time;
     private float latitude;
     private float longtitude;
     private float forceDetect;
     private float speedDetect;
+    //-- accCode is have very importance role.
     private char accCode;
+    //A[Accident]: Pending for rescue, 
+    //R[Resecue]: Rescuer is on the way, 
+    //C[Clear]: Rescue received, marking will be cleared next time.  
 
     private static Accident accident;
-    public static Accident getInsatance(){
-        if(accident == null){
+
+    public Accident() {
+    }
+
+    public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect, char accCode) {
+        this.userId = userId;
+        this.date = date;
+        this.time = time;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.forceDetect = forceDetect;
+        this.speedDetect = speedDetect;
+        this.accCode = accCode;
+    }
+
+    public static Accident getInsatance() {
+        if (accident == null) {
             accident = new Accident();
         }
         return accident;
     }
-    
-    public int getUserId() {
+
+    public long getUserId() {
         return userId;
     }
 
@@ -97,6 +117,5 @@ public class Accident {
     public String toString() {
         return "Accident{" + "userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longtitude=" + longtitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accCode=" + accCode + '}';
     }
-    
-    
+
 }

@@ -5,19 +5,17 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
+import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.A;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -36,24 +34,54 @@ public class DriverAppInServlet extends HttpServlet {
      */
     private HttpServletRequest request;
     private HttpServletResponse response;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         this.request = request;
         this.response = response;
+        AccidentService accService = AccidentService.getInstance();
+        UserService usrService = UserService.getInstance();
         String option = request.getParameter("opt");
-        switch(option){
-            case "login" : 
-                Profile pf = UserService.getInstance().login(
+        switch (option) {
+            case "login": //1. Driver Login Section START ---- 
+                Profile pf = usrService.login(
                         request.getParameter("usrn"),
                         request.getParameter("pswd"),
-                        request.getParameter("utyp").charAt(0));
-                System.out.println(UserService.getInstance().convertProfileToJSON(pf));
-                break;
-            default : System.out.println("N/A");return;
+                        request.getParameter("utyp").charAt(0)); //Or constant'M'
+                request.setAttribute("result", usrService.convertProfileToJSON(pf));
+                break; //1.END ---- 
+            case "acchit": //2. Driver got an accident and save accident data Section START ---- 
+                Accident accident = new Accident(getL("usrid"),
+                         new Date(System.currentTimeMillis()),
+                         getS("time"),
+                         getF("lat"),
+                         getF("lng"),
+                         getF("fdt"),
+                         getF("sdt"),
+                         getS("accc").charAt(0));
+                if (accService.saveAccident(accident)) {
+                    request.setAttribute("result", true);
+                }
+                break; //2. END ---- 
+            default:
+                System.out.println("N/A");
+                return;
         }
-        
-        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR+"result.jsp").forward(request, response);
+
+        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
+    }
+
+    private String getS(String param) {
+        return request.getParameter(param);
+    }
+
+    private long getL(String param) {
+        return Long.valueOf(request.getParameter(param));
+    }
+
+    private float getF(String param) {
+        return Float.valueOf(request.getParameter(param));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
