@@ -16,30 +16,35 @@ import java.util.logging.Logger;
  */
 public class ConnectionBuilder {
 
-    public static java.sql.Connection getConnection() throws SQLException {
+    public static java.sql.Connection getConnection() {
         java.sql.Connection con = null;
 
         try { //Connect to (Real)Database on Server First.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8&serverTimezone=ICT";
+            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
             String user = "drvsafe";
             String pw = "@Qwerty69";
-            Class.forName(dbDriver);
-            con = DriverManager.getConnection(dbUrl, user, pw);
-        } catch (Exception ex1) {
-//            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
-            System.out.println("Try... Connected with Localhost. [อย่าตกใจ แค่เปลี่ยนเป็นเชื่อมต่อกับ Localhost MySQL]");
-            //If-Failed -> Connect to Localhost Database.
-                String dbDriver = "com.mysql.jdbc.Driver";
-                String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
-                String user = "root";
-                String pw = "";
             try {
                 Class.forName(dbDriver);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex);
             }
+            con = DriverManager.getConnection(dbUrl, user, pw);
+        } catch (SQLException ex1) {
+            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
+            System.out.println("Try... Connected with Localhost. [อย่าตกใจ แค่เปลี่ยนเป็นเชื่อมต่อกับ Localhost MySQL]");
+            //If-Failed -> Connect to Localhost Database.
+            String dbDriver = "com.mysql.jdbc.Driver";
+            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
+            String user = "root";
+            String pw = "";
+            try {
+                Class.forName(dbDriver);
                 con = DriverManager.getConnection(dbUrl, user, pw);
+            } catch (Exception ex) {
+                Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
 
         return con;
