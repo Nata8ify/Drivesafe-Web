@@ -43,6 +43,7 @@ public class DriverAppInServlet extends HttpServlet {
         AccidentService accService = AccidentService.getInstance();
         UserService usrService = UserService.getInstance();
         String option = request.getParameter("opt");
+
         switch (option) {
             case "login": //1. Driver Login Section START ---- 
                 Profile pf = usrService.login(
@@ -51,25 +52,34 @@ public class DriverAppInServlet extends HttpServlet {
                         request.getParameter("utyp").charAt(0)); //Or constant'M'
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 break; //1.END ---- 
-            case "acchit": //2. Driver got an accident and save accident data Section START ---- 
-                Accident accident = new Accident(getL("usrid"),
-                         new Date(System.currentTimeMillis()),
-                         getS("time"),
-                         getF("lat"),
-                         getF("lng"),
-                         getF("fdt"),
-                         getF("sdt"),
-                         getS("accc").charAt(0));
-                if (accService.saveAccident(accident)) {
+            case "acchit": //2. Driver got an accident and save accident data Section START ----
+                if (accService.saveAccident(getAccidentData()).isSuccess()) {
+                    // **PRIORITY** will system return 'Accident' Data back?
                     request.setAttribute("result", true);
                 }
                 break; //2. END ---- 
+            case "usr_accfalse": //3. for receive/acknowledge user false positive data.
+
+                break;// 3. END ------
+            case "sys_accfalse": //4. for receive/acknowledge system false positive data.
+                break;//4. END ------
             default:
                 System.out.println("N/A");
                 return;
         }
 
         getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
+    }
+
+    private Accident getAccidentData() {
+        return new Accident(getL("usrid"),
+                new Date(System.currentTimeMillis()),
+                getS("time"),
+                getF("lat"),
+                getF("lng"),
+                getF("fdt"),
+                getF("sdt"),
+                getS("accc").charAt(0));
     }
 
     private String getS(String param) {

@@ -22,10 +22,18 @@ public class Accident {
     private float speedDetect;
     //-- accCode is have very importance role.
     private char accCode;
+    
+    public static char ACC_CODE_A = 'A';
+    public static char ACC_CODE_G = 'G';
+    public static char ACC_CODE_R = 'R';
+    public static char ACC_CODE_C = 'C';
+    public static char ACC_CODE_ERRU = '1';
+    public static char ACC_CODE_ERRS = '2';
     //A[Accident]: Pending for rescue, 
-    //R[Resecue]: Rescuer is on the way, 
+    //G[Going]: Rescuer is on the way, 
+    //R[Resecue]: Rescuer is rescuing, 
     //C[Clear]: Rescue received, marking will be cleared next time.  
-
+//1[False on User]
     private static Accident accident;
 
     public Accident() {
