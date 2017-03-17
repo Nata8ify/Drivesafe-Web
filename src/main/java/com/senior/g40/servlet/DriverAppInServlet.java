@@ -10,6 +10,7 @@ import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.A;
+import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.sql.Date;
 import javax.servlet.ServletException;
@@ -53,9 +54,11 @@ public class DriverAppInServlet extends HttpServlet {
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 break; //1.END ---- 
             case "acchit": //2. Driver got an accident and save accident data Section START ----
-                if (accService.saveAccident(getAccidentData()).isSuccess()) {
-                    // **PRIORITY** will system return 'Accident' Data back?
-                    request.setAttribute("result", true);
+                Result result = accService.saveAccident(getAccidentData());
+                if (result.isSuccess()) {
+                    // **PRIORITY** DONE! -> will system return 'Accident' Data back? 
+                    Accident acc = (Accident)result.getObj();
+                    request.setAttribute("result", accService.convertAccidentToJSON(acc));
                 }
                 break; //2. END ---- 
             case "usr_accfalse": //3. for receive/acknowledge user false positive data.

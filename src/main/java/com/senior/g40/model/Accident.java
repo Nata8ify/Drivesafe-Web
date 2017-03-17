@@ -13,6 +13,7 @@ import java.sql.Date;
  */
 public class Accident {
 
+    private long accidentId;
     private long userId;
     private Date date;
     private String time;
@@ -20,6 +21,7 @@ public class Accident {
     private float longtitude;
     private float forceDetect;
     private float speedDetect;
+    
     //-- accCode is have very importance role.
     private char accCode;
     
@@ -57,6 +59,16 @@ public class Accident {
         return accident;
     }
 
+    public long getAccidentId() {
+        return accidentId;
+    }
+
+    public void setAccidentId(long accidentId) {
+        this.accidentId = accidentId;
+    }
+
+    
+    
     public long getUserId() {
         return userId;
     }

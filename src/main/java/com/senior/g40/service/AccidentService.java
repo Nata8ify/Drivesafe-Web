@@ -40,7 +40,7 @@ public class AccidentService {
             Result result = null;
             Connection conn = ConnectionBuilder.getConnection();
             String sqlCmd = "INSERT INTO `accident` "
-                    + "(`userId`, `date`, `time`, `latitude`, `longtitude`, `accCode`, `forceDetect`, `speedDetect`) "
+                    + "(`userId`, `date`, `time`, `latitude`, `longtitude`, `forceDetect`, `speedDetect`, `accCode`) "
                     + "VALUES "
                     + "(?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
@@ -51,9 +51,15 @@ public class AccidentService {
             pstm.setFloat(5, acc.getLongtitude());
             pstm.setFloat(6, acc.getForceDetect());
             pstm.setFloat(7, acc.getSpeedDetect());
-            pstm.setString(8, String.valueOf(acc.getAccCode()));
-            result = new Result(pstm.executeUpdate() != 0, "Saved");
-            if (result.isSuccess()) {
+            pstm.setString(8, String.valueOf(Accident.ACC_CODE_A));
+            if (pstm.executeUpdate() != 0) {
+                sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
+                pstm = conn.prepareStatement(sqlCmd);
+                ResultSet rs = pstm.executeQuery();
+                if (rs.next()) {
+                    setAccident(rs, acc);
+                    result = new Result(true, "Saved", acc);
+                }
                 conn.close();
                 return result;
             }
@@ -63,9 +69,9 @@ public class AccidentService {
         }
         return new Result(false, "saveAccident is NO EXCEPTION and row is 0 updated.");
     }
+
     //------------------------------------About INSERT/ADD. - END
     //------------------------------------About UPDATE. - START
-
     public Result updateOnRequestRescueAccc(long userId, long accId) {
         return updateAccCodeStatus(userId, Accident.ACC_CODE_A);
     }
@@ -139,9 +145,9 @@ public class AccidentService {
         Accident accident = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode IN (" + Accident.ACC_CODE_A
-                    + ", " + Accident.ACC_CODE_G
-                    + ", " + Accident.ACC_CODE_R + ");";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode IN ('" + Accident.ACC_CODE_A
+                    + "', '" + Accident.ACC_CODE_G
+                    + "', '" + Accident.ACC_CODE_R + "');";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -165,7 +171,7 @@ public class AccidentService {
         Accident accident = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = " + Accident.ACC_CODE_A + ";";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_A + "';";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -189,7 +195,7 @@ public class AccidentService {
         Accident accident = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = " + Accident.ACC_CODE_G + ";";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_G + "';";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -213,7 +219,7 @@ public class AccidentService {
         Accident accident = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = " + Accident.ACC_CODE_R + ";";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_R + "';";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -236,7 +242,7 @@ public class AccidentService {
         return null;
     }
 
-        public List<Accident> getAccidentByLatLng(float lat, float lng) {
+    public List<Accident> getAccidentByLatLng(float lat, float lng) {
         List<Accident> accidents = null;
         Accident accident = null;
         try {
@@ -260,6 +266,7 @@ public class AccidentService {
         }
         return null;
     }
+
     //-------------------------------- About QUERY - END
     //-------------------------------- Accident Value Setup
     private void setAccident(ResultSet rs, Accident ac) throws SQLException {
@@ -271,6 +278,7 @@ public class AccidentService {
         ac.setForceDetect(rs.getFloat("forceDetect"));
         ac.setSpeedDetect(rs.getFloat("speedDetect"));
         ac.setAccCode(rs.getString("accCode").charAt(0));
+        ac.setAccidentId(rs.getLong("accidentId"));
     }
 //    --------------------------------- Dealing with JSON
 
@@ -286,6 +294,7 @@ public class AccidentService {
                 jsonObj.put("forceDetect", accident.getForceDetect());
                 jsonObj.put("speedDetect", accident.getSpeedDetect());
                 jsonObj.put("accCode", accident.getAccCode());
+                jsonObj.put("accidentId", accident.getAccidentId());
                 return jsonObj;
             }
         } catch (JSONException ex) {
@@ -293,6 +302,6 @@ public class AccidentService {
         }
         return null;
     }
-    
+
 //    --------------------------------- Dealing with JSON
 }

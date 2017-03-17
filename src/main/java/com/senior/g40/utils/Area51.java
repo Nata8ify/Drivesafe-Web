@@ -5,6 +5,7 @@
  */
 package com.senior.g40.utils;
 
+import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,14 +29,16 @@ public class Area51 {
         //        System.out.println(new UserService().getLatestUserId());
         //        System.out.println(UserService.getProfileByUserId(10).toString());
         //        JSONObject js = new JSONObject();
-        //        System.out.println(js);
-        ArrayList<Integer> nums = new ArrayList<Integer>();
-        nums.add(1);
-        nums.add(2);
-        nums.add(3);
-        nums.add(4);
-        Object obj = nums;
-        System.out.println(((ArrayList<Integer>) obj).toString());
-        System.out.println(accCode.Cs);
+//        //        System.out.println(js);
+//        ArrayList<Integer> nums = new ArrayList<Integer>();
+//        nums.add(1);
+//        nums.add(2);
+//        nums.add(3);
+//        nums.add(4);
+//        Object obj = nums;
+//        System.out.println(((ArrayList<Integer>) obj).toString());
+//        System.out.println(accCode.Cs);
+        System.out.println(
+                AccidentService.getInstance().getOnRequestAccidents());
     }
 }

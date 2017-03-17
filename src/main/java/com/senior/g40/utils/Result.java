@@ -9,18 +9,18 @@ package com.senior.g40.utils;
  *
  * @author PNattawut
  */
-
- /******************************************************************************
- ** 1.- 'Result' return a value holding the result after a method is operated which
- *      contain 'isSuccess' value that implied the operation is success or not
- *      'message' value can specify for the message after the operation is done.
- *      'excp' value contained the exception object if exception was occurred.
- *      'obj' value is the Object class contained the result value that up to which
- *      type of object has returned from method (to implement the 'obj' as usable
- *      value need to perform 'Casting'. purpose of 'obj' is for gathering object result
- *      and opertaion result and so on.. 
- ******************************************************************************/
-
+/**
+ * ****************************************************************************
+ ** 1.- 'Result' return a value holding the result after a method is operated
+ * which contain 'isSuccess' value that implied the operation is success or not
+ * 'message' value can specify for the message after the operation is done.
+ * 'excp' value contained the exception object if exception was occurred. 'obj'
+ * value is the Object class contained the result value that up to which type of
+ * object has returned from method (to implement the 'obj' as usable value need
+ * to perform 'Casting'. purpose of 'obj' is for gathering object result and
+ * opertaion result and so on.. 
+ *****************************************************************************
+ */
 public class Result {
 
     private boolean success;
@@ -34,7 +34,13 @@ public class Result {
         this.obj = obj;
         this.excp = excp;
     }
-    
+
+    public Result(boolean isSuccess, String message, Object obj) {
+        this.success = isSuccess;
+        this.message = message;
+        this.obj = obj;
+    }
+
     public Result(boolean isSuccess, String message, Exception excp) {
         this.success = isSuccess;
         this.message = message;
@@ -58,7 +64,7 @@ public class Result {
     public boolean isSuccess() {
         return success;
     }
-    
+
     public String getMessage() {
         return message;
     }
@@ -82,6 +88,5 @@ public class Result {
     public void setExcp(Exception excp) {
         this.excp = excp;
     }
-    
-    
+
 }

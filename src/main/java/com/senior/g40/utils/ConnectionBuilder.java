@@ -31,7 +31,7 @@ public class ConnectionBuilder {
             }
             con = DriverManager.getConnection(dbUrl, user, pw);
         } catch (SQLException ex1) {
-            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
+//            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
             System.out.println("Try... Connected with Localhost. [อย่าตกใจ แค่เปลี่ยนเป็นเชื่อมต่อกับ Localhost MySQL]");
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";

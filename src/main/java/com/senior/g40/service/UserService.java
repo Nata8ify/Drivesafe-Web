@@ -189,7 +189,7 @@ public class UserService {
                 jsonObj.put("address1", profile.getAddress1());
                 jsonObj.put("address2", profile.getAddress2());
                 jsonObj.put("age", profile.getAge());
-                jsonObj.put("gender", profile.getGender());
+                jsonObj.put("gender", Character.valueOf(profile.getGender()));
                 return jsonObj;
             }
         } catch (JSONException ex) {
