@@ -38,7 +38,9 @@ public class Area51 {
 //        Object obj = nums;
 //        System.out.println(((ArrayList<Integer>) obj).toString());
 //        System.out.println(accCode.Cs);
-        System.out.println(
-                AccidentService.getInstance().getOnRequestAccidents());
+//        System.out.println(
+//                AccidentService.getInstance().getOnRequestAccidents());
+        float f = 1234.65431123f;
+        System.out.println(String.format("%.5f", f));
     }
 }

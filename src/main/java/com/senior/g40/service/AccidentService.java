@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -269,6 +270,7 @@ public class AccidentService {
 
     //-------------------------------- About QUERY - END
     //-------------------------------- Accident Value Setup
+//    private static final DecimalFormat fmtLatLng = new DecimalFormat("#.####");
     private void setAccident(ResultSet rs, Accident ac) throws SQLException {
         ac.setUserId(rs.getInt("userId"));
         ac.setDate(rs.getDate("date"));
@@ -289,10 +291,10 @@ public class AccidentService {
                 jsonObj.put("userId", accident.getUserId());
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
-                jsonObj.put("latitude", accident.getLatitude());
-                jsonObj.put("longtitude", accident.getLongtitude());
-                jsonObj.put("forceDetect", accident.getForceDetect());
-                jsonObj.put("speedDetect", accident.getSpeedDetect());
+                jsonObj.put("latitude", Float.valueOf(accident.getLatitude()));
+                jsonObj.put("longtitude", Float.valueOf(accident.getLongtitude()));
+                jsonObj.put("forceDetect", Float.valueOf(accident.getForceDetect()));
+                jsonObj.put("speedDetect", Float.valueOf(accident.getSpeedDetect()));
                 jsonObj.put("accCode", accident.getAccCode());
                 jsonObj.put("accidentId", accident.getAccidentId());
                 return jsonObj;

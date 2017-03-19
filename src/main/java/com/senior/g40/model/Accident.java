@@ -35,7 +35,8 @@ public class Accident {
     //G[Going]: Rescuer is on the way, 
     //R[Resecue]: Rescuer is rescuing, 
     //C[Clear]: Rescue received, marking will be cleared next time.  
-//1[False on User]
+    //1[False on User]
+    //2[False on System]
     private static Accident accident;
 
     public Accident() {

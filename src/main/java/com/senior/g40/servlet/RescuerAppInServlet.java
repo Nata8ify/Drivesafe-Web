@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -57,11 +58,15 @@ public class RescuerAppInServlet extends HttpServlet {
             case "getaccs":
                 List<Accident> accidents = accService.getAllAccidents();
                 if (accidents != null) {
-                    JSONArray accJSONArray = null;
-                    if (accJSONArray == null) {
-                        accJSONArray = new JSONArray(accidents);
+                    JSONArray accsJson = null;
+                    for(Accident acc : accidents){
+                        if(accsJson == null){
+                            accsJson = new JSONArray();
+                        }
+                        accsJson.put(accService.convertAccidentToJSON(acc));
                     }
-                    request.setAttribute("result", accJSONArray);
+                    System.out.println(accsJson);
+                    request.setAttribute("result", accsJson.toString());
                 } else {
                     request.setAttribute("result", "WOW");
                 }

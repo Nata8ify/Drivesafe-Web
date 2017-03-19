@@ -32,7 +32,7 @@ public class ConnectionBuilder {
             con = DriverManager.getConnection(dbUrl, user, pw);
         } catch (SQLException ex1) {
 //            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
-            System.out.println("Try... Connected with Localhost. [อย่าตกใจ แค่เปลี่ยนเป็นเชื่อมต่อกับ Localhost MySQL]");
+            System.out.println("Try... Connected with Localhost.");
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";
             String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";

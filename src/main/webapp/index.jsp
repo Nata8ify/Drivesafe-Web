@@ -16,7 +16,7 @@
     <body>
         <h1>Welcome to Drivesafe System!</h1><br/>
         <fieldset>
-            <legend>Monitoring/Super User Login ${msg}</legend>
+            <legend><u>Monitoring/Super User</u> Login ${msg}</legend>
             <form action="Login" method="POST">
                 Username : <input name="usrn" type="text" required=""/><br/><br/>
                 Password : <input name="pswd" type="password"  required=""/><br/><br/>
@@ -27,7 +27,7 @@
         </fieldset>
         <br/><br/><br/>
         <fieldset id="regis">
-            <legend>Driving User Sign up</legend>
+            <legend><u>Driving User</u> Sign up</legend>
             <form action="Signup" method="POST">
                 First name : <input name="fname" type="text" required=""/><br/><br/>
                 Last name  : <input name="lname" type="text"  required=""/><br/><br/>
