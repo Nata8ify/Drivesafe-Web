@@ -5,12 +5,17 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.model.Accident;
+import com.senior.g40.service.AccidentService;
+import com.senior.g40.utils.A;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 
 /**
  *
@@ -32,15 +37,28 @@ public class MonitoringServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MonitoringServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet MonitoringServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            AccidentService accService = AccidentService.getInstance();
+            String opt = request.getParameter("opt");
+            switch (opt) {
+                case "quickacc":
+                    List<Accident> accidents = accService.getAllAccidents();
+                if (accidents != null) {
+                    JSONArray accsJson = null;
+                    for(Accident acc : accidents){
+                        if(accsJson == null){
+                            accsJson = new JSONArray();
+                        }
+                        accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+                    }
+                    System.out.println(accsJson);
+                    request.setAttribute("result", accsJson);
+                } else {
+                    request.setAttribute("result", "WOW");
+                }
+                    break;
+            }
+
+            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
 

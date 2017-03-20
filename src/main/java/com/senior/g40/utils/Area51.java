@@ -5,12 +5,8 @@
  */
 package com.senior.g40.utils;
 
-import com.senior.g40.service.AccidentService;
-import com.senior.g40.service.UserService;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *

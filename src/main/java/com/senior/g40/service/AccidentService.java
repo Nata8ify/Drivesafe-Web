@@ -276,7 +276,7 @@ public class AccidentService {
         ac.setDate(rs.getDate("date"));
         ac.setTime(rs.getString("time"));
         ac.setLatitude(rs.getFloat("latitude"));
-        ac.setLongtitude(rs.getFloat("longtitude"));
+        ac.setLongtitude(rs.getFloat("longitude"));
         ac.setForceDetect(rs.getFloat("forceDetect"));
         ac.setSpeedDetect(rs.getFloat("speedDetect"));
         ac.setAccCode(rs.getString("accCode").charAt(0));
@@ -292,10 +292,10 @@ public class AccidentService {
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
                 jsonObj.put("latitude", Float.valueOf(accident.getLatitude()));
-                jsonObj.put("longtitude", Float.valueOf(accident.getLongtitude()));
+                jsonObj.put("longitude", Float.valueOf(accident.getLongtitude()));
                 jsonObj.put("forceDetect", Float.valueOf(accident.getForceDetect()));
                 jsonObj.put("speedDetect", Float.valueOf(accident.getSpeedDetect()));
-                jsonObj.put("accCode", accident.getAccCode());
+                jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
                 jsonObj.put("accidentId", accident.getAccidentId());
                 return jsonObj;
             }
@@ -305,5 +305,22 @@ public class AccidentService {
         return null;
     }
 
+    public JSONObject convertAccidentToJSONForMonitorTable(Accident accident) {
+        try {
+            if (accident != null) {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("date", accident.getDate());
+                jsonObj.put("time", accident.getTime());
+                jsonObj.put("latitude", Float.valueOf(accident.getLatitude()));
+                jsonObj.put("longitude", Float.valueOf(accident.getLongtitude()));
+                jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
+                jsonObj.put("accidentId", accident.getAccidentId());
+                return jsonObj;
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 //    --------------------------------- Dealing with JSON
 }
