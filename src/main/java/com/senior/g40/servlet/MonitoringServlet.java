@@ -41,7 +41,7 @@ public class MonitoringServlet extends HttpServlet {
             String opt = request.getParameter("opt");
             switch (opt) {
                 case "quickacc":
-                    List<Accident> accidents = accService.getAllAccidents();
+                    List<Accident> accidents = accService.getActiveAccidents();
                 if (accidents != null) {
                     JSONArray accsJson = null;
                     for(Accident acc : accidents){

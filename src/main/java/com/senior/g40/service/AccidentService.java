@@ -41,7 +41,7 @@ public class AccidentService {
             Result result = null;
             Connection conn = ConnectionBuilder.getConnection();
             String sqlCmd = "INSERT INTO `accident` "
-                    + "(`userId`, `date`, `time`, `latitude`, `longtitude`, `forceDetect`, `speedDetect`, `accCode`) "
+                    + "(`userId`, `date`, `time`, `latitude`, `longitude`, `forceDetect`, `speedDetect`, `accCode`) "
                     + "VALUES "
                     + "(?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
@@ -89,19 +89,19 @@ public class AccidentService {
         return updateAccCodeStatus(userId, Accident.ACC_CODE_C);
     }
 
-    public Result updateOnUserFalseAccc(long userId, long accId) {
-        return updateAccCodeStatus(userId, Accident.ACC_CODE_ERRU);
+    public Result updateOnUserFalseAccc(long accId) {
+        return updateAccCodeStatus(accId, Accident.ACC_CODE_ERRU);
     }
 
-    public Result updateOnSystemFalseAccc(long userId, long accId) {
-        return updateAccCodeStatus(userId, Accident.ACC_CODE_ERRS);
+    public Result updateOnSystemFalseAccc(long accId) {
+        return updateAccCodeStatus(accId, Accident.ACC_CODE_ERRS);
     }
 
     public Result updateAccCodeStatus(long userId, char accCode) {
         try {
             Result result = null;
             Connection conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "UPDATE accident SET `accCode`= ? WHERE userId = ?;";
+            String sqlCmd = "UPDATE accident SET `accCode`= ? WHERE accidentId = ?;";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, String.valueOf(accCode));
             pstm.setLong(2, userId);

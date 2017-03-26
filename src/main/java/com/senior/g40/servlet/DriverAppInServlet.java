@@ -44,7 +44,7 @@ public class DriverAppInServlet extends HttpServlet {
         AccidentService accService = AccidentService.getInstance();
         UserService usrService = UserService.getInstance();
         String option = request.getParameter("opt");
-
+        Result rs;
         switch (option) {
             case "login": //1. Driver Login Section START ---- 
                 Profile pf = usrService.login(
@@ -54,17 +54,24 @@ public class DriverAppInServlet extends HttpServlet {
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 break; //1.END ---- 
             case "acchit": //2. Driver got an accident and save accident data Section START ----
-                Result result = accService.saveAccident(getAccidentData());
-                if (result.isSuccess()) {
+                rs = accService.saveAccident(getAccidentData());
+                if (rs.isSuccess()) {
                     // **PRIORITY** DONE! -> will system return 'Accident' Data back? 
-                    Accident acc = (Accident)result.getObj();
+                    Accident acc = (Accident) rs.getObj();
                     request.setAttribute("result", accService.convertAccidentToJSON(acc));
                 }
                 break; //2. END ---- 
             case "usr_accfalse": //3. for receive/acknowledge user false positive data.
-                
+                rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("accid")));
+                if (rs.isSuccess()) {
+                    request.setAttribute("result", true);
+                }
                 break;// 3. END ------
             case "sys_accfalse": //4. for receive/acknowledge system false positive data.
+                rs = accService.updateOnSystemFalseAccc(Long.valueOf(request.getParameter("accid")));
+                if (rs.isSuccess()) {
+                    request.setAttribute("result", true);
+                }
                 break;//4. END ------
             default:
                 System.out.println("N/A");

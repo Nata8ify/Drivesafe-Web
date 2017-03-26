@@ -53,14 +53,14 @@ public class RescuerAppInServlet extends HttpServlet {
                         request.getParameter("pswd"),
                         request.getParameter("utyp").charAt(0)); //Or constant 'T'
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
-                to(A.Path.JSP_RESULT_DIR+"result.jsp");
+                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
                 break; //1.END ---- 
             case "getaccs":
                 List<Accident> accidents = accService.getAllAccidents();
                 if (accidents != null) {
                     JSONArray accsJson = null;
-                    for(Accident acc : accidents){
-                        if(accsJson == null){
+                    for (Accident acc : accidents) {
+                        if (accsJson == null) {
                             accsJson = new JSONArray();
                         }
                         accsJson.put(accService.convertAccidentToJSON(acc));
@@ -70,16 +70,33 @@ public class RescuerAppInServlet extends HttpServlet {
                 } else {
                     request.setAttribute("result", "WOW");
                 }
-                to(A.Path.JSP_RESULT_DIR+"result.jsp");
+                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "sys_accfalse" :
+            case "get_activeaccs":
+                List<Accident> activeAccidents = accService.getActiveAccidents();
+                if (activeAccidents != null) {
+                    JSONArray accsJson = null;
+                    for (Accident acc : activeAccidents) {
+                        if (accsJson == null) {
+                            accsJson = new JSONArray();
+                        }
+                        accsJson.put(accService.convertAccidentToJSON(acc));
+                    }
+                    System.out.println(accsJson);
+                    request.setAttribute("result", accsJson.toString());
+                } else {
+                    request.setAttribute("result", "WOW");
+                }
+                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
+            case "sys_accfalse":
                 break;
             default:
                 return;
         }
     }
 
-    private void to(String destination) throws ServletException, IOException {
+    private void goTo(String destination) throws ServletException, IOException {
         getServletContext().getRequestDispatcher(destination).forward(request, response);
     }
 
