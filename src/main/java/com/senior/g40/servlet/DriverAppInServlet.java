@@ -13,6 +13,7 @@ import com.senior.g40.utils.A;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -82,14 +83,14 @@ public class DriverAppInServlet extends HttpServlet {
     }
 
     private Accident getAccidentData() {
+        Date currentDate = new Date(System.currentTimeMillis());
         return new Accident(getL("usrid"),
-                new Date(System.currentTimeMillis()),
-                getS("time"),
+                currentDate,
+                new SimpleDateFormat("HH:mm").format(currentDate),
                 getF("lat"),
                 getF("lng"),
                 getF("fdt"),
-                getF("sdt"),
-                getS("accc").charAt(0));
+                getF("sdt"));
     }
 
     private String getS(String param) {

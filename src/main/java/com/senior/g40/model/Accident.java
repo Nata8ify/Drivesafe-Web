@@ -21,10 +21,10 @@ public class Accident {
     private float longtitude;
     private float forceDetect;
     private float speedDetect;
-    
+
     //-- accCode is have very importance role.
     private char accCode;
-    
+
     public static char ACC_CODE_A = 'A';
     public static char ACC_CODE_G = 'G';
     public static char ACC_CODE_R = 'R';
@@ -53,6 +53,16 @@ public class Accident {
         this.accCode = accCode;
     }
 
+    public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect) {
+        this.userId = userId;
+        this.date = date;
+        this.time = time;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.forceDetect = forceDetect;
+        this.speedDetect = speedDetect;
+    }
+
     public static Accident getInsatance() {
         if (accident == null) {
             accident = new Accident();
@@ -68,8 +78,6 @@ public class Accident {
         this.accidentId = accidentId;
     }
 
-    
-    
     public long getUserId() {
         return userId;
     }

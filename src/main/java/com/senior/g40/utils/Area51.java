@@ -5,7 +5,9 @@
  */
 package com.senior.g40.utils;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import org.json.JSONException;
 
 /**
@@ -36,7 +38,8 @@ public class Area51 {
 //        System.out.println(accCode.Cs);
 //        System.out.println(
 //                AccidentService.getInstance().getOnRequestAccidents());
-        float f = 1234.65431123f;
-        System.out.println(String.format("%.5f", f));
+//        float f = 1234.65431123f;
+//        System.out.println(String.format("%.5f", f));
+        System.out.println(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
     }
 }
