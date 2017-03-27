@@ -48,9 +48,9 @@ public class AccidentService {
             pstm.setLong(1, acc.getUserId());
             pstm.setDate(2, acc.getDate());
             pstm.setString(3, acc.getTime());
-            pstm.setFloat(4, acc.getLatitude());
-            pstm.setFloat(5, acc.getLongtitude());
-            pstm.setFloat(6, acc.getForceDetect());
+            pstm.setDouble(4, acc.getLatitude());
+            pstm.setDouble(5, acc.getLongtitude());
+            pstm.setDouble(6, acc.getForceDetect());
             pstm.setFloat(7, acc.getSpeedDetect());
             pstm.setString(8, String.valueOf(Accident.ACC_CODE_A));
             if (pstm.executeUpdate() != 0) {
@@ -291,9 +291,9 @@ public class AccidentService {
                 jsonObj.put("userId", accident.getUserId());
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
-                jsonObj.put("latitude", Float.valueOf(accident.getLatitude()));
-                jsonObj.put("longitude", Float.valueOf(accident.getLongtitude()));
-                jsonObj.put("forceDetect", Float.valueOf(accident.getForceDetect()));
+                jsonObj.put("latitude", Double.valueOf(accident.getLatitude()));
+                jsonObj.put("longitude", Double.valueOf(accident.getLongtitude()));
+                jsonObj.put("forceDetect", Double.valueOf(accident.getForceDetect()));
                 jsonObj.put("speedDetect", Float.valueOf(accident.getSpeedDetect()));
                 jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
                 jsonObj.put("accidentId", accident.getAccidentId());
@@ -311,8 +311,8 @@ public class AccidentService {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
-                jsonObj.put("latitude", Float.valueOf(accident.getLatitude()));
-                jsonObj.put("longitude", Float.valueOf(accident.getLongtitude()));
+                jsonObj.put("latitude", Double.valueOf(accident.getLatitude()));
+                jsonObj.put("longitude", Double.valueOf(accident.getLongtitude()));
                 jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
                 jsonObj.put("accidentId", accident.getAccidentId());
                 return jsonObj;

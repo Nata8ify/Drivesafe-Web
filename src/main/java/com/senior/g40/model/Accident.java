@@ -17,9 +17,9 @@ public class Accident {
     private long userId;
     private Date date;
     private String time;
-    private float latitude;
-    private float longtitude;
-    private float forceDetect;
+    private double latitude;
+    private double longtitude;
+    private double forceDetect;
     private float speedDetect;
 
     //-- accCode is have very importance role.
@@ -102,7 +102,7 @@ public class Accident {
         this.time = time;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -110,7 +110,7 @@ public class Accident {
         this.latitude = latitude;
     }
 
-    public float getLongtitude() {
+    public double getLongtitude() {
         return longtitude;
     }
 
@@ -118,7 +118,7 @@ public class Accident {
         this.longtitude = longtitude;
     }
 
-    public float getForceDetect() {
+    public double getForceDetect() {
         return forceDetect;
     }
 
