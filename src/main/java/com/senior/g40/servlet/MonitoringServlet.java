@@ -37,11 +37,12 @@ public class MonitoringServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            List<Accident> accidents;
             AccidentService accService = AccidentService.getInstance();
             String opt = request.getParameter("opt");
             switch (opt) {
-                case "quickacc":
-                    List<Accident> accidents = accService.getActiveAccidents();
+                case "quickacc":                    
+                    accidents = accService.getActiveAccidents();
                 if (accidents != null) {
                     JSONArray accsJson = null;
                     for(Accident acc : accidents){
@@ -52,7 +53,24 @@ public class MonitoringServlet extends HttpServlet {
                     }
                     System.out.println(accsJson);
                     request.setAttribute("result", accsJson);
-                } else {
+                        
+                }
+                case "currentDate": 
+                    //แสดงเฉพาะวันที่นั้นๆ
+                    accidents = accService.getCurrentDateAccidents();
+                if (accidents != null) {
+                    JSONArray accsJson = null;
+                    for(Accident acc : accidents){
+                        if(accsJson == null){
+                            accsJson = new JSONArray();
+                        }
+                        accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+                    }
+                    System.out.println(accsJson);
+                    request.setAttribute("result", accsJson);
+                        
+                }
+                else {
                     request.setAttribute("result", "WOW");
                 }
                     break;
@@ -61,7 +79,6 @@ public class MonitoringServlet extends HttpServlet {
             getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -40,9 +40,10 @@ public class LoginServlet extends HttpServlet {
         Profile pf = UserService.getInstance().login(username, password, userType);
         if (pf != null) {
             request.setAttribute("msg", username);
-            request.getSession().setAttribute("pf", pf);
+            request.getSession().setAttribute("pf", pf);          
             getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "main.jsp").forward(request, response);
-
+           
+            
         } else {
             request.setAttribute("msg", "<p style='color:red'>" + username + " is not found or incorrect password</p>");
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

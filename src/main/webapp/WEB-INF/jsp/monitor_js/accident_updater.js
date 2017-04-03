@@ -16,6 +16,7 @@ function updateAccident() {
 //                + "<td>" + data.date + " : " + data.time + "</td></tr>");
 //    });
 }
+
 var dataTable;
 $('document').ready(function () {
     var quickAccURL = "Monitor?opt=quickacc";
@@ -37,6 +38,10 @@ $('document').ready(function () {
         "drawCallback": ""
     });
 });
+
+setInterval( function () {
+    dataTable.ajax.reload( null, false );
+}, 3000 );
 
 $('#acctable tbody').on( 'click', 'tr', function () {
     var accRow = dataTable.row( this ).data();

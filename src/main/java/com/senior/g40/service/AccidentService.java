@@ -9,6 +9,7 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.Result;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -139,7 +140,32 @@ public class AccidentService {
         }
         return null;
     }
-
+    
+    public List<Accident> getCurrentDateAccidents(){
+    // means "get only accident that occured today"
+        Date today = new Date(System.currentTimeMillis());
+        List<Accident> accidents = null;
+        Accident accident = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today +"';";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                accident = new Accident();
+                if (accidents == null) {
+                    accidents = new ArrayList<Accident>();
+                }
+                setAccident(rs, accident);
+                accidents.add(accident);
+            }
+            return accidents;
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    return null;
+    }
+    
     public List<Accident> getActiveAccidents() {
         // means "get any accident that still need for resuce or being rescues."
         List<Accident> accidents = null;
@@ -322,5 +348,6 @@ public class AccidentService {
         }
         return null;
     }
+    
 //    --------------------------------- Dealing with JSON
 }
