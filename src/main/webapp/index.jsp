@@ -14,10 +14,10 @@
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
 
-        <link href="/Drivesafe-Web/css/bootstrap.css" rel="stylesheet" />
-        <link href="/Drivesafe-Web/css/ct-paper.css" rel="stylesheet"/>
-        <link href="/Drivesafe-Web/css/demo.css" rel="stylesheet" /> 
-        <link href="/Drivesafe-Web/css/examples.css" rel="stylesheet" /> 
+        <link href="Drivesafe-Web/src/main/webapp/css/bootstrap.css" rel="stylesheet" />
+        <link href="Drivesafe-Web/src/main/webapp/css/ct-paper.css" rel="stylesheet"/>
+        <link href="Drivesafe-Web/src/main/webapp/css/demo.css" rel="stylesheet" /> 
+        <link href="Drivesafe-Web/src/main/webapp/css/examples.css" rel="stylesheet" /> 
 
         <!--     Fonts and icons     -->
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
