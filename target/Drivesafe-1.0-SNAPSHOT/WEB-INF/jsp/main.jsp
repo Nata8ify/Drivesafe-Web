@@ -30,19 +30,23 @@
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-
+        <style>
+            tr:hover{
+               background-color: #FF841E;
+            }
+        </style>
     </head>
     <body>
 
         <nav class="navbar navbar-default" role="navigation-demo" id="demo-navbar">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                
-                    
 
-                    <a class="navbar-brand">Welcome to Drivesafe System!</a>
-                    
-                      
+
+
+                <a class="navbar-brand">Welcome to Drivesafe System!</a>
+
+
                 <div class="collapse navbar-collapse" id="navigation-example-2">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -68,7 +72,9 @@
                     <div class="col-md-8 col-md-offset-2">                                                                              
                         <div>
                             <table id="acctable" style="width: 100%;"> 
-                                <thead>
+
+                                <thead> 
+                               
                                     <tr>
                                         <th>Date</th>
                                         <th>Time</th>
@@ -77,7 +83,9 @@
                                         <th>Accident Code</th>
                                         <th>Accident Id</th> 
                                     </tr>
+                               
                                 </thead>
+
                                 <tbody style="text-align: center">
 
                                 </tbody>
