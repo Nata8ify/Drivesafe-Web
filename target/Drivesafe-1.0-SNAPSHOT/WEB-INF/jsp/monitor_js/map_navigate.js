@@ -22,7 +22,7 @@ function displayDestination(map) {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     directionsDisplay.setMap(map);
-    calculateAndDisplayRoute(directionsService, directionsDisplay); // Dummy Destination
+//    calculateAndDisplayRoute(directionsService, directionsDisplay); // Dummy Destination
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {

@@ -31,8 +31,9 @@
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
-            tr:hover{
+            #acctable tr:hover{ 
                background-color: #FF841E;
+               cursor: pointer
             }
         </style>
     </head>

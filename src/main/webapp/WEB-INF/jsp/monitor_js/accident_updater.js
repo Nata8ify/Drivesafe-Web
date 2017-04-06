@@ -35,22 +35,25 @@ $('document').ready(function () {
             {"data": "accCode", "width": "10%"},
             {"data": "accidentId", "width": "10%"}
         ],
-
+        "language": {
+            "loadingRecords": "Pending ... ",
+            "zeroRecords": "No Accident Rescue Request (For Now)" //<- Not Work?
+        },
         "drawCallback": ""
     });
 });
 
-setInterval( function () {
-    dataTable.ajax.reload( null, false );
-    $.fn.dataTable.ext.errMode = 'none';
-}, 3000 );
+setInterval(function () {
+    dataTable.ajax.reload(null, false);
+    $.fn.dataTable.ext.errMode = 'none'; //Disable the Error Dialog Only.
+}, 3000);
 
-$('#acctable tbody').on( 'click', 'tr', function () {
-    var accRow = dataTable.row( this ).data();
+$('#acctable tbody').on('click', 'tr', function () {
+    var accRow = dataTable.row(this).data();
     var lat = accRow.latitude;
     var lng = accRow.longitude;
     console.log(lat);
-    $("#out").html(lat+" : "+lng);
+    $("#out").html("Selected Accident Location is on "+lat + " : " + lng);
     somewhere = {lat: lat, lng: lng};
     navigate();
-} );
+});
