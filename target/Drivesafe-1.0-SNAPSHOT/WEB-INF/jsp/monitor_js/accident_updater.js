@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 setInterval(updateAccident, 2000);
+$.fn.dataTable.ext.errMode = 'none';
 
 var records = 0;
 function updateAccident() {
@@ -41,6 +42,7 @@ $('document').ready(function () {
 
 setInterval( function () {
     dataTable.ajax.reload( null, false );
+    $.fn.dataTable.ext.errMode = 'none';
 }, 3000 );
 
 $('#acctable tbody').on( 'click', 'tr', function () {

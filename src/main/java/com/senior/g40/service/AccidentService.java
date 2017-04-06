@@ -134,6 +134,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -159,6 +160,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -185,6 +187,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,6 +212,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -233,6 +237,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -257,6 +262,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -287,6 +293,7 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
