@@ -36,6 +36,10 @@
         <servlet-name>MonitoringServlet</servlet-name>
         <servlet-class>com.senior.g40.servlet.MonitoringServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StatisticServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.StatisticServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/Test</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>MonitoringServlet</servlet-name>
         <url-pattern>/Monitor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatisticServlet</servlet-name>
+        <url-pattern>/Statistic</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

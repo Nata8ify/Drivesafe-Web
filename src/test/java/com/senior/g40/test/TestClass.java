@@ -5,6 +5,7 @@
  */
 package com.senior.g40.test;
 
+import com.senior.g40.service.StatisticService;
 import org.junit.Test;
 
 /**
@@ -24,5 +25,9 @@ public class TestClass {
     @Test
     public void isRootProfileExisted(){
 //        assert()
+    }
+    
+    @Test
+    public void isRowBeCounted(){
     }
 }

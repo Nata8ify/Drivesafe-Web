@@ -9,9 +9,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Statistic Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Hello stat.jsp</h1>
+        <p>nAccStat</p>
+        <p>${nAccStat}</p>
+        
+        <p>geoAccStat</p>
+        <p>${geoAccStat}</p>
     </body>
 </html>

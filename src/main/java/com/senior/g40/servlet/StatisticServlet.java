@@ -5,9 +5,12 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.service.StatisticService;
 import com.senior.g40.utils.A;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author PNattawut
  */
-public class ToServlet extends HttpServlet {
+public class StatisticServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,47 +31,31 @@ public class ToServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        {
         response.setContentType("text/html;charset=UTF-8");
-        this.request = request;
-        this.response = response;
-        String option = request.getParameter("opt");
-
-        switch (option) {
-            case "main":
-                to(A.Path.JSP_DIR + "main.jsp");
-                break;
-            case "index":
-                to("/index.jsp");
-                break;
-            case "stat":
-                to("/Statistic");
-                break;
-            default:
-                return;
-        }
-
+        StatisticService statService = StatisticService.getInstance();
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+        String numberOfAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())));
+        String accLatLngStatJSOn = statService.parseAccidentGeoCStatisticToJSON(statService.getTotalAccidentGeoStatistic());
+        request.setAttribute("nAccStat", numberOfAccStatJSON);
+        request.setAttribute("geoAccStat", accLatLngStatJSOn);
+        getServletContext().getRequestDispatcher(A.Path.JSP_DIR+"/stat.jsp").forward(request, response);
     }
+}
 
-    private void to(String destination) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher(destination).forward(request, response);
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+/**
+ * Handles the HTTP <code>GET</code> method.
+ *
+ * @param request servlet request
+ * @param response servlet response
+ * @throws ServletException if a servlet-specific error occurs
+ * @throws IOException if an I/O error occurs
+ */
+@Override
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -82,7 +69,7 @@ public class ToServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -93,7 +80,7 @@ public class ToServlet extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
