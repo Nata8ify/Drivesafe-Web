@@ -34,7 +34,7 @@ public class StatisticService {
 
     // Get Number of Accident Statistic on Specific Period Date.  -- Still need to reform the code better.  
     public HashMap<Date, Integer> getNumberOfAccidentViaDate(Date beginDate, Date lastDate) {
-        HashMap<Date, Integer> accStatHashMap = null;
+        LinkedHashMap<Date, Integer> accStatHashMap = null;
         Calendar cal = null;
         Date iterDate = null;
         SimpleDateFormat sdf = null;
@@ -54,7 +54,7 @@ public class StatisticService {
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
-                        accStatHashMap = new HashMap<Date, Integer>();
+                        accStatHashMap = new LinkedHashMap<Date, Integer>();
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
@@ -82,8 +82,10 @@ public class StatisticService {
             String sqlCmd = "SELECT latitude, longitude FROM `accident`;";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
-            while(rs.next()){
-                if(accGeoCList == null){ accGeoCList = new ArrayList<GeoCoordinate>();}
+            while (rs.next()) {
+                if (accGeoCList == null) {
+                    accGeoCList = new ArrayList<GeoCoordinate>();
+                }
                 accGeoC = new GeoCoordinate();
                 accGeoC.setLatitude(Double.valueOf(rs.getFloat("latitude")));
                 accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
@@ -92,30 +94,52 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return accGeoCList;
+        return accGeoCList;
     }
-    
+
     //Get Statistic of Accident by Day Time Period.
-    public HashMap<Date, Integer> getDayTimePeriodOfAccidentStatistic(){
-        return null;
+    public List<String> getByDayTimePeriodOfAccidentStatistic(Date date) {
+        List<String> byDateAccStatHassMap = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+            String sqlCmd = "SELECT time FROM `accident` WHERE date = ?;";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDate(1, date);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (byDateAccStatHassMap == null) {
+                    byDateAccStatHassMap = new ArrayList<String>();
+                }
+                byDateAccStatHassMap.add(rs.getString("time"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return byDateAccStatHassMap;
     }
 
     /**
      * ***Dealing with JSON*****
+     * Return as String is easier and saving more memory resource. 
+     * Gson is no need Exception handler for dealing with JSON.
      */
+    
     //Parse Number of Accident Statistic on Specific Period Date into JSON Format.
     public String parseDateAccidentStatisticToJSON(HashMap<Date, Integer> accStatHashMap) {
-        // Return as String is easier and saving more memory resource. 
-        // Gson is no need Exception handler for dealing with JSON.
+        System.out.println(accStatHashMap.toString());
         return new Gson().toJson(accStatHashMap);
     }
-   //Parse Accident GeoCoordinate Statistic into JSON Format.
+
+    //Parse Accident GeoCoordinate Statistic into JSON Format.
     public String parseAccidentGeoCStatisticToJSON(List<GeoCoordinate> accGeoCList) {
-        // Return as String is easier and saving more memory resource. 
-        // Gson is no need Exception handler for dealing with JSON.
         return new Gson().toJson(accGeoCList);
     }
-    
+
+    //Parse Accident Day Time Statistic into JSON Format.
+    public String parseAccidentDayTimeStatisticToJSON(List<String> timeDayAccList) {
+        return new Gson().toJson(timeDayAccList);
+    }
+
     /**
      * ***Debug Out*****
      */

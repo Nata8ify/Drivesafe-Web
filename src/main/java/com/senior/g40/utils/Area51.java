@@ -18,7 +18,7 @@ import org.json.JSONException;
  * @author PNattawut
  */
 public class Area51 {
-    
+
     enum accCode {
         Rs, Cs, Gs
     };
@@ -44,11 +44,13 @@ public class Area51 {
 //        float f = 1234.65431123f;
 //        System.out.println(String.format("%.5f", f));
 //        System.out.println(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
+        StatisticService statService = StatisticService.getInstance();
 //        System.out.println(StatisticService.getInstance().getQuantitiesOfAccidentViaDate(null, null));
 //        System.out.println("isEmpty: " + (StatisticService.getInstance().getQuantitiesOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())) == null));
 //          Gson gson = new Gson();
 //          String gsonAcc = gson.toJson((StatisticService.getInstance().getQuantitiesOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis()))));
 //          System.out.println("gson: "+gsonAcc);
-        System.out.println("getTotalAccidentGeoStatistic() : " + StatisticService.getInstance().parseAccidentGeoCStatisticToJSON(StatisticService.getInstance().getTotalAccidentGeoStatistic()));
+//        System.out.println("getTotalAccidentGeoStatistic() : " + StatisticService.getInstance().parseAccidentGeoCStatisticToJSON(StatisticService.getInstance().getTotalAccidentGeoStatistic()));
+//        System.out.println("Stat TimeDay : " + statService.parseAccidentTimeDayStatisticToJSON(statService.getByDayTimePeriodOfAccidentStatistic(Date.valueOf("2017-03-19"))));
     }
 }
