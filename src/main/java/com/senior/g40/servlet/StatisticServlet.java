@@ -33,6 +33,7 @@ public class StatisticServlet extends HttpServlet {
      */
     private HttpServletRequest request;
     private HttpServletResponse response;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         {
@@ -43,14 +44,23 @@ public class StatisticServlet extends HttpServlet {
             String opt = request.getParameter("opt");
             switch (opt) {
                 case "statTotalAcc":
-                    String numberOfAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())));
-                    request.setAttribute("result", numberOfAccStatJSON);
-                    goTo(A.Path.JSP_RESULT_DIR+"/result.jsp");
+                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())));
+                    request.setAttribute("result", numberOfTotalAccStatJSON);
+                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    return;
+                case "statSpecPeriodAcc":
+                    String beginDate = request.getParameter("bDate");
+                    String endDate = request.getParameter("eDate");
+                    String numberOfPeriodAccStatJSON 
+                            = statService
+                                    .parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf(beginDate), Date.valueOf(endDate)));
+                    request.setAttribute("result", numberOfPeriodAccStatJSON);
+                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     return;
                 case "statAccGeo":
                     String accLatLngStatJSOn = statService.parseAccidentGeoCStatisticToJSON(statService.getTotalAccidentGeoStatistic());
                     request.setAttribute("result", accLatLngStatJSOn);
-                    goTo(A.Path.JSP_RESULT_DIR+"/result.jsp");
+                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     return;
                 default:
                     System.out.println("Redirect to stat.jsp");
@@ -59,10 +69,10 @@ public class StatisticServlet extends HttpServlet {
         }
     }
 
-    private void goTo(String path) throws ServletException, IOException{
-         getServletContext().getRequestDispatcher(path).forward(request, response);
+    private void goTo(String path) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher(path).forward(request, response);
     }
-    
+
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
