@@ -46,16 +46,15 @@ public class StatisticServlet extends HttpServlet {
                     String numberOfAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())));
                     request.setAttribute("result", numberOfAccStatJSON);
                     goTo(A.Path.JSP_RESULT_DIR+"/result.jsp");
-                    break;
+                    return;
                 case "statAccGeo":
                     String accLatLngStatJSOn = statService.parseAccidentGeoCStatisticToJSON(statService.getTotalAccidentGeoStatistic());
                     request.setAttribute("result", accLatLngStatJSOn);
                     goTo(A.Path.JSP_RESULT_DIR+"/result.jsp");
-                    break;
+                    return;
                 default:
                     System.out.println("Redirect to stat.jsp");
                     getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "/stat.jsp").forward(request, response);
-                    return;
             }
         }
     }

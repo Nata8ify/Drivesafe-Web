@@ -53,12 +53,14 @@
                     seriesAccTimes
                 ]
             };
-            new Chartist.Line('.ct-chart', data, {
-                axisY: {
-                    type: Chartist.AutoScaleAxis,
-                    onlyInteger: true
-                }
-            });
+            setTimeout(function () {
+                new Chartist.Line('.ct-chart', data, {
+                    axisY: {
+                        type: Chartist.AutoScaleAxis,
+                        onlyInteger: true
+                    }
+                });
+            }, 500);
         </script>        
         <script>
             //Do Geo Accident Map Stat
@@ -69,16 +71,18 @@
                     zoom: 10,
                     center: NEARSIT_LATLNG
                 });
-                $.getJSON("Statistic?opt=statAccGeo").done(function(json){
-                    $.each(json, function(index, element){
-                        var lat = element.latitude;
-                        var lng = element.longitude;
-                        var marker = new google.maps.Marker({
-                            position: {lat, lng},
-                            map: nAccStatMap
-                        });
-                    })
-                });
+                setTimeout(function () {
+                    $.getJSON("Statistic?opt=statAccGeo").done(function (json) {
+                        $.each(json, function (index, element) {
+                            var lat = element.latitude;
+                            var lng = element.longitude;
+                            var marker = new google.maps.Marker({
+                                position: {lat, lng},
+                                map: nAccStatMap
+                            });
+                        })
+                    });
+                }, 500); //Wait by 500ms for the number of accident stat chart job is done to avoid illegalexception.  
             }
         </script>
         <script async defer

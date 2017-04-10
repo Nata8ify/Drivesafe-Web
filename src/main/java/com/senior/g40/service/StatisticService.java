@@ -46,10 +46,11 @@ public class StatisticService {
             String sqlCmd;
             PreparedStatement pstm;
             ResultSet rs;
+            
+            iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?;";
                 pstm = conn.prepareStatement(sqlCmd);
-                iterDate = Date.valueOf(sdf.format(cal.getTime()));
                 pstm.setDate(1, iterDate);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
@@ -61,9 +62,9 @@ public class StatisticService {
                     return accStatHashMap;
                 }
 
-                System.out.println(sdf.format(cal.getTime()) + " > " + rs.getInt(1));
+                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
                 cal.add(Calendar.DATE, 1);
-                System.out.println("\nNext Date : " + sdf.format(cal.getTime()));
+                iterDate = Date.valueOf(sdf.format(cal.getTime()));
             } while (iterDate.compareTo(lastDate) != 1);
             conn.close();
         } catch (SQLException ex) {
@@ -91,9 +92,11 @@ public class StatisticService {
                 accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
                 accGeoCList.add(accGeoC);
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return accGeoCList;
     }
 
@@ -119,11 +122,9 @@ public class StatisticService {
     }
 
     /**
-     * ***Dealing with JSON*****
-     * Return as String is easier and saving more memory resource. 
-     * Gson is no need Exception handler for dealing with JSON.
+     * ***Dealing with JSON***** Return as String is easier and saving more
+     * memory resource. Gson is no need Exception handler for dealing with JSON.
      */
-    
     //Parse Number of Accident Statistic on Specific Period Date into JSON Format.
     public String parseDateAccidentStatisticToJSON(HashMap<Date, Integer> accStatHashMap) {
         System.out.println(accStatHashMap.toString());
