@@ -14,7 +14,7 @@ $.getJSON({url: "Statistic?opt=statTotalAcc"}).done(function (json) {
             endDate = index;
         }
     });
-    $('#nAccStatTitle').append(" [" + beginDate + " to " + endDate + "]");
+    $('#acc-period-title').html(" (" + beginDate + " To " + endDate + ")");
     $('#input-b-date').val(beginDate);
     $('#input-e-date').val(endDate);
 });
@@ -33,16 +33,16 @@ var nAccStatMap;
 var NEARSIT_LATLNG = {lat: 13.652277, lng: 100.494457};
 function initMap() {
     nAccStatMap = new google.maps.Map(document.getElementById('acc-stat-map'), {
-        zoom: 10,
+        zoom: 9,
         center: NEARSIT_LATLNG
     });
-    postAccidentGeoMap();
+    postTotalAccidentGeoMap();
 }
 
 $('#input-b-date, #input-e-date').change(function () {
-    var now = new Date();
-    var beginInputDate = new Date($('#input-b-date').val());
-    var endInputDate = new Date($('#input-e-date').val());
+    var now = moment(new Date()).format("YYYY-MM-DD");
+    var beginInputDate = $('#input-b-date').val();
+    var endInputDate = $('#input-e-date').val();
     if (beginInputDate < endInputDate & endInputDate <= now) {
         labelsDate = [];
         seriesAccTimes = [];
@@ -59,22 +59,27 @@ $('#input-b-date, #input-e-date').change(function () {
                     endDate = index;
                 }
             });
-            $('#nAccStatTitle').html(" [" + beginDate + " to " + endDate + "]");
         });
-
+        $('#acc-period-title').html("(" + $('#input-b-date').val() + " To " + $('#input-e-date').val() + ")");
         setTimeout(function () {
-            nAccidentChart.update({
+            postByDatePeriodAccidentGeoMap();
+            postAccidentStatChart({
                 labels: labelsDate,
                 series: [
                     seriesAccTimes
                 ]
             });
-        }, 500);
+            //Hide Alert.
+            $('#alrt-invalid-period').fadeOut();
+        }
+        , 500);
     } else if (endInputDate < beginInputDate) {
-        alert("Begin Date shouldn't be after the present date. [" + new Date() + "]");
+        $('#alrt-ip-msg').html("Begin Date shouldn't be after the present date. (" + moment(new Date()).format("YYYY-MM-DD") + ")")
+        $('#alrt-invalid-period').fadeIn();
         $('#input-b-date').val(beginDate);
     } else {
-        alert("End Date shouldn't be after the present date. [" + new Date() + "]");
+        $('#alrt-ip-msg').html("End Date shouldn't be after the present date. (" + moment(new Date()).format("YYYY-MM-DD") + ")")
+        $('#alrt-invalid-period').fadeIn();
         $('#input-e-date').val(endDate);
     }
 });
@@ -89,22 +94,55 @@ function postAccidentStatChart(data) {
         nAccidentChart = new Chartist.Line('.ct-chart', data, {
             axisY: {
                 type: Chartist.AutoScaleAxis,
-                onlyInteger: true
-            }
+                onlyInteger: true,
+            },
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return moment(value).format('MMM D');
+                }}
         });
     }, 500);
 }
-function postAccidentGeoMap() {
+
+var markers = [];
+function postTotalAccidentGeoMap() {
     setTimeout(function () {
         $.getJSON("Statistic?opt=statAccGeo").done(function (json) {
-            $.each(json, function (index, element) {
-                var lat = element.latitude;
-                var lng = element.longitude;
-                var marker = new google.maps.Marker({
-                    position: {lat, lng},
-                    map: nAccStatMap
-                });
-            })
+            setMarker(json);
         });
     }, 500); //Wait by 500ms for the number of accident stat chart job is done to avoid illegalexception.  
 }
+
+function postByDatePeriodAccidentGeoMap() {
+    setTimeout(function () {
+        $.getJSON("Statistic?opt=statPeriodAccGeo", {
+            bDate: $('#input-b-date').val(),
+            eDate: $('#input-e-date').val()}).done(function (json) {
+            emptyMarker();
+            setMarker(json);
+        });
+    }, 500); //Wait by 500ms for the number of accident stat chart job is done to avoid illegalexception.  
+}
+
+/*Utilities Function*/
+function emptyMarker() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+        console.log(markers[i].getPosition().lat() + " : " + markers[i].getPosition().lng() + " -delete " + i);
+    }
+    markers = [];
+}
+
+function setMarker(json) {
+    $.each(json, function (index, element) {
+        var lat = element.latitude;
+        var lng = element.longitude;
+        var marker = new google.maps.Marker({
+            position: {lat, lng},
+            map: nAccStatMap
+        });
+        markers.push(marker);
+    });
+}
+
+/* Chartist.js Properties*/

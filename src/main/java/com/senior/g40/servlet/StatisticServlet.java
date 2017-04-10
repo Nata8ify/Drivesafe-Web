@@ -42,6 +42,7 @@ public class StatisticServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             StatisticService statService = StatisticService.getInstance();
             String opt = request.getParameter("opt");
+
             switch (opt) {
                 case "statTotalAcc":
                     String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())));
@@ -49,19 +50,43 @@ public class StatisticServlet extends HttpServlet {
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     return;
                 case "statSpecPeriodAcc":
-                    String beginDate = request.getParameter("bDate");
-                    String endDate = request.getParameter("eDate");
-                    String numberOfPeriodAccStatJSON 
+                    String nAccPeriodStatJSON
                             = statService
-                                    .parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf(beginDate), Date.valueOf(endDate)));
-                    request.setAttribute("result", numberOfPeriodAccStatJSON);
+                                    .parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
+                    request.setAttribute("result", nAccPeriodStatJSON);
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
-                    return;
+                    break;
+
+                case "statFalseAcc":
+                    String nFalseAccPeriodStatJSON
+                            = statService
+                                    .parseDateAccidentStatisticToJSON(statService.getNumberOfFalseAccidentViaDate(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
+                    request.setAttribute("result", nFalseAccPeriodStatJSON);
+                    break;
+                case "statUserFalseAcc":
+                    String nUsrFalseAccPeriodStatJSON
+                            = statService
+                                    .parseDateAccidentStatisticToJSON(statService.getNumberOfFalseAccidentViaDate(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
+                    request.setAttribute("result", nUsrFalseAccPeriodStatJSON);
+                    break;
+                case "statSysFalseAcc":
+                    String nSysFalseAccPeriodStatJSON
+                            = statService
+                                    .parseDateAccidentStatisticToJSON(statService.getNumberOfFalseAccidentViaDate(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
+                    request.setAttribute("result", nSysFalseAccPeriodStatJSON);
+                    break;
                 case "statAccGeo":
-                    String accLatLngStatJSOn = statService.parseAccidentGeoCStatisticToJSON(statService.getTotalAccidentGeoStatistic());
+                    String accLatLngStatJSOn = statService
+                            .parseAccidentGeoCStatisticToJSON(statService.getTotalAccidentGeoStatistic());
                     request.setAttribute("result", accLatLngStatJSOn);
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
-                    return;
+                    break;
+                case "statPeriodAccGeo":
+                    String periodAccLatLngStatJSON = statService
+                            .parseAccidentGeoCStatisticToJSON(statService.getByDatePeriodAccidentGeoStatistic(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
+                    request.setAttribute("result", periodAccLatLngStatJSON);
+                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    break;
                 default:
                     System.out.println("Redirect to stat.jsp");
                     getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "/stat.jsp").forward(request, response);

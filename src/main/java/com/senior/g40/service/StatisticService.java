@@ -46,10 +46,135 @@ public class StatisticService {
             String sqlCmd;
             PreparedStatement pstm;
             ResultSet rs;
-            
+
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
-                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?;";
+//                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?;";
+//                Only select accidents that isn't cause by UserFalse or SystemFalse.
+                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
+                pstm = conn.prepareStatement(sqlCmd);
+                pstm.setDate(1, iterDate);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    if (accStatHashMap == null) {
+                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                    }
+                    accStatHashMap.put(iterDate, rs.getInt(1));
+                } else {
+                    return accStatHashMap;
+                }
+
+                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
+                cal.add(Calendar.DATE, 1);
+                iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            } while (iterDate.compareTo(lastDate) != 1);
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accStatHashMap;
+    }
+
+    // Get Number of False Accident Statistic (including UserFalse and SystemFalse) on Specific Period Date.  -- Still need to reform the code better.  
+    public HashMap<Date, Integer> getNumberOfFalseAccidentViaDate(Date beginDate, Date lastDate) {
+        LinkedHashMap<Date, Integer> accStatHashMap = null;
+        Calendar cal = null;
+        Date iterDate = null;
+        SimpleDateFormat sdf = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+            cal = Calendar.getInstance();
+            cal.setTime(beginDate);
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sqlCmd;
+            PreparedStatement pstm;
+            ResultSet rs;
+
+            iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            do {
+                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode IN('1', '2');";
+                pstm = conn.prepareStatement(sqlCmd);
+                pstm.setDate(1, iterDate);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    if (accStatHashMap == null) {
+                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                    }
+                    accStatHashMap.put(iterDate, rs.getInt(1));
+                } else {
+                    return accStatHashMap;
+                }
+
+                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
+                cal.add(Calendar.DATE, 1);
+                iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            } while (iterDate.compareTo(lastDate) != 1);
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accStatHashMap;
+    }
+
+    // Get Number of User False Accident Statistic on Specific Period Date.  -- Still need to reform the code better.  
+    public HashMap<Date, Integer> getNumberOfUserFalseAccidentViaDate(Date beginDate, Date lastDate) {
+        LinkedHashMap<Date, Integer> accStatHashMap = null;
+        Calendar cal = null;
+        Date iterDate = null;
+        SimpleDateFormat sdf = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+            cal = Calendar.getInstance();
+            cal.setTime(beginDate);
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sqlCmd;
+            PreparedStatement pstm;
+            ResultSet rs;
+
+            iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            do {
+                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('1');";
+                pstm = conn.prepareStatement(sqlCmd);
+                pstm.setDate(1, iterDate);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    if (accStatHashMap == null) {
+                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                    }
+                    accStatHashMap.put(iterDate, rs.getInt(1));
+                } else {
+                    return accStatHashMap;
+                }
+
+                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
+                cal.add(Calendar.DATE, 1);
+                iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            } while (iterDate.compareTo(lastDate) != 1);
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accStatHashMap;
+    }
+
+    // Get Number of System False Accident Statistic on Specific Period Date.  -- Still need to reform the code better.  
+    public HashMap<Date, Integer> getNumberOfSysFalseAccidentViaDate(Date beginDate, Date lastDate) {
+        LinkedHashMap<Date, Integer> accStatHashMap = null;
+        Calendar cal = null;
+        Date iterDate = null;
+        SimpleDateFormat sdf = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+            cal = Calendar.getInstance();
+            cal.setTime(beginDate);
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sqlCmd;
+            PreparedStatement pstm;
+            ResultSet rs;
+
+            iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            do {
+                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('2');";
                 pstm = conn.prepareStatement(sqlCmd);
                 pstm.setDate(1, iterDate);
                 rs = pstm.executeQuery();
@@ -96,7 +221,36 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        return accGeoCList;
+    }
+
+        //Get Total Accident Location via GeoCoordinate.
+    public List<GeoCoordinate> getByDatePeriodAccidentGeoStatistic(Date beginDate, Date lastDate) {
+        List<GeoCoordinate> accGeoCList = null;
+        GeoCoordinate accGeoC = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+
+            String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDate(1, beginDate);
+            pstm.setDate(2, lastDate);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accGeoCList == null) {
+                    accGeoCList = new ArrayList<GeoCoordinate>();
+                }
+                accGeoC = new GeoCoordinate();
+                accGeoC.setLatitude(Double.valueOf(rs.getFloat("latitude")));
+                accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
+                accGeoCList.add(accGeoC);
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return accGeoCList;
     }
 
