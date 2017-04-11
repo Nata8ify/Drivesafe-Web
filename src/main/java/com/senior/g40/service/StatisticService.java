@@ -6,6 +6,7 @@
 package com.senior.g40.service;
 
 import com.google.gson.Gson;
+import com.senior.g40.utils.A;
 import com.senior.g40.utils.ConnectionBuilder;
 import java.sql.Connection;
 import java.sql.Date;
@@ -225,7 +226,36 @@ public class StatisticService {
         return accGeoCList;
     }
 
-        //Get Total Accident Location via GeoCoordinate.
+    //Get Total Accident Location via GeoCoordinate.
+    public List<GeoCoordinate> getWeekAccidentGeoStatistic() {
+        List<GeoCoordinate> accGeoCList = null;
+        GeoCoordinate accGeoC = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+
+            String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDate(1, new Date(System.currentTimeMillis()-A.Const.DATE_WEEK_FOR_SQLCMD));
+            pstm.setDate(2, new Date(System.currentTimeMillis()));
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accGeoCList == null) {
+                    accGeoCList = new ArrayList<GeoCoordinate>();
+                }
+                accGeoC = new GeoCoordinate();
+                accGeoC.setLatitude(Double.valueOf(rs.getFloat("latitude")));
+                accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
+                accGeoCList.add(accGeoC);
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return accGeoCList;
+    }
+
+    //Get Total Accident Location via GeoCoordinate.
     public List<GeoCoordinate> getByDatePeriodAccidentGeoStatistic(Date beginDate, Date lastDate) {
         List<GeoCoordinate> accGeoCList = null;
         GeoCoordinate accGeoC = null;
@@ -269,6 +299,7 @@ public class StatisticService {
                 }
                 byDateAccStatHassMap.add(rs.getString("time"));
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         }

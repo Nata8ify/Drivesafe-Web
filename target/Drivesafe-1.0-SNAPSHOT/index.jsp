@@ -56,7 +56,7 @@
         <nav class="navbar navbar-default "  id="demo-navbar">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
-               
+
                 <div class="navbar-header text-center ">   
                     <a id="head"><center> Welcome to Drivesafe System! </center></a>
                 </div>
@@ -71,7 +71,7 @@
                             <div class="panel panel-info ">
                                 <fieldset id="login">
                                     <div class="panel-heading"><legend><center>Monitoring/Super User Login ${msg}</center></legend></div>
-                                    
+
                                     <form action="Login" method="POST">
                                         <center> Username : <input name="usrn" type="text" required=""/> <br/><br/>
                                             Password : <input name="pswd" type="password"  required=""/><br/><br/>
@@ -79,7 +79,7 @@
                                             <button type="submit" class="btn btn-success">Submit</button>&nbsp;&nbsp;<button type="reset" class="btn btn-warning">Reset</button><br/><br/>
                                             <a href="#regis">Register for Driving User</a></center> &nbsp;&nbsp;
                                     </form>
-                                       
+
                                 </fieldset>
                             </div> 
                         </div>
@@ -95,21 +95,53 @@
                             <div class="col-md-8 col-md-offset-2">
                                 <div class="panel panel-info">
                                     <fieldset id = "regis" name="regis">
-                                        <div class="panel-heading"><legend > Driving User Sign up </legend></div>
+                                        <div class="panel-heading"> Driving User Sign Up </div>
                                         <form action = "Signup" method = "POST">
-                                            <center>
-                                                First name : <input name = "fname" type = "text" required = "" /> <br/> <br/>
-                                                Last name  : <input name = "lname" type = "text"  required = ""/> <br/> <br/>
-                                                Personal ID : <input name = "pid" type = "number" required = "" /> <br/> <br/>
-                                                Phone : <input name = "phone" type = "number"  required = "" /> <br/> <br/>
-                                                Address 1 : <input name = "addr1" type = "text" required = "" /> <br/> <br/>
-                                                Address 2 : <input name = "addr2" type = "text" /> <br/> <br/>
-                                                Age : <input name = "age" type = "number" required = "" /> <br/> <br/>
-                                                Gender : <select name = "sex" >
-                                                    <option value = "M"> Male </option>
-                                                    <option value = "F"> Female </option>
-                                                    <option value = "O"> None of above </option>
-                                                </select>
+                                            <table class="table table-striped table-responsive" style="align-content: center">
+                                                    <tr>
+                                                        <td>First name : </td>
+                                                        <td><input name = "fname" type = "text" required = "" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Last name  : </td>
+                                                        <td><input name = "lname" type = "text"  required = ""/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Personal ID : </td>
+                                                        <td><input name = "pid" type = "number" required = "" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Phone : </td>
+                                                        <td><input name = "phone" type = "number"  required = ""/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Address 1 : </td>
+                                                        <td><input name = "addr1" type = "text" required = ""/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Address 2 : </td>
+                                                        <td><input name = "addr2" type = "text"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Age : </td>
+                                                        <td><input name = "age" type = "number" required = "" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gender : </td>
+                                                        <td><select name = "sex" >
+                                                                <option value = "M"> Male </option>
+                                                                <option value = "F"> Female </option>
+                                                                <option value = "O"> None of above </option>
+                                                            </select></td>
+                                                    </tr>
+                                                </table>
+                                                
+                                                
+                                                 
+                                                 
+                                                
+                                                
+
                                                 <hr/><br/>
                                                 <p> Define your Username and Password for next time Sign in into the System. </p><br/>
                                                 Username : <input name = "usrn" type = "text" required = "" /> <br/> <br/>
@@ -119,7 +151,7 @@
                                         </form>
                                     </fieldset>
                                 </div>
-                                       
+
 
                                 <br/>
                                 <a href="#demo-navbar" class="btn btn-info btn-fill">Back to top</a><br/><br/>
@@ -133,10 +165,10 @@
         <footer class="footer-demo section-dark">
             <div class="container">
                 <nav class="pull-left">
-                    
+
                 </nav>
                 <div class="copyright pull-right">
-                   
+
                 </div>
             </div>
         </footer>

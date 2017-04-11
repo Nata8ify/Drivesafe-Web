@@ -17,5 +17,10 @@ public class A { // A = App
     }
     public class Attr{
         public static final String MESSAGE = "msg"; 
+        public static final String RESULT = "result"; 
+    }
+    public class Const{
+        public static final long DATE_WEEK = 1000*60*60*24*7l;
+        public static final long DATE_WEEK_FOR_SQLCMD = 1000*60*60*24*6l; //just included today and 6 days before. 
     }
 }

@@ -44,8 +44,8 @@ public class StatisticServlet extends HttpServlet {
             String opt = request.getParameter("opt");
 
             switch (opt) {
-                case "statTotalAcc":
-                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())));
+                case "statWeekendAcc":
+                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(new Date(System.currentTimeMillis()-A.Const.DATE_WEEK_FOR_SQLCMD), new Date(System.currentTimeMillis())));
                     request.setAttribute("result", numberOfTotalAccStatJSON);
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     return;
@@ -75,10 +75,10 @@ public class StatisticServlet extends HttpServlet {
                                     .parseDateAccidentStatisticToJSON(statService.getNumberOfFalseAccidentViaDate(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
                     request.setAttribute("result", nSysFalseAccPeriodStatJSON);
                     break;
-                case "statAccGeo":
-                    String accLatLngStatJSOn = statService
-                            .parseAccidentGeoCStatisticToJSON(statService.getTotalAccidentGeoStatistic());
-                    request.setAttribute("result", accLatLngStatJSOn);
+                case "statWeekAccGeo":
+                    String weekAccLatLngStatJSOn = statService
+                            .parseAccidentGeoCStatisticToJSON(statService.getWeekAccidentGeoStatistic());
+                    request.setAttribute("result", weekAccLatLngStatJSOn);
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
                 case "statPeriodAccGeo":
