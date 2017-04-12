@@ -73,8 +73,8 @@
                                     <div class="panel-heading"><legend><center>Monitoring/Super User Login ${msg}</center></legend></div>
 
                                     <form action="Login" method="POST">
-                                        <center> Username : <input name="usrn" type="text" required=""/> <br/><br/>
-                                            Password : <input name="pswd" type="password"  required=""/><br/><br/>
+                                        <center> Username : <input name="usrn" type="text" required="" value="root"/> <br/><br/>
+                                            Password : <input name="pswd" type="password"  required="" value="root"/><br/><br/>
                                             <input name="utyp" type="hidden"  value="T" required=""/>
                                             <button type="submit" class="btn btn-success">Submit</button>&nbsp;&nbsp;<button type="reset" class="btn btn-warning">Reset</button><br/><br/>
                                             <a href="#regis">Register for Driving User</a></center> &nbsp;&nbsp;
