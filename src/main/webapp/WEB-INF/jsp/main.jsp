@@ -54,6 +54,9 @@
                             <a href="To?opt=stat">Open Statistics</a>
                         </li>
                         <li>
+                            <a href="To?opt=sett">Setting</a>
+                        </li>
+                        <li>
                             <a href="Logout">Logout / Invalidate</a>
                         </li>
                     </ul>

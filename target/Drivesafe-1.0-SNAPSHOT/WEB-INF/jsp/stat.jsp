@@ -48,7 +48,7 @@
         <div class="container">
             <!--<h3><a href="#acc-stat-chart">Number of Accident Statistic</a> <a href="#acc-stat-map">Visualizing Accident Location</a></h3><br/>-->
             <br/><br/><br/><br/>
-            <div class="well">
+            <div class="well" >
                 <legend>Please Specify a Period <b id="acc-period-title"></b></legend>
                 <form action="#">
                     <div class="row">

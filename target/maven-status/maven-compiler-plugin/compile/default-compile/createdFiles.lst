@@ -1,6 +1,7 @@
 com\senior\g40\servlet\LogoutServlet.class
 com\senior\g40\utils\A$Const.class
 com\senior\g40\servlet\LoginServlet.class
+com\senior\g40\servlet\SettingServlet.class
 com\senior\g40\servlet\ToServlet.class
 com\senior\g40\servlet\SignupServlet.class
 com\senior\g40\model\Accident.class
@@ -15,6 +16,7 @@ com\senior\g40\servlet\MonitoringServlet.class
 com\senior\g40\model\User.class
 com\senior\g40\service\StatisticService$1.class
 com\senior\g40\utils\Result.class
+com\senior\g40\model\extras\LatLng.class
 com\senior\g40\servlet\StatisticServlet.class
 com\senior\g40\servlet\TestConnectServlet.class
 com\senior\g40\utils\A$Attr.class
@@ -24,3 +26,4 @@ com\senior\g40\utils\Encrypt.class
 com\senior\g40\service\UserService.class
 com\senior\g40\utils\A.class
 com\senior\g40\utils\Area51.class
+com\senior\g40\service\SettingService.class
