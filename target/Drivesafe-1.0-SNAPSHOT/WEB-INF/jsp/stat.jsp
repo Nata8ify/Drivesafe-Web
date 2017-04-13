@@ -60,7 +60,7 @@
                         <div class="col-sm-3"><b>Begin  from : </b><input type="date" name="bDate" id="input-b-date" class="form-control"/></div>
                         <div class="col-sm-3"><b>To </b><input type="date" name="bDate" id="input-e-date" class="form-control"/></div>
                         <div class="col-sm-6">
-                            <nav class="navbar navbar-collapse navbar-default" style="z-index: 1">
+<!--                            <nav class="navbar navbar-collapse navbar-default" style="z-index: 1">
                                 <div class="container-fluid">
                                     <ul class="nav navbar-nav ">
                                         <li class="active"><a href="#" ><input type="checkbox" id="acc-opt-normalacc" checked=""/> Normal</a></li>
@@ -69,7 +69,7 @@
                                         <li><a href="#" ><input type="checkbox" id="acc-opt-usrfalse"/> User False</a></li>
                                     </ul>
                                 </div>
-                            </nav>
+                            </nav>-->
                         </div>
                     </div>
 
