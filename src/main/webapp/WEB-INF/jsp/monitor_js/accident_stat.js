@@ -13,9 +13,6 @@ var SEVLT_STATOPT_ACCGEO_WEEK = "statWeekAccGeo";
 var SEVLT_STATOPT_ACCGEO_PERIOD = "statPeriodAccGeo";
 var SEVLT_STATOPT_SPEC_WEEK_PERIOD = "statWeekendAcc";
 
-/* Initialize Section */
-var nAccidentChart;
-var isFirstSetup = true;
 $.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD}).done(function (json) {
     $.each(json, function (index, element) {
         labelsDate.push(index);
@@ -72,40 +69,28 @@ $('#input-b-date, #input-e-date').change(function () {
 });
 
 $('#acc-opt-normalacc').click(function () {
-    if ($('#acc-opt-normalacc').is(':checked')) {
-        prepareNumAccidentData(SEVLT_STATOPT_SPEC_PERIOD, null);
-    } else {
-
-    }
+    prepareNumAccidentData(SEVLT_STATOPT_SPEC_PERIOD, null);
 });
 
 $('#acc-opt-false').click(function () {
-    if ($('#acc-opt-false').is(':checked')) {
-        prepareNumAccidentData(SEVLT_STATOPT_FALSE_ALL, null);
-    } else {
-
-    }
+    prepareNumAccidentData(SEVLT_STATOPT_FALSE_ALL, null);
 
 });
 
 $('#acc-opt-sysfalse').click(function () {
-    if ($('#acc-opt-sysfalse').is(':checked')) {
-        prepareNumAccidentData(SEVLT_STATOPT_FALSE_SYSTEM, null);
-    } else {
+    prepareNumAccidentData(SEVLT_STATOPT_FALSE_SYSTEM, null);
 
-    }
 });
 
 $('#acc-opt-usrfalse').click(function () {
-    if ($('#acc-opt-usrfalse').is(':checked')) {
-        prepareNumAccidentData(SEVLT_STATOPT_FLASE_USER, null);
-    } else {
+    prepareNumAccidentData(SEVLT_STATOPT_FLASE_USER, null);
 
-    }
 });
 
 /** Function **/
 /* Post to Page section */
+var nAccidentChart;
+var state = false;
 function postAccidentStatChart(data) {
     setTimeout(function () {
         nAccidentChart = new Chartist.Line('.ct-chart', data, {
@@ -116,16 +101,15 @@ function postAccidentStatChart(data) {
             axisX: {
                 labelInterpolationFnc: function (value) {
                     return moment(value).format('MMM D');
-                }},
-            lineSmooth: false
+                }}
+        }, {
+            low: 0
         });
-        if (isFirstSetup === true) {
-            animate(true, 500);
-            isFirstSetup = false;
-        } else {
-            animate(false, 0);
+        if (state === false){
+            animate(); //Just do animete only first time.
+            state = true;
         }
-    }, 100);
+    }, 500);
 }
 
 var markers = [];
@@ -203,10 +187,10 @@ function setMarker(json) {
 }
 
 /* Chartist.js Properties*/
+var seq = 0, delays = 80, durations = 500;
 
 // Once the chart is fully created we reset the sequence
-function  animate(isFromBegin, plotDaley) {
-    var seq = 0, delays = 80, durations = 500;
+function  animate() {
     nAccidentChart.on('created', function () {
         seq = 0;
     });
@@ -214,17 +198,13 @@ function  animate(isFromBegin, plotDaley) {
 // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
     nAccidentChart.on('draw', function (data) {
         seq++;
-        if (!isFromBegin) {
-            delays = 0;
-        }
+
         if (data.type === 'line') {
             // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
-
             data.element.animate({
-
                 opacity: {
                     // The delay when we like to start the animation
-                    begin: seq * delays + plotDaley,
+                    begin: seq * delays + 1000,
                     // Duration of the animation
                     dur: durations,
                     // The value where the animation should start
@@ -254,7 +234,7 @@ function  animate(isFromBegin, plotDaley) {
                     easing: 'easeOutQuart'
                 }
             });
-        } else if (data.type === 'point' && isFromBegin) {
+        } else if (data.type === 'point') {
             data.element.animate({
                 x1: {
                     begin: seq * delays,
@@ -278,7 +258,7 @@ function  animate(isFromBegin, plotDaley) {
                     easing: 'easeOutQuart'
                 }
             });
-        } else if (data.type === 'grid' && isFromBegin) {
+        } else if (data.type === 'grid') {
             // Using data.axis we get x or y which we can use to construct our animation definition objects
             var pos1Animation = {
                 begin: seq * delays,
@@ -310,4 +290,5 @@ function  animate(isFromBegin, plotDaley) {
             data.element.animate(animations);
         }
     });
+    ;
 }
