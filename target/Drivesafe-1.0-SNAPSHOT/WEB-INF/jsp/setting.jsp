@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="false" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,10 +15,15 @@
     </head>
     <body>
         <h1>Setting Page</h1>
-        <div id="spec-oper-location-section">
-            <div id="spec-oper-location-map" style="width: 100%; height: 600px; padding: 30px;"></div>
-            <input type="text" id="spec-oper-location-input" placeholder="Enter the plcae"/>
-            <input type="text" id="spec-oper-location-submit" type="button"/>
+        <div id="spec-location-section">
+            <div id="spec-location-map" style="width: 100%; height: 600px; padding: 30px;"></div>
+            <fieldset>
+                <input type="text" id="spec-location-lat-input" placeholder="Enter the Latitude" required="" value="13.372186"/>
+                <input type="text" id="spec-location-lng-input" placeholder="Enter the Longitude" required="" value="100.977893"/>
+                <input type="number" id="spec-location-boundrds-input" placeholder="Enter the Bound Radius" required="" value="50"/>
+                <input type="hidden" id="spec-location-input" placeholder="Enter the plcae" disabled=""/>
+                <input type="button" id="spec-location-submit" value="Submit This Location"/>
+            </fieldset>
         </div>
         <script>
             <jsp:include page="monitor_js/setting.js" flush="true"/>

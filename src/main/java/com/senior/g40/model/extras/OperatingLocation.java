@@ -5,6 +5,8 @@
  */
 package com.senior.g40.model.extras;
 
+import com.google.gson.Gson;
+
 /**
  *
  * @author PNattawut
@@ -13,6 +15,11 @@ public class OperatingLocation {
     private LatLng latLng;
     private int bound;
 
+    public OperatingLocation(LatLng latLng, int bound) {
+        this.latLng = latLng;
+        this.bound = bound;
+    }
+    
     public LatLng getLatLng() {
         return latLng;
     }
@@ -29,5 +36,7 @@ public class OperatingLocation {
         this.bound = bound;
     }
     
-    
+    public String toJSON(){
+        return new Gson().toJson(this);
+    }
 }
