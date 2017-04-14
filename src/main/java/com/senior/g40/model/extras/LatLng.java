@@ -13,6 +13,16 @@ public class LatLng {
     private double latitude;
     private double longitude;
 
+    public LatLng(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public LatLng(String strLatitude, String strLongitude) {
+        this.latitude = Double.valueOf(strLatitude);
+        this.longitude = Double.valueOf(strLongitude);
+    }
+    
     public double getLatitude() {
         return latitude;
     }

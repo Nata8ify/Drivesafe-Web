@@ -5,6 +5,9 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.model.extras.LatLng;
+import com.senior.g40.service.SettingService;
+import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -22,14 +25,29 @@ public class SettingServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String option = request.getParameter("opt");
-
+ Result rs;
+        SettingService settingService = SettingService.getInstance();
         switch (option) {
-            case "":
+            case "storeOpLocation":
+                rs = settingService.storeOpertingLocation(
+                        new LatLng(request.getParameter("lat"), request.getParameter("lng")),
+                        Integer.valueOf(request.getParameter("boundRds")),
+                        Long.valueOf(request.getParameter("userId")));
+                break;
+            case "supdateOpLocation":
+                rs = settingService.updateOpertingLocation(
+                        new LatLng(request.getParameter("lat"), request.getParameter("lng")),
+                        Integer.valueOf(request.getParameter("boundRds")),
+                        Long.valueOf(request.getParameter("userId")));
+                break;
+            case "getOpLocation":
+                settingService.getOpertingLocation(Long.valueOf(request.getParameter("userId"))); //<-- Countinue this
                 break;
             default: ;
         }
-        
+
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
