@@ -7,6 +7,7 @@ package com.senior.g40.servlet;
 
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.extras.LatLng;
+import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.service.SettingService;
 import com.senior.g40.utils.A;
 import com.senior.g40.utils.Result;
@@ -45,22 +46,23 @@ public class SettingServlet extends HttpServlet {
                 result = settingService.updateOpertingLocation(
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
-                        Long.valueOf(request.getParameter("userId")));
+                        pf.getUserId());
                 attrName = A.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
             case "getOpLocation":
-                result = settingService.getOpertingLocation(Long.valueOf(request.getParameter("userId")));
+                result = settingService.getOpertingLocation(pf.getUserId());
                 attrName = A.Attr.RESULT;
-                request.setAttribute(attrName, result.getMessage());
-                request.setAttribute(attrName, result.getMessage());
+                OperatingLocation ol = ((OperatingLocation)result.getObj());
+                request.setAttribute(attrName, result.getMessage()+"\""+ol.toJSON()+"\"");
                 break;
             default: ;
         }
         if (attrName.equals(A.Attr.MESSAGE)) {
-            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "/msg").forward(request, response);
+            System.out.println((A.Path.JSP_RESULT_DIR) + "msg.jsp");
+            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
         } else {
-            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "/result").forward(request, response);
+            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
 

@@ -32,8 +32,8 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
             #acctable tr:hover{ 
-               background-color: #FF841E;
-               cursor: pointer
+                background-color: #FF841E;
+                cursor: pointer
             }
         </style>
     </head>
@@ -42,12 +42,7 @@
         <nav class="navbar navbar-default" role="navigation-demo" id="demo-navbar">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
-
-
-
                 <a class="navbar-brand">Welcome to Drivesafe System!</a>
-
-
                 <div class="collapse navbar-collapse" id="navigation-example-2">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -76,9 +71,7 @@
                     <div class="col-md-8 col-md-offset-2">                                                                              
                         <div>
                             <table id="acctable" style="width: 100%;"> 
-
                                 <thead> 
-                               
                                     <tr>
                                         <th>Date</th>
                                         <th>Time</th>
@@ -87,17 +80,13 @@
                                         <th>Accident Code</th>
                                         <th>Accident Id</th> 
                                     </tr>
-                               
                                 </thead>
-
                                 <tbody style="text-align: center">
-
                                 </tbody>
                             </table>
                         </div>                 
                     </div>
                     <br/>
-
                 </div>    
             </div>                               
             <div class="main">
@@ -106,11 +95,7 @@
                         <div class="row">
                             <br/><br/>
                             <div class="col-md-8 col-md-offset-2">
-
-
-
                                 <div id="map" style="background-color: #ddd;width: 100%;height: 400px;padding-right: 30px;">
-
                                 </div>
                                 <br/><hr/>
                                 <script>
@@ -122,9 +107,7 @@
                                 <script>
                                     <%@include file="monitor_js/accident_updater.js"  %>
                                 </script>
-
                                 <br/>
-
                             </div>
                         </div>
                     </div>

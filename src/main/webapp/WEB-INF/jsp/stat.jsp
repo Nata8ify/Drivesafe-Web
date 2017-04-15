@@ -10,23 +10,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-        <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
-
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-        <meta name="viewport" content="width=device-width" />
-
-        <link href="css/bootstrap.css" rel="stylesheet" />
-        <link href="css/ct-paper.css" rel="stylesheet"/>
-        <link href="css/demo.css" rel="stylesheet" /> 
-        <!-- jQuery library -->
-        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        <jsp:include page="includes/bslibraries.jsp"/>
         <!--moment.js-->
         <script src="https://momentjs.com/downloads/moment.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         <title>Statistic Page</title>
     </head>
     <body>
@@ -61,16 +50,16 @@
                         <div class="col-sm-3"><b>Begin  from : </b><input type="date" name="bDate" id="input-b-date" class="form-control"/></div>
                         <div class="col-sm-3"><b>To </b><input type="date" name="bDate" id="input-e-date" class="form-control"/></div>
                         <div class="col-sm-6">
-<!--                            <nav class="navbar navbar-collapse navbar-default" style="z-index: 1">
-                                <div class="container-fluid">
-                                    <ul class="nav navbar-nav ">
-                                        <li class="active"><a href="#" ><input type="checkbox" id="acc-opt-normalacc" checked=""/> Normal</a></li>
-                                        <li><a href="#"><input type="checkbox" id="acc-opt-false"/> False</a></li>
-                                        <li><a href="#" ><input type="checkbox" id="acc-opt-sysfalse"/> System False</a></li>
-                                        <li><a href="#" ><input type="checkbox" id="acc-opt-usrfalse"/> User False</a></li>
-                                    </ul>
-                                </div>
-                            </nav>-->
+                            <!--                            <nav class="navbar navbar-collapse navbar-default" style="z-index: 1">
+                                                            <div class="container-fluid">
+                                                                <ul class="nav navbar-nav ">
+                                                                    <li class="active"><a href="#" ><input type="checkbox" id="acc-opt-normalacc" checked=""/> Normal</a></li>
+                                                                    <li><a href="#"><input type="checkbox" id="acc-opt-false"/> False</a></li>
+                                                                    <li><a href="#" ><input type="checkbox" id="acc-opt-sysfalse"/> System False</a></li>
+                                                                    <li><a href="#" ><input type="checkbox" id="acc-opt-usrfalse"/> User False</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </nav>-->
                         </div>
                     </div>
 
