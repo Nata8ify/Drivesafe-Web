@@ -12,8 +12,11 @@ var SEVLT_STATOPT_FALSE_ALL = "statFalseAcc";
 var SEVLT_STATOPT_ACCGEO_WEEK = "statWeekAccGeo";
 var SEVLT_STATOPT_ACCGEO_PERIOD = "statPeriodAccGeo";
 var SEVLT_STATOPT_SPEC_WEEK_PERIOD = "statWeekendAcc";
+var SEVLT_STATOPT_CRASH_SPEED_ALL = "statSpeedDetected";
 
-$.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD}).done(function (json) {
+
+/* Initialize Section */
+$.when($.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD})).done(function (json) {
     $.each(json, function (index, element) {
         labelsDate.push(index);
         seriesAccTimes.push(element);
@@ -26,16 +29,16 @@ $.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD}).done(functio
     $('#acc-period-title').html(" [" + beginDate + " To " + endDate + " (Week)]");
     $('#input-b-date').val(beginDate);
     $('#input-e-date').val(endDate);
+    var data = {
+        // A labels array that can contain any sort of values
+        labels: labelsDate,
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+            seriesAccTimes
+        ]
+    };
+    postAccidentStatChart(data);
 });
-var data = {
-    // A labels array that can contain any sort of values
-    labels: labelsDate,
-    // Our series array that contains series objects or in this case series data arrays
-    series: [
-        seriesAccTimes
-    ]
-};
-postAccidentStatChart(data);
 
 //Do Geo Accident Map Stat
 var nAccStatMap;
@@ -49,6 +52,8 @@ function initMap() {
     });
     postTotalAccidentGeoMap();
 }
+
+/* End-Initialize Section */
 
 /* Event Listener */
 $('#input-b-date, #input-e-date').change(function () {
@@ -93,7 +98,7 @@ var nAccidentChart;
 var state = false;
 function postAccidentStatChart(data) {
     setTimeout(function () {
-        nAccidentChart = new Chartist.Line('.ct-chart', data, {
+        nAccidentChart = new Chartist.Line('#acc-stat-chart', data, {
             axisY: {
                 type: Chartist.AutoScaleAxis,
                 onlyInteger: true
@@ -105,40 +110,64 @@ function postAccidentStatChart(data) {
         }, {
             low: 0
         });
-        if (state === false){
+        if (state === false) {
             animate(); //Just do animete only first time.
             state = true;
         }
     }, 500);
+    postCrashSpeedStatisticChart(); //<-- Post crash speed stat after postAccidentStatChart job is done.
 }
 
 var markers = [];
 function postTotalAccidentGeoMap() {
     setTimeout(function () {
-        $.getJSON("Statistic?opt=" + SEVLT_STATOPT_ACCGEO_WEEK).done(function (json) {
+        $.when($.getJSON("Statistic?opt=" + SEVLT_STATOPT_ACCGEO_WEEK)).done(function (json) {
             setMarker(json);
         });
     }, 500); //Wait by 500ms for the number of accident stat chart job is done to avoid illegalexception.  
 }
 
 function postByDatePeriodAccidentGeoMap() {
-    setTimeout(function () {
-        $.getJSON("Statistic?opt=" + SEVLT_STATOPT_ACCGEO_PERIOD, {
+    setTimeout(function () {// $.when..done() implemented. //14:05 16-04-2017
+        $.when($.getJSON("Statistic?opt=" + SEVLT_STATOPT_ACCGEO_PERIOD, {
             bDate: $('#input-b-date').val(),
-            eDate: $('#input-e-date').val()}).done(function (json) {
+            eDate: $('#input-e-date').val()})).done(function (json) {
             emptyMarker();
             setMarker(json);
         });
     }, 500); //Wait by 500ms for the number of accident stat chart job is done to avoid illegalexception.  
 }
 
+var nCrashSpeedChart;
+var CHART_SCATTER_SETTING = {
+    low: 0,
+    showLine: false
+};
+function postCrashSpeedStatisticChart() {
+    $.when($.getJSON("Statistic?opt=" + SEVLT_STATOPT_CRASH_SPEED_ALL)).done(function (json) {
+        var labelSpeed = [];
+        var seriesAmount = [];
+        $.each(json, function (index, element) {
+            log(index + " :: " + element);
+            labelSpeed.push(element);
+            seriesAmount.push(index);
+        });
+        nCrashSpeedChart = new Chartist.Line('#crashspeed-stat-chart', {
+            labels: labelSpeed,
+            series: [
+                seriesAmount
+            ]
+        }, CHART_SCATTER_SETTING);
+    });
+}
+
 function prepareNumAccidentData(opt, params) {
     labelsDate = [];
     seriesAccTimes = [];
-    $.getJSON({url: "Statistic?opt=" + opt}, {
+    $.when($.getJSON({url: "Statistic?opt=" + opt}, {
         bDate: $('#input-b-date').val(),
         eDate: $('#input-e-date').val()
-    }).done(function (json) {
+    })).done(function (json) {
         $.each(json, function (index, element) {
             labelsDate.push(index);
             seriesAccTimes.push(element);
@@ -292,3 +321,14 @@ function  animate() {
     });
     ;
 }
+
+/* Other */
+
+/* Other */
+function log(str) {
+    console.log(str);
+}
+
+//function callbackMessage(str) {
+//    $('#callback-msg').html(str);
+//}

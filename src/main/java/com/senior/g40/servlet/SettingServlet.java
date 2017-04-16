@@ -27,9 +27,13 @@ public class SettingServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Profile pf = (Profile)request.getSession(false).getAttribute("pf"); // Retriveing User's Profile on Current Session
-        System.out.println("pf: "+pf.toString());
+        Profile pf = (Profile) request.getSession(false).getAttribute("pf"); // Retriveing User's Profile on Current Session
+        System.out.println("pf: " + pf.toString());
         String option = request.getParameter("opt");
+        char mode = '0';
+        if (request.getParameter("mode") != null) {
+            mode = request.getParameter("mode").charAt(0);
+        }
         String attrName = null;
         Result result;
         SettingService settingService = SettingService.getInstance();
@@ -53,8 +57,12 @@ public class SettingServlet extends HttpServlet {
             case "getOpLocation":
                 result = settingService.getOpertingLocation(pf.getUserId());
                 attrName = A.Attr.RESULT;
-                OperatingLocation ol = ((OperatingLocation)result.getObj());
-                request.setAttribute(attrName, result.getMessage()+"\""+ol.toJSON()+"\"");
+                OperatingLocation ol = ((OperatingLocation) result.getObj());
+                if (mode == A.Mode.NORMAL) {
+                    request.setAttribute(attrName, ol.toJSON());
+                } else if (mode == A.Mode.VERBOSE) {
+                    request.setAttribute(attrName, result.getMessage() + " \"" + ol.toJSON() + "\"");
+                }
                 break;
             default: ;
         }

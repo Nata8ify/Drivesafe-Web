@@ -45,7 +45,7 @@ public class StatisticServlet extends HttpServlet {
 
             switch (opt) {
                 case "statWeekendAcc":
-                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(new Date(System.currentTimeMillis()-A.Const.DATE_WEEK_FOR_SQLCMD), new Date(System.currentTimeMillis())));
+                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD), new Date(System.currentTimeMillis())));
                     request.setAttribute("result", numberOfTotalAccStatJSON);
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     return;
@@ -85,6 +85,13 @@ public class StatisticServlet extends HttpServlet {
                     String periodAccLatLngStatJSON = statService
                             .parseAccidentGeoCStatisticToJSON(statService.getByDatePeriodAccidentGeoStatistic(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
                     request.setAttribute("result", periodAccLatLngStatJSON);
+                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    break;
+                case "statSpeedDetected":
+                    String statSpeedDEtectedJSON = statService
+                            .parseCrashSpeedStatisticToJSON(statService
+                                    .getTotalCrashSpeedStatistic());
+                    request.setAttribute("result", statSpeedDEtectedJSON);
                     goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
                 default:

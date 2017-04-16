@@ -24,7 +24,7 @@
         <link href="css/bootstrap.css" rel="stylesheet" />
         <link href="css/ct-paper.css" rel="stylesheet"/>
         <link href="css/demo.css" rel="stylesheet" /> 
-        <link href="examples.css" rel="stylesheet" /> 
+        
 
         <!--     Fonts and icons     -->
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -93,7 +93,8 @@
                 <div class="section text-center landing-section">
                     <div class="container">
                         <div class="row">
-                            <br/><br/>
+                            <br/>
+                            <i id="callback-msg"></i>
                             <div class="col-md-8 col-md-offset-2">
                                 <div id="map" style="background-color: #ddd;width: 100%;height: 400px;padding-right: 30px;">
                                 </div>

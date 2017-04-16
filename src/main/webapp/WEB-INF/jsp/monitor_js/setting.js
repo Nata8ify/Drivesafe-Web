@@ -45,7 +45,7 @@ $('#update-location-submit').click(function () {
     var lng = $('#spec-location-lng-input').val();
     var boundRadius = $('#spec-location-boundrds-input').val();
     $.ajax({
-        url: "Setting?opt=" + OPT_UPDATE_OL,
+        url: "Setting?&opt=" + OPT_UPDATE_OL,
         data: {
             lat: lat,
             lng: lng,
@@ -58,7 +58,7 @@ $('#update-location-submit').click(function () {
 
 $('#getcur-location-submit').click(function () {
     $.ajax({
-        url: "Setting?opt=" + OPT_GET_OL}).done(function (aresult) {
+        url: "Setting?mode=v&opt=" + OPT_GET_OL}).done(function (aresult) {
         log("> Result is: " + aresult);
         callbackMessage(aresult);
     });

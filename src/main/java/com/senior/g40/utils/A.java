@@ -23,4 +23,9 @@ public class A { // A = App
         public static final long DATE_WEEK = 1000*60*60*24*7l;
         public static final long DATE_WEEK_FOR_SQLCMD = 1000*60*60*24*6l; //just included today and 6 days before. 
     }
+    public class Mode{
+        public static final char VERBOSE = 'v';
+        public static final char DEBUG = 'd';
+        public static final char NORMAL = 'n';
+    }
 }

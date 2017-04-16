@@ -235,7 +235,7 @@ public class StatisticService {
 
             String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            pstm.setDate(1, new Date(System.currentTimeMillis()-A.Const.DATE_WEEK_FOR_SQLCMD));
+            pstm.setDate(1, new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD));
             pstm.setDate(2, new Date(System.currentTimeMillis()));
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -306,13 +306,32 @@ public class StatisticService {
         return byDateAccStatHassMap;
     }
 
+    //Getting Statistic of Crash Speed detected by the app since the Drivesafe system was actived.
+    public Map<Float, Integer> getTotalCrashSpeedStatistic() {
+        Map<Float, Integer> crashSpeedMap = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        try {
+            String sqlCmd = "SELECT `speedDetect`, COUNT(`speedDetect`) AS amount FROM `accident` GROUP BY `speedDetect`";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (crashSpeedMap == null) {
+                    crashSpeedMap = new HashMap<Float, Integer>();
+                }
+                crashSpeedMap.put(rs.getFloat("speedDetect"), rs.getInt("amount"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return crashSpeedMap;
+    }
+
     /**
      * ***Dealing with JSON***** Return as String is easier and saving more
      * memory resource. Gson is no need Exception handler for dealing with JSON.
      */
     //Parse Number of Accident Statistic on Specific Period Date into JSON Format.
-    public String parseDateAccidentStatisticToJSON(HashMap<Date, Integer> accStatHashMap) {
-        System.out.println(accStatHashMap.toString());
+    public String parseDateAccidentStatisticToJSON(Map<Date, Integer> accStatHashMap) {
         return new Gson().toJson(accStatHashMap);
     }
 
@@ -326,6 +345,11 @@ public class StatisticService {
         return new Gson().toJson(timeDayAccList);
     }
 
+    //Parse Number of Accident Statistic on Specific Period Date into JSON Format.
+    public String parseCrashSpeedStatisticToJSON(Map<Float, Integer> crashSpeedMap) {
+        return new Gson().toJson(crashSpeedMap);
+    }
+    
     /**
      * ***Debug Out*****
      */
