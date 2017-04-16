@@ -80,27 +80,26 @@ function getOpLatLng(opMap) {
         url: "Setting?mode=n&opt=" + OPT_GET_OL})).done(function (aresult) {
         var opLocationRawJSON = $.parseJSON(aresult);
         var opLatLng = {lat: opLocationRawJSON['latLng']['latitude'], lng: opLocationRawJSON['latLng']['longitude']};
-        var bound = opLocationRawJSON['bound'] * 1.609344;
+        var bound = opLocationRawJSON['bound'];
         log("> LatLng : " + opLatLng['lat'] + " | " + opLatLng['lng']);
         log("> Bound : " + bound);
         opMap = new google.maps.Map($('#map')[0], {
-            zoom: 14,
+            zoom: 9,
             center: opLatLng
         });
         var opMarker = new google.maps.Marker({
             position: opLatLng,
-            map: opMap
+            map: opMap,
+            title: "Operting Place"
         });
         var opCircle =  new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
+            fillColor: '#AAA',
             map: opMap,
             center: opLatLng,
-            redius: bound
+            radius: bound * 1000
         });
+
+//        opCircle.bindTo('center', opMarker, 'position');
     });
 }
 

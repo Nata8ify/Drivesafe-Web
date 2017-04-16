@@ -32,7 +32,7 @@
         <br/><br/><br/><br/><br/>
     <center>
         <div id="spec-location-section">
-            <div id="spec-location-map" style="width: 90%; height: 600px; padding: 30px;"></div>
+            <div id="spec-location-map" style="width: 90%; height: 600px; padding: 30px;" hidden=""></div>
             <i id="callback-msg"></i>
             <br/>
             <fieldset style="padding: 1%">
