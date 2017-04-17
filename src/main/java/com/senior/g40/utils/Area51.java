@@ -7,6 +7,7 @@ package com.senior.g40.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.StatisticService;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ import org.json.JSONException;
  * @author PNattawut
  */
 public class Area51 {
-
+    
     enum accCode {
         Rs, Cs, Gs
     };
@@ -45,6 +46,7 @@ public class Area51 {
 //        System.out.println(String.format("%.5f", f));
 //        System.out.println(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
         StatisticService statService = StatisticService.getInstance();
+        AccidentService accidentService = AccidentService.getInstance();
 //        System.out.println(StatisticService.getInstance().getQuantitiesOfAccidentViaDate(null, null));
 //        System.out.println("isEmpty: " + (StatisticService.getInstance().getQuantitiesOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())) == null));
 //          Gson gson = new Gson();
@@ -52,5 +54,6 @@ public class Area51 {
 //          System.out.println("gson: "+gsonAcc);
 //        System.out.println("getTotalAccidentGeoStatistic() : " + StatisticService.getInstance().parseAccidentGeoCStatisticToJSON(StatisticService.getInstance().getTotalAccidentGeoStatistic()));
 //        System.out.println("Stat TimeDay : " + statService.parseAccidentTimeDayStatisticToJSON(statService.getByDayTimePeriodOfAccidentStatistic(Date.valueOf("2017-03-19"))));
+        System.out.println(AccidentService.getInstance().getCurrentDateInBoundAccidents(1));
     }
 }

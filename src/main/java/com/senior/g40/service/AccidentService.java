@@ -6,6 +6,8 @@
 package com.senior.g40.service;
 
 import com.senior.g40.model.Accident;
+import com.senior.g40.model.extras.LatLng;
+import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.Result;
 import java.sql.Connection;
@@ -50,7 +52,7 @@ public class AccidentService {
             pstm.setDate(2, acc.getDate());
             pstm.setString(3, acc.getTime());
             pstm.setDouble(4, acc.getLatitude());
-            pstm.setDouble(5, acc.getLongtitude());
+            pstm.setDouble(5, acc.getLongitude());
             pstm.setDouble(6, acc.getForceDetect());
             pstm.setFloat(7, acc.getSpeedDetect());
             pstm.setString(8, String.valueOf(Accident.ACC_CODE_A));
@@ -141,15 +143,15 @@ public class AccidentService {
         }
         return null;
     }
-    
-    public List<Accident> getCurrentDateAccidents(){
-    // means "get only accident that occured today"
+
+    public List<Accident> getCurrentDateAccidents() {
+        // means "get only accident that occured today"
         Date today = new Date(System.currentTimeMillis());
         List<Accident> accidents = null;
         Accident accident = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today +"';";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today + "';";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -165,9 +167,37 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         }
-    return null;
+        return null;
     }
-    
+
+    public List<Accident> getCurrentDateInBoundAccidents(long rescueSideUserId) {
+        // means "get only accident that occured today"
+        Date today = new Date(System.currentTimeMillis());
+        List<Accident> accidents = null;
+        Accident accident = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today + "';";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                accident = new Accident();
+                if (accidents == null) {
+                    accidents = new ArrayList<Accident>();
+                }
+                setAccident(rs, accident);
+                if (isBoundWithin(rescueSideUserId, accident)) {
+                    accidents.add(accident);
+                }
+            }
+            conn.close();
+            return accidents;
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public List<Accident> getActiveAccidents() {
         // means "get any accident that still need for resuce or being rescues."
         List<Accident> accidents = null;
@@ -325,7 +355,7 @@ public class AccidentService {
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
                 jsonObj.put("latitude", Double.valueOf(accident.getLatitude()));
-                jsonObj.put("longitude", Double.valueOf(accident.getLongtitude()));
+                jsonObj.put("longitude", Double.valueOf(accident.getLongitude()));
                 jsonObj.put("forceDetect", Double.valueOf(accident.getForceDetect()));
                 jsonObj.put("speedDetect", Float.valueOf(accident.getSpeedDetect()));
                 jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
@@ -345,7 +375,7 @@ public class AccidentService {
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
                 jsonObj.put("latitude", Double.valueOf(accident.getLatitude()));
-                jsonObj.put("longitude", Double.valueOf(accident.getLongtitude()));
+                jsonObj.put("longitude", Double.valueOf(accident.getLongitude()));
                 jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
                 jsonObj.put("accidentId", accident.getAccidentId());
                 return jsonObj;
@@ -355,6 +385,45 @@ public class AccidentService {
         }
         return null;
     }
-    
+
 //    --------------------------------- Dealing with JSON
+//    --------------------------------- Other
+    private OperatingLocation ol;
+    private final double DR = Math.PI / 180; //DEG_TO_RAD
+    private final int RADIAN_OF_EARTH_IN_KM = 6371;
+    private final int KM = 1000;
+
+    private boolean isBoundWithin(long userId, Accident acc) throws SQLException {
+        if (ol == null) {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
+            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, userId);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                ol = new OperatingLocation(new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                        rs.getInt("opBound"));
+            }
+            conn.close();
+        }
+        {
+            // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
+            int opBound = ol.getBound();
+            double dLat = DR * (ol.getLatLng().getLatitude() - acc.getLatitude());
+            double dLng = DR * (ol.getLatLng().getLongitude() - acc.getLongitude());
+            double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                    + (Math.cos(acc.getLatitude() * DR) * Math.cos(ol.getLatLng().getLatitude() * DR))
+                    * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = c * RADIAN_OF_EARTH_IN_KM;
+            System.out.println("distance: " + distance);
+            System.out.println("opBound: " + opBound);
+            if (distance < opBound) {
+                System.out.println("Accident [" + acc.getAccidentId() + "]Will be Out of Bound In : " + (opBound - distance) + " Kilometers.");
+                return true;
+            }
+        }
+        return false;
+    }
+//    --------------------------------- Other
 }

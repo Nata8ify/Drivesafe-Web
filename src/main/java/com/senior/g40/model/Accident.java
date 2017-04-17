@@ -18,7 +18,7 @@ public class Accident {
     private Date date;
     private String time;
     private double latitude;
-    private double longtitude;
+    private double longitude;
     private double forceDetect;
     private float speedDetect;
 
@@ -42,12 +42,12 @@ public class Accident {
     public Accident() {
     }
 
-    public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect, char accCode) {
+    public Accident(long userId, Date date, String time, float latitude, float longitude, float forceDetect, float speedDetect, char accCode) {
         this.userId = userId;
         this.date = date;
         this.time = time;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
         this.forceDetect = forceDetect;
         this.speedDetect = speedDetect;
         this.accCode = accCode;
@@ -58,7 +58,7 @@ public class Accident {
         this.date = date;
         this.time = time;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longtitude;
         this.forceDetect = forceDetect;
         this.speedDetect = speedDetect;
     }
@@ -110,12 +110,12 @@ public class Accident {
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(float longtitude) {
-        this.longtitude = longtitude;
+    public void setLongtitude(float longitude) {
+        this.longitude = longitude;
     }
 
     public double getForceDetect() {
@@ -144,7 +144,7 @@ public class Accident {
 
     @Override
     public String toString() {
-        return "Accident{" + "userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longtitude=" + longtitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accCode=" + accCode + '}';
+        return "Accident{" + "userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longtitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accCode=" + accCode + '}';
     }
 
 }
