@@ -191,6 +191,7 @@ public class AccidentService {
                 }
             }
             conn.close();
+            resetOP();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -424,6 +425,9 @@ public class AccidentService {
             }
         }
         return false;
+    }
+    private void resetOP(){
+        this.ol = null;
     }
 //    --------------------------------- Other
 }
