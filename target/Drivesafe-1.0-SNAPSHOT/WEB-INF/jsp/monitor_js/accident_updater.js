@@ -3,20 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-setInterval(updateAccident, 2000);
 $.fn.dataTable.ext.errMode = 'none';
-
-var records = 0;
-function updateAccident() {
-//    $.each(accidents, function (index, data) {
-//        $('#accData').html("<tr><td>" + data.accCode + "</td>"
-//                + "<td>" + data.latitude + "</td>"
-//                + "<td>" + data.longtitude + "</td>"
-//                + "<td>" + data.forceDetect + "</td>"
-//                + "<td>" + data.speedDetect + "</td>"
-//                + "<td>" + data.date + " : " + data.time + "</td></tr>");
-//    });
-}
 
 var dataTable;
 $('document').ready(function () {
@@ -52,8 +39,7 @@ $('#acctable tbody').on('click', 'tr', function () {
     var accRow = dataTable.row(this).data();
     var lat = accRow.latitude;
     var lng = accRow.longitude;
-    console.log(lat);
-    $("#out").html("Selected Accident Location is on "+lat + " : " + lng);
-    somewhere = {lat: lat, lng: lng};
-    navigate();
+    $("#callback-msg").html("Selected Accident Location is on "+lat + " : " + lng);
+    crashLatLng = {lat: lat, lng: lng};
+    navigate(crashLatLng);
 });
