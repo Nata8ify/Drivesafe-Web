@@ -7,7 +7,7 @@ $.fn.dataTable.ext.errMode = 'none';
 
 var dataTable;
 $('document').ready(function () {
-    var quickAccURL = "Monitor?opt=quickacc";
+    var quickAccURL = "Monitor?opt=currentDateInBoundReq";
     dataTable = $('#acctable').DataTable({
         "ajax": {
             "url": quickAccURL,

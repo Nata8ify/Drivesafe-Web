@@ -6,6 +6,7 @@
 package com.senior.g40.servlet;
 
 import com.senior.g40.model.Accident;
+import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.utils.A;
 import java.io.IOException;
@@ -40,45 +41,64 @@ public class MonitoringServlet extends HttpServlet {
             List<Accident> accidents;
             AccidentService accService = AccidentService.getInstance();
             String opt = request.getParameter("opt");
+            Profile pf = (Profile) request.getSession(false).getAttribute("pf");
             switch (opt) {
-                case "quickacc":                    
+                case "quickacc":
                     accidents = accService.getActiveAccidents();
-                if (accidents != null) {
-                    JSONArray accsJson = null;
-                    for(Accident acc : accidents){
-                        if(accsJson == null){
-                            accsJson = new JSONArray();
+                    if (accidents != null) {
+                        JSONArray accsJson = null;
+                        for (Accident acc : accidents) {
+                            if (accsJson == null) {
+                                accsJson = new JSONArray();
+                            }
+                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
                         }
-                        accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+                        System.out.println(accsJson);
+                        request.setAttribute("result", accsJson);
+
                     }
-                    System.out.println(accsJson);
-                    request.setAttribute("result", accsJson);
-                        
-                }
-                case "currentDate": 
+                case "currentDate":
                     //แสดงเฉพาะวันที่นั้นๆ
                     accidents = accService.getCurrentDateAccidents();
-                if (accidents != null) {
-                    JSONArray accsJson = null;
-                    for(Accident acc : accidents){
-                        if(accsJson == null){
-                            accsJson = new JSONArray();
+                    if (accidents != null) {
+                        JSONArray accsJson = null;
+                        for (Accident acc : accidents) {
+                            if (accsJson == null) {
+                                accsJson = new JSONArray();
+                            }
+                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
                         }
-                        accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+                        System.out.println(accsJson);
+                        request.setAttribute("result", accsJson);
+
+                    } else {
+                        request.setAttribute("result", "WOW");
                     }
-                    System.out.println(accsJson);
-                    request.setAttribute("result", accsJson);
-                        
-                }
-                else {
-                    request.setAttribute("result", "WOW");
-                }
+                    break;
+                case "currentDateInBoundReq":
+                    //แสดงเฉพาะวันที่นั้นๆ
+                    accidents = accService.getCurrentDateInBoundAccidents(pf.getUserId());
+                    if (accidents != null) {
+                        JSONArray accsJson = null;
+                        for (Accident acc : accidents) {
+                            if (accsJson == null) {
+                                accsJson = new JSONArray();
+                            }
+                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+                        }
+                        System.out.println(accsJson);
+                        request.setAttribute("result", accsJson);
+
+                    } else {
+                        request.setAttribute("result", "WOW");
+                    }
                     break;
             }
 
             getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
