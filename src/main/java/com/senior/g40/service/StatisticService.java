@@ -311,12 +311,12 @@ public class StatisticService {
         Map<Float, Integer> crashSpeedMap = null;
         Connection conn = ConnectionBuilder.getConnection();
         try {
-            String sqlCmd = "SELECT `speedDetect`, COUNT(`speedDetect`) AS amount FROM `accident` GROUP BY `speedDetect`";
+            String sqlCmd = "SELECT `speedDetect`, COUNT(`speedDetect`) AS amount FROM `accident` GROUP BY `speedDetect` ORDER BY `speedDetect`;";
             PreparedStatement pstm = conn.prepareStatement(sqlCmd);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 if (crashSpeedMap == null) {
-                    crashSpeedMap = new HashMap<Float, Integer>();
+                    crashSpeedMap = new LinkedHashMap<Float, Integer>();
                 }
                 crashSpeedMap.put(rs.getFloat("speedDetect"), rs.getInt("amount"));
             }
