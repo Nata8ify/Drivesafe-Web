@@ -63,8 +63,9 @@ public class SettingService {
             pstm.setDouble(3, boundRadius);
             pstm.setLong(4, userId);
             if (pstm.executeUpdate() == 1) {
-                result = new Result(true, "Operating Laocation updated.");
+                result = new Result(true, "Operating Laocation updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
             }
+            
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);

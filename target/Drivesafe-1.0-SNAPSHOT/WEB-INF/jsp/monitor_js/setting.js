@@ -5,17 +5,30 @@ var OPT_GET_OL = "getOpLocation";
 /* Google Map Function*/
 var KMUTT_LATLNG = {lat: 13.651553, lng: 100.495030};
 var opLocationMap;
+var opMarker;
 function initMap() {
     opLocationMap = new google.maps.Map(document.getElementById('spec-location-map'), {
         zoom: 5,
         center: KMUTT_LATLNG,
         mapTypeId: 'hybrid'
     });
-    var initMarker = new google.maps.Marker({position: KMUTT_LATLNG,
+    opMarker = new google.maps.Marker({position: KMUTT_LATLNG,
         map: opLocationMap,
         draggable: true,
         title: "Drag into new Operting Location",
         icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
+
+    google.maps.event.addListener(opMarker, 'dragend', function (evt) {
+        $.ajax({
+            url: "Setting?&opt=" + OPT_UPDATE_OL,
+            data: {
+                lat: this.getPosition().lat(),
+                lng: this.getPosition().lng(),
+                boundRds: $('#spec-location-boundrds-input').val()
+            }}).done(function (aresult) {
+            callbackMessage(aresult);
+        });
+    });
 }
 
 /* Event Listener */
@@ -23,6 +36,9 @@ function initMap() {
 //inputLocation.keyup(function () {
 //    log(inputLocation.val());
 //});
+
+
+
 $('#spec-location-submit').click(function () {
     var lat = $('#spec-location-lat-input').val();
     var lng = $('#spec-location-lng-input').val();
@@ -37,7 +53,6 @@ $('#spec-location-submit').click(function () {
         log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
         callbackMessage(aresult);
     });
-
 });
 
 $('#update-location-submit').click(function () {
