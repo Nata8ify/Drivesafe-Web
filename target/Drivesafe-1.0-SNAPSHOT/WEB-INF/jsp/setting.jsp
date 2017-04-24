@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-sm-4">
                         <fieldset>
-                            <input disabled="" placeholder="Enter Somewhere (ex. สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
+                            <input placeholder="Enter Somewhere (ex. สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
                             <hr/>
                             <input type="number" id="spec-location-lat-input" placeholder="Enter the Latitude" required="" value="${param.lat}" class="form-control"/><br/>
                             <input type="number" id="spec-location-lng-input" placeholder="Enter the Longitude" required="" value="${param.lng}" class="form-control"/><br/>
@@ -73,7 +73,7 @@
         <jsp:include page="monitor_js/setting.js" flush="true"/>
     </script>
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
     </script>
 </body>
 </html>

@@ -31,18 +31,40 @@ function initMap() {
             callbackMessage(aresult);
         });
     });
-    
-    initialSearrchBox(opLocationMap);
+
+    initialSearchBox(opLocationMap, opMarker);
 }
+
+function setNewOpMarker(opLocationMap, opMarker, OpLocation) {
+    if (opMarker !== null) {
+        opMarker.setMap(null);
+        opMarker = new google.maps.Marker({position: OpLocation,
+            map: opLocationMap,
+            draggable: true,
+            title: "Drag into new Operting Location",
+            icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
+        opLocationMap.setCenter(OpLocation);
+    }
+}
+
 /* Initialize Function*/
-function initialSearrchBox(opLocationMap){
-     var searchBox = new google.maps.places.SearchBox($('#spec-location-input')[0]);
+function initialSearchBox(opLocationMap, opMarker) {
+    var placeInput = $('#spec-location-input')[0];
+    var searchBox = new google.maps.places.SearchBox(placeInput);
+    opLocationMap.addListener('bounds_changed', function () {
+        searchBox.setBounds(opLocationMap.getBounds());
+    });
+    searchBox.addListener('places_changed', function () {
+        var searchPlace = this.getPlaces();
+        if(searchPlace == 0){return;}
+        var bounds = new google.maps.LatLngBounds();
+        
+//        setNewOpMarker(opLocationMap, opMarker);
+        log(searchPlace);
+    });
 }
 /* Event Listener */
-//var inputLocation = $('#spec-location-input');
-//inputLocation.keyup(function () {
-//    log(inputLocation.val());
-//});
+
 
 
 
@@ -74,13 +96,8 @@ $('#update-location-submit').click(function () {
             lng: lng,
             boundRds: boundRadius
         }}).done(function (aresult) {
-        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
-        opMarker.setMap(null);
-        opMarker = new google.maps.Marker({position: OpLocation,
-            map: opLocationMap,
-            draggable: true,
-            title: "Drag into new Operting Location",
-            icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
+//        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
+        setNewOpMarker(opLocationMap, opMarker, OpLocation);
         callbackMessage(aresult);
     });
 });
@@ -97,7 +114,7 @@ $('#getcur-location-submit').click(function () {
     });
 });
 
-$('#spec-location-input').change(function(){
+$('#spec-location-input').change(function () {
 });
 
 /* Other */
