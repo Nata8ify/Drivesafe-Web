@@ -61,7 +61,7 @@ public class SettingServlet extends HttpServlet {
                 if (mode == A.Mode.NORMAL) {
                     request.setAttribute(attrName, ol.toJSON());
                 } else if (mode == A.Mode.VERBOSE) {
-                    request.setAttribute(attrName, result.getMessage() + " \"" + ol.toJSON() + "\"");
+                    request.setAttribute(attrName, result.getMessage() + " \"" + ol.toString() + "\"");
                 }
                 break;
             default: ;

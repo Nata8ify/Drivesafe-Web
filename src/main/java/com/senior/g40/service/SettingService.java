@@ -63,7 +63,7 @@ public class SettingService {
             pstm.setDouble(3, boundRadius);
             pstm.setLong(4, userId);
             if (pstm.executeUpdate() == 1) {
-                result = new Result(true, "Operating Laocation updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
+                result = new Result(true, "Operating Location updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
             }
             
             conn.close();

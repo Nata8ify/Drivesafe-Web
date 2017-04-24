@@ -76,6 +76,11 @@ function settingMap(opMap, opLatLng, bound) {
         center: opLatLng,
         radius: bound * 1000
     });
+    setSettingRefProperties(opLatLng, bound);
+}
+
+function setSettingRefProperties(opLatLng, bound){
+    $('a[href*=sett]').attr('href', 'To?opt=sett&lat='+opLatLng['lat']+"&lng="+opLatLng['lng']+"&bound="+bound);
 }
 
 /* Other */
