@@ -43,3 +43,4 @@ $('#acctable tbody').on('click', 'tr', function () {
     crashLatLng = {lat: lat, lng: lng};
     navigate(crashLatLng);
 });
+

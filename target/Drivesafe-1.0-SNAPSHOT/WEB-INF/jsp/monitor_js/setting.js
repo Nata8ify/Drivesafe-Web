@@ -9,6 +9,7 @@ var opMarker;
 var OpLocation;
 function initMap() {
     OpLocation = {lat: parseFloat($('#spec-location-lat-input').val()), lng: parseFloat($('#spec-location-lng-input').val())};
+    
     opLocationMap = new google.maps.Map(document.getElementById('spec-location-map'), {
         zoom: 5,
         center: OpLocation,
@@ -31,12 +32,25 @@ function initMap() {
             callbackMessage(aresult);
         });
     });
+    google.maps.event.addListener(opLocationMap, 'dblclick', function (evt) {
+        var dblLatLng = {lat: evt.latLng.lat(), lng: evt.latLng.lng()};
+        setNewOpMarker(opLocationMap, dblLatLng);
+        log(dblLatLng);
+        $.ajax({
+            url: "Setting?&opt=" + OPT_UPDATE_OL,
+            data: {
+                lat: evt.latLng.lat(),
+                lng: evt.latLng.lng(),
+                boundRds: $('#spec-location-boundrds-input').val()
+            }}).done(function (aresult) {
+            callbackMessage(aresult);
+        });
+    });
 
     initialSearchBox(opLocationMap, opMarker);
 }
 
-function setNewOpMarker(opLocationMap, opMarker, OpLocation) {
-    if (opMarker !== null) {
+function setNewOpMarker(opLocationMap, OpLocation) {
         opMarker.setMap(null);
         opMarker = new google.maps.Marker({position: OpLocation,
             map: opLocationMap,
@@ -44,7 +58,7 @@ function setNewOpMarker(opLocationMap, opMarker, OpLocation) {
             title: "Drag into new Operting Location",
             icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
         opLocationMap.setCenter(OpLocation);
-    }
+    setInputLatLng(OpLocation.lat, OpLocation.lng);
 }
 
 /* Initialize Function*/
@@ -56,13 +70,22 @@ function initialSearchBox(opLocationMap, opMarker) {
     });
     searchBox.addListener('places_changed', function () {
         var searchPlace = this.getPlaces();
-        if(searchPlace == 0){return;}
+        if (searchPlace == 0) {
+            return;
+        }
         var bounds = new google.maps.LatLngBounds();
-        
+
 //        setNewOpMarker(opLocationMap, opMarker);
         log(searchPlace);
     });
 }
+
+/* Setting Function */
+function setInputLatLng(lat, lng){
+    $('#spec-location-lat-input').val(lat);
+    $('#spec-location-lng-input').val(lng);
+}
+
 /* Event Listener */
 
 
@@ -97,7 +120,7 @@ $('#update-location-submit').click(function () {
             boundRds: boundRadius
         }}).done(function (aresult) {
 //        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
-        setNewOpMarker(opLocationMap, opMarker, OpLocation);
+        setNewOpMarker(opLocationMap, OpLocation);
         callbackMessage(aresult);
     });
 });

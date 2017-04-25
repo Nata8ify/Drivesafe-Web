@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-sm-4">
                         <fieldset>
-                            <input placeholder="Enter Somewhere (ex. สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
+                            <input type="hidden" placeholder="Enter Somewhere (ex. สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
                             <hr/>
                             <input type="number" id="spec-location-lat-input" placeholder="Enter the Latitude" required="" value="${param.lat}" class="form-control"/><br/>
                             <input type="number" id="spec-location-lng-input" placeholder="Enter the Longitude" required="" value="${param.lng}" class="form-control"/><br/>

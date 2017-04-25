@@ -42,12 +42,12 @@ public class SettingService {
             pstm.setDouble(3, boundRadius);
             pstm.setLong(4, userId);
             if (pstm.executeUpdate() == 1) {
-                rs = new Result(true, "Storing Operating Laocation accomplished.");
+                rs = new Result(true, "Storing Operating Location accomplished.");
             }
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
-            rs = new Result(false, "Storing Operating Laocation failed.", ex);
+            rs = new Result(false, "Storing Operating Location failed.", ex);
         }
         return rs;
     }
@@ -69,7 +69,7 @@ public class SettingService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
-            result = new Result(false, "Operating Laocation update is failed.", ex);
+            result = new Result(false, "Operating Location update is failed.", ex);
         }
         return result;
     }
@@ -90,7 +90,7 @@ public class SettingService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
-            result = new Result(false, "Getting Operating Laocation Failed.", ex);
+            result = new Result(false, "Getting Operating Location Failed.", ex);
         }
         return result;
     }

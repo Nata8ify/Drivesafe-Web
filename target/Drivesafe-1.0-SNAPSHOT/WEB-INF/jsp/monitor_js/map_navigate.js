@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/* Option Constants */
+var OPT_STORE_OL = "storeOpLocation";
 
 var opMap;
 var WARANON_LATLNG = {lat: 13.647094, lng: 100.487458};
 var SUANTHON_LATLNG = {lat: 13.652293, lng: 100.491173};
 var SUKSAWADROAD_LATLNG = {lat: 13.652797, lng: 100.521451};
 var NEARSIT_LATLNG = {lat: 13.652277, lng: 100.494457};
+var KMUTT_LATLNG = {lat: 13.651553, lng: 100.495030};
 var directionsDisplay;
 var directionsService;
 function initMap() {
@@ -47,14 +50,21 @@ var OPT_GET_OL = "getOpLocation";
 var opBound;
 function getOpLatLng(opMap) {
     $.when($.ajax({
-        url: "Setting?mode=n&opt=" + OPT_GET_OL})).done(function (json) {
-        var opLocationJSON = $.parseJSON(json);
-        opLatLng = {lat: opLocationJSON['latLng']['latitude'], lng: opLocationJSON['latLng']['longitude']};
-        opBound = opLocationJSON['bound'];
-        log("> LatLng : " + opLatLng['lat'] + " | " + opLatLng['lng']);
-        log("> Bound : " + opBound);
-        settingMap(opMap, opLatLng, opBound);
-    });
+        url: "Setting?mode=n&opt=" + OPT_GET_OL}))
+            .done(function (json) {
+                var opLocationJSON = $.parseJSON(json);
+                opLatLng = {lat: opLocationJSON['latLng']['latitude'], lng: opLocationJSON['latLng']['longitude']};
+                log(opLatLng);
+                opBound = opLocationJSON['bound'];
+
+                settingMap(opMap, opLatLng, opBound);
+            })
+            .fail(function (ex) {
+                setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
+                initMap();
+                return;
+            });
+
 }
 
 function settingMap(opMap, opLatLng, bound) {
@@ -79,8 +89,21 @@ function settingMap(opMap, opLatLng, bound) {
     setSettingRefProperties(opLatLng, bound);
 }
 
-function setSettingRefProperties(opLatLng, bound){
-    $('a[href*=sett]').attr('href', 'To?opt=sett&lat='+opLatLng['lat']+"&lng="+opLatLng['lng']+"&bound="+bound);
+
+function setSettingRefProperties(opLatLng, bound) {
+    $('a[href*=sett]').attr('href', 'To?opt=sett&lat=' + opLatLng['lat'] + "&lng=" + opLatLng['lng'] + "&bound=" + bound);
+}
+
+function setDefaultOpProperties(lat, lng, boundRadius) {
+    $.ajax({
+        url: "Setting?opt=" + OPT_STORE_OL,
+        data: {
+            lat: lat,
+            lng: lng,
+            boundRds: boundRadius
+        }}).done(function (aresult) {
+        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
+    });
 }
 
 /* Other */
