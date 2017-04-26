@@ -21,7 +21,7 @@ public class ConnectionBuilder {
 
         try { //Connect to (Real)Database on Server First.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
+            String dbUrl = "jdbc:mysql://103.253.146.87/drivesafe?useUnicode=true&characterEncoding=UTF-8";
             String user = "drvsafeany";
             String pw = "@Qwerty69";
             try {
@@ -36,8 +36,8 @@ public class ConnectionBuilder {
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";
             String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
-            String user = "root";
-            String pw = "";
+            String user = "drvsafe";
+            String pw = "@Qwerty69";
             try {
                 Class.forName(dbDriver);
                 con = DriverManager.getConnection(dbUrl, user, pw);

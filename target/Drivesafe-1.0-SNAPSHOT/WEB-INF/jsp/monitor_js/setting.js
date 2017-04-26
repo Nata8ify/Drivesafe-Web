@@ -35,7 +35,6 @@ function initMap() {
     google.maps.event.addListener(opLocationMap, 'dblclick', function (evt) {
         var dblLatLng = {lat: evt.latLng.lat(), lng: evt.latLng.lng()};
         setNewOpMarker(opLocationMap, dblLatLng);
-        log(dblLatLng);
         $.ajax({
             url: "Setting?&opt=" + OPT_UPDATE_OL,
             data: {
@@ -116,9 +115,7 @@ $('#update-location-submit').click(function () {
             lat: lat,
             lng: lng,
             boundRds: boundRadius
-        }}).done(function (aresult) {
-//        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
-        setNewOpMarker(opLocationMap, OpLocation);
+        }}).done(function (aresult) {setNewOpMarker(opLocationMap, OpLocation);
         callbackMessage(aresult);
     });
 });
