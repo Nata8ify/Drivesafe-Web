@@ -148,7 +148,6 @@ function postCrashSpeedStatisticChart() {
         var labelSpeed = [];
         var seriesAmount = [];
         $.each(json, function (index, element) {
-            log(index + " :: " + element);
             labelSpeed.push(element);
             seriesAmount.push(index);
         });
@@ -197,7 +196,6 @@ function prepareNumAccidentData(opt, params) {
 function emptyMarker() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
-        console.log(markers[i].getPosition().lat() + " : " + markers[i].getPosition().lng() + " -delete " + i);
     }
     markers = [];
 }
@@ -325,9 +323,9 @@ function  animate() {
 /* Other */
 
 /* Other */
-function log(str) {
-    console.log(str);
-}
+//function log(str) {
+//    console.log(str);
+//}
 
 //function callbackMessage(str) {
 //    $('#callback-msg').html(str);

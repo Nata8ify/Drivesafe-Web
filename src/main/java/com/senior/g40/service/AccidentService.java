@@ -40,14 +40,17 @@ public class AccidentService {
     //------------------------------------About INSERT/ADD. - START
 
     public Result saveAccident(Accident acc) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
             Result result = null;
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "INSERT INTO `accident` "
                     + "(`userId`, `date`, `time`, `latitude`, `longitude`, `forceDetect`, `speedDetect`, `accCode`) "
                     + "VALUES "
                     + "(?, ?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setLong(1, acc.getUserId());
             pstm.setDate(2, acc.getDate());
             pstm.setString(3, acc.getTime());
@@ -59,17 +62,18 @@ public class AccidentService {
             if (pstm.executeUpdate() != 0) {
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
                 pstm = conn.prepareStatement(sqlCmd);
-                ResultSet rs = pstm.executeQuery();
+                rs = pstm.executeQuery();
                 if (rs.next()) {
                     setAccident(rs, acc);
                     result = new Result(true, "Saved", acc);
                 }
-                conn.close();
                 return result;
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
             return new Result(false, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return new Result(false, "saveAccident is NO EXCEPTION and row is 0 updated.");
     }
@@ -101,19 +105,22 @@ public class AccidentService {
     }
 
     public Result updateAccCodeStatus(long userId, char accCode) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
         try {
             Result result = null;
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "UPDATE accident SET `accCode`= ? WHERE accidentId = ?;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, String.valueOf(accCode));
             pstm.setLong(2, userId);
             result = new Result(pstm.executeUpdate() != 0, "Update Success!");
-            conn.close();
             return result;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
             return new Result(false, "Update 'accCode' Failed", ex);
+        } finally {
+            closeSQLProperties(conn, pstm, null);
         }
     }
 
@@ -123,11 +130,15 @@ public class AccidentService {
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident`;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -136,10 +147,11 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -149,11 +161,15 @@ public class AccidentService {
         Date today = new Date(System.currentTimeMillis());
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today + "';";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -162,10 +178,13 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
+            pstm.close();
             conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -175,11 +194,15 @@ public class AccidentService {
         Date today = new Date(System.currentTimeMillis());
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today + "';";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -190,11 +213,12 @@ public class AccidentService {
                     accidents.add(accident);
                 }
             }
-            conn.close();
             resetOP();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -203,13 +227,17 @@ public class AccidentService {
         // means "get any accident that still need for resuce or being rescues."
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE accCode IN ('" + Accident.ACC_CODE_A
                     + "', '" + Accident.ACC_CODE_G
                     + "', '" + Accident.ACC_CODE_R + "');";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -218,10 +246,11 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -230,11 +259,15 @@ public class AccidentService {
         // means "get only accident that request for resuce immediately."
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_A + "';";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -243,10 +276,11 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -255,11 +289,15 @@ public class AccidentService {
         // means "get only accident that rescuer are o the way for rescue."
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_G + "';";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -268,10 +306,11 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -280,11 +319,15 @@ public class AccidentService {
         // means "get only accident that rescuer are performing rescue on the accident area."
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_R + "';";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -293,10 +336,11 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -309,13 +353,17 @@ public class AccidentService {
     public List<Accident> getAccidentByLatLng(float lat, float lng) {
         List<Accident> accidents = null;
         Accident accident = null;
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE latitude = ? AND longtitude = ?;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setFloat(1, lat);
             pstm.setFloat(2, lng);
-            ResultSet rs = pstm.executeQuery();
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
@@ -324,10 +372,11 @@ public class AccidentService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -426,8 +475,26 @@ public class AccidentService {
         }
         return false;
     }
-    private void resetOP(){
+
+    private void resetOP() {
         this.ol = null;
+    }
+
+    //Close the SQLProperties for preventing conection and memory leak.
+    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstm != null) {
+                pstm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 //    --------------------------------- Other
 }

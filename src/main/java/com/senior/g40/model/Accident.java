@@ -25,12 +25,12 @@ public class Accident {
     //-- accCode is have very importance role.
     private char accCode;
 
-    public static char ACC_CODE_A = 'A';
-    public static char ACC_CODE_G = 'G';
-    public static char ACC_CODE_R = 'R';
-    public static char ACC_CODE_C = 'C';
-    public static char ACC_CODE_ERRU = '1';
-    public static char ACC_CODE_ERRS = '2';
+    public static final char ACC_CODE_A = 'A';
+    public static final char ACC_CODE_G = 'G';
+    public static final char ACC_CODE_R = 'R';
+    public static final char ACC_CODE_C = 'C';
+    public static final char ACC_CODE_ERRU = '1';
+    public static final char ACC_CODE_ERRS = '2';
     //A[Accident]: Pending for rescue, 
     //G[Going]: Rescuer is on the way, 
     //R[Resecue]: Rescuer is rescuing, 

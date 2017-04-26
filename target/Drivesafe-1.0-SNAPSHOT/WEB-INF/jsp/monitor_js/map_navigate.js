@@ -24,8 +24,7 @@ var opLatLng; // Operating Center LatLng
 
 function navigate(crashLatLng) {
     $.getJSON("RescuerIn?opt=getaccs").done(function (json) {
-        console.log("opLatLng: [" + opLatLng.lat + "," + opLatLng.lng + "] ||| crashLatLng: [" + crashLatLng.lat + "," + crashLatLng.lng + "]");
-        directionsService.route({
+       directionsService.route({
             origin: opLatLng,
             destination: crashLatLng,
             travelMode: 'DRIVING'
@@ -54,12 +53,11 @@ function getOpLatLng(opMap) {
             .done(function (json) {
                 var opLocationJSON = $.parseJSON(json);
                 opLatLng = {lat: opLocationJSON['latLng']['latitude'], lng: opLocationJSON['latLng']['longitude']};
-                log(opLatLng);
                 opBound = opLocationJSON['bound'];
 
                 settingMap(opMap, opLatLng, opBound);
             })
-            .fail(function (ex) {
+            .fail(function () {
                 setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
                 initMap();
                 return;
@@ -75,12 +73,12 @@ function settingMap(opMap, opLatLng, bound) {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     directionsDisplay.setMap(opMap);
-    var opMarker = new google.maps.Marker({
+    new google.maps.Marker({
         position: opLatLng,
         map: opMap,
         title: "Operting Place"
     });
-    var opCircle = new google.maps.Circle({
+    new google.maps.Circle({
         fillColor: '#AAA',
         map: opMap,
         center: opLatLng,
@@ -102,14 +100,13 @@ function setDefaultOpProperties(lat, lng, boundRadius) {
             lng: lng,
             boundRds: boundRadius
         }}).done(function (aresult) {
-        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
-    });
+        });
 }
 
 /* Other */
-function log(str) {
-    console.log(str);
-}
+//function log(str) {
+//    console.log(str);
+//}
 
 function callbackMessage(str) {
     $('#callback-msg').html(str);

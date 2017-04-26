@@ -76,7 +76,6 @@ function initialSearchBox(opLocationMap, opMarker) {
         var bounds = new google.maps.LatLngBounds();
 
 //        setNewOpMarker(opLocationMap, opMarker);
-        log(searchPlace);
     });
 }
 
@@ -102,7 +101,6 @@ $('#spec-location-submit').click(function () {
             lng: lng,
             boundRds: boundRadius
         }}).done(function (aresult) {
-        log("lat: " + lat + " | " + " lng: " + lng + " | " + " boundRadius: " + boundRadius + "\n> Result is: " + aresult);
         callbackMessage(aresult);
     });
 });
@@ -129,7 +127,6 @@ $('#getcur-location-submit').click(function () {
     $.ajax({
         url: "Setting?mode=n&opt=" + OPT_GET_OL}).done(function (aresult) {
         var opProperties = $.parseJSON(aresult);
-        log(opProperties);
         $('#spec-location-lat-input').val(opProperties['latLng']['latitude']);
         $('#spec-location-lng-input').val(opProperties['latLng']['longitude']);
         $('#spec-location-boundrds-input').val(opProperties['bound']);
@@ -141,9 +138,9 @@ $('#spec-location-input').change(function () {
 });
 
 /* Other */
-function log(str) {
-    console.log(str);
-}
+//function log(str) {
+//    console.log(str);
+//}
 
 function callbackMessage(str) {
     $('#callback-msg').html(str);

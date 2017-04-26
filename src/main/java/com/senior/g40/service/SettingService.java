@@ -33,10 +33,11 @@ public class SettingService {
     
     public Result storeOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result rs = null;
+        PreparedStatement pstm = null;
         Connection conn = ConnectionBuilder.getConnection();
         try {
             String sqlCmd = "INSERT INTO `properties`(`opLat`, `opLng`, `opBound`, `userId`) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setDouble(1, latLng.getLatitude());
             pstm.setDouble(2, latLng.getLongitude());
             pstm.setDouble(3, boundRadius);
@@ -55,9 +56,10 @@ public class SettingService {
     public Result updateOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result result = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
         try {
             String sqlCmd = "UPDATE `properties` SET `opLat`= ?,`opLng`= ?,`opBound`= ? WHERE `userId`= ?;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setDouble(1, latLng.getLatitude());
             pstm.setDouble(2, latLng.getLongitude());
             pstm.setDouble(3, boundRadius);
@@ -77,9 +79,10 @@ public class SettingService {
     public Result getOpertingLocation(long userId) {
         Result result = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
         try {
             String sqlCmd = "SELECT * FROM `properties` WHERE userId = ?;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setLong(1, userId);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
