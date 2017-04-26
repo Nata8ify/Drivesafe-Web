@@ -23,7 +23,7 @@ var crashLatLng; // Crash LatLng
 var opLatLng; // Operating Center LatLng
 
 function navigate(crashLatLng) {
-    $.getJSON("RescuerIn?opt=getaccs").done(function (json) {
+    $.getJSON("RescuerIn?opt=getaccs").done(function () {
        directionsService.route({
             origin: opLatLng,
             destination: crashLatLng,
@@ -39,10 +39,6 @@ function navigate(crashLatLng) {
 }
 
 /* Event Listener */
-$('document').ready(function () {
-
-});
-
 
 /* Function */
 var OPT_GET_OL = "getOpLocation";
@@ -59,7 +55,6 @@ function getOpLatLng(opMap) {
             })
             .fail(function () {
                 setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
-                initMap();
                 return;
             });
 
@@ -99,14 +94,11 @@ function setDefaultOpProperties(lat, lng, boundRadius) {
             lat: lat,
             lng: lng,
             boundRds: boundRadius
-        }}).done(function (aresult) {
+        }}).done(function () {initMap();
         });
 }
 
 /* Other */
-//function log(str) {
-//    console.log(str);
-//}
 
 function callbackMessage(str) {
     $('#callback-msg').html(str);

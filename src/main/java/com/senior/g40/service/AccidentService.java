@@ -167,8 +167,9 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today + "';";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = ?;";
             pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDate(1, today);
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
@@ -200,8 +201,9 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date ='" + today + "';";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = ?;";
             pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDate(1, today);
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
@@ -233,10 +235,11 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode IN ('" + Accident.ACC_CODE_A
-                    + "', '" + Accident.ACC_CODE_G
-                    + "', '" + Accident.ACC_CODE_R + "');";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode IN (?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
+            pstm.setString(1, String.valueOf(Accident.ACC_CODE_A));
+            pstm.setString(2, String.valueOf(Accident.ACC_CODE_G));
+            pstm.setString(3, String.valueOf(Accident.ACC_CODE_R));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
@@ -265,8 +268,9 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_A + "';";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = ?;";
             pstm = conn.prepareStatement(sqlCmd);
+            pstm.setString(1, String.valueOf(Accident.ACC_CODE_A));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
@@ -295,8 +299,9 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_G + "';";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = ?;";
             pstm = conn.prepareStatement(sqlCmd);
+            pstm.setString(1, String.valueOf(Accident.ACC_CODE_G));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
@@ -325,8 +330,9 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = '" + Accident.ACC_CODE_R + "';";
+            String sqlCmd = "SELECT * FROM `accident` WHERE accCode = ?;";
             pstm = conn.prepareStatement(sqlCmd);
+            pstm.setString(1, String.valueOf(Accident.ACC_CODE_R ));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
