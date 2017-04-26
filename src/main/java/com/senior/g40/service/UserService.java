@@ -61,12 +61,14 @@ public class UserService {
             long personalId, String phoneNumber, String address1,
             String address2, int age, char gender,
             String username, String password, char userType) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "INSERT INTO `profile` "
                     + "(`firstName`, `lastName`, `personalId`, `phone`, `address1`, `address2`, `age`, `gender`) "
                     + "VALUES (?,  ?,  ?,  ?, ?, ?,  ?,  ?);";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, firstName);
             pstm.setString(2, lastName);
             pstm.setLong(3, personalId);
@@ -83,6 +85,8 @@ public class UserService {
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 
+        } finally {
+            closeSQLProperties(conn, pstm, null);
         }
         return false;
     }
@@ -198,4 +202,21 @@ public class UserService {
         return null;
     }
 //    --------------------------------- Dealing with JSON
+    
+    // Other 
+        private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstm != null) {
+                pstm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

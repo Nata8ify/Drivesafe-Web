@@ -38,39 +38,39 @@ public class TestConnectServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String str = "";
-            try {
-                /* TODO output your page here. You may use following sample code. */
-                Connection conn = ConnectionBuilder.getConnection();
-                String sql = "SELECT * FROM drivesafe.user WHERE username = 'root' AND password = '63a9f0ea7bb98050796b649e85481845' AND userType = 'T'";
-                PreparedStatement pstm = conn.prepareStatement(sql);
-                ResultSet rs = pstm.executeQuery();
-                rs.first();
-                str = rs.getString("username");
-            } catch (SQLException ex) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Servlet TestConnectServlet</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Servlet Message" + ex.getLocalizedMessage() + "</h1>");
-                out.println("<p>" + getStackTrace(ex) + "</p>");
-                out.println("</body>");
-                out.println("</html>");
-                Logger.getLogger(TestConnectServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TestConnectServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TestConnectServlet at " + str + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        try (PrintWriter out = response.getWriter()) {
+//            String str = "";
+//            try {
+//                /* TODO output your page here. You may use following sample code. */
+//                Connection conn = ConnectionBuilder.getConnection();
+//                String sql = "SELECT * FROM drivesafe.user WHERE username = 'root' AND password = '63a9f0ea7bb98050796b649e85481845' AND userType = 'T'";
+//                PreparedStatement pstm = conn.prepareStatement(sql);
+//                ResultSet rs = pstm.executeQuery();
+//                rs.first();
+//                str = rs.getString("username");
+//            } catch (SQLException ex) {
+//                out.println("<!DOCTYPE html>");
+//                out.println("<html>");
+//                out.println("<head>");
+//                out.println("<title>Servlet TestConnectServlet</title>");
+//                out.println("</head>");
+//                out.println("<body>");
+//                out.println("<h1>Servlet Message" + ex.getLocalizedMessage() + "</h1>");
+//                out.println("<p>" + getStackTrace(ex) + "</p>");
+//                out.println("</body>");
+//                out.println("</html>");
+//                Logger.getLogger(TestConnectServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet TestConnectServlet</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet TestConnectServlet at " + str + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     public static String getStackTrace(final Throwable throwable) {
