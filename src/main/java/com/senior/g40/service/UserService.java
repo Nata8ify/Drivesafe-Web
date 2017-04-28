@@ -34,14 +34,17 @@ public class UserService {
     }
 
     public Profile login(String username, String password, char userType) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
-            Connection conn = ConnectionBuilder.getConnection();
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM drivesafe.user WHERE username = ? AND password = ? AND userType = ?;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, username);
             pstm.setString(2, Encrypt.toMD5(password));
             pstm.setString(3, String.valueOf(userType));
-            ResultSet rs = pstm.executeQuery();
+            rs = pstm.executeQuery();
             if (rs.next()) {//If there is account existed.
                 //TODO
                 System.out.println("LOGIN!");
@@ -51,7 +54,8 @@ public class UserService {
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return null;
     }
@@ -81,7 +85,7 @@ public class UserService {
                 conn.close();
                 createUser(username, password, userType);
                 return true;
-            } conn.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -100,10 +104,10 @@ public class UserService {
         pstm.setString(3, Encrypt.toMD5(password));
         pstm.setString(4, String.valueOf(userType));
         if (pstm.executeUpdate() != 0) {
-            conn.close();
+            closeSQLProperties(conn, pstm, null);
             return true;
         } else {
-            conn.close();
+            closeSQLProperties(conn, pstm, null);
             return false;
         }
     }
@@ -119,15 +123,15 @@ public class UserService {
         ResultSet rs = pstm.executeQuery();
         if (rs.next()) {
             long latestId = rs.getLong("latestId");
-            conn.close();
+            closeSQLProperties(conn, pstm, rs);
             return latestId;
         } else {
-            conn.close();
+            closeSQLProperties(conn, pstm, rs);
             throw new SQLException("Latest userId is N/A.");
         }
     }
 
-    public static Profile getProfileByUserId(long userId) throws SQLException {
+    public Profile getProfileByUserId(long userId) throws SQLException {
         Profile pf = null;
 
         Connection conn = ConnectionBuilder.getConnection();
@@ -139,9 +143,10 @@ public class UserService {
         if (rs.next()) {
             pf = new Profile();
             setProfile(rs, pf);
-            conn.close();
+            closeSQLProperties(conn, pstm, rs);
             return pf;
-        }conn.close();
+        }
+        closeSQLProperties(conn, pstm, rs);
         return null;
     }
 
@@ -155,13 +160,6 @@ public class UserService {
         pf.setAddress2(rs.getString("address2"));
         pf.setAge(rs.getInt("age"));
         pf.setGender(rs.getString("gender").charAt(0));
-    }
-
-    private static void setUser(ResultSet rs, User usr) throws SQLException {
-        usr.setUserId(rs.getLong(""));
-        usr.setUsername(rs.getString(""));
-        usr.setPassword(rs.getString(""));
-        usr.setUserType(rs.getString("").charAt(0));
     }
 
 //    --------------------------------- Dealing with JSON
@@ -202,9 +200,9 @@ public class UserService {
         return null;
     }
 //    --------------------------------- Dealing with JSON
-    
+
     // Other 
-        private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
+    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
         try {
             if (conn != null) {
                 conn.close();

@@ -7,10 +7,6 @@
 var OPT_STORE_OL = "storeOpLocation";
 
 var opMap;
-var WARANON_LATLNG = {lat: 13.647094, lng: 100.487458};
-var SUANTHON_LATLNG = {lat: 13.652293, lng: 100.491173};
-var SUKSAWADROAD_LATLNG = {lat: 13.652797, lng: 100.521451};
-var NEARSIT_LATLNG = {lat: 13.652277, lng: 100.494457};
 var KMUTT_LATLNG = {lat: 13.651553, lng: 100.495030};
 var directionsDisplay;
 var directionsService;

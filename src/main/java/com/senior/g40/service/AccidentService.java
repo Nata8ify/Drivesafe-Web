@@ -15,7 +15,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -80,20 +79,20 @@ public class AccidentService {
 
     //------------------------------------About INSERT/ADD. - END
     //------------------------------------About UPDATE. - START
-    public Result updateOnRequestRescueAccc(long userId, long accId) {
-        return updateAccCodeStatus(userId, Accident.ACC_CODE_A);
+    public Result updateOnRequestRescueAccc(long accId) {
+        return updateAccCodeStatus(accId, Accident.ACC_CODE_A);
     }
 
-    public Result updateOnGoingAccc(long userId, long accId) {
-        return updateAccCodeStatus(userId, Accident.ACC_CODE_G);
+    public Result updateOnGoingAccc(long accId) {
+        return updateAccCodeStatus(accId, Accident.ACC_CODE_G);
     }
 
-    public Result updateOnRescuingAccc(long userId, long accId) {
-        return updateAccCodeStatus(userId, Accident.ACC_CODE_R);
+    public Result updateOnRescuingAccc(long accId) {
+        return updateAccCodeStatus(accId, Accident.ACC_CODE_R);
     }
 
-    public Result updateClosedRescueAccc(long userId, long accId) {
-        return updateAccCodeStatus(userId, Accident.ACC_CODE_C);
+    public Result updateClosedRescueAccc(long accId) {
+        return updateAccCodeStatus(accId, Accident.ACC_CODE_C);
     }
 
     public Result updateOnUserFalseAccc(long accId) {
@@ -460,7 +459,7 @@ public class AccidentService {
                 ol = new OperatingLocation(new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
                         rs.getInt("opBound"));
             }
-            conn.close();
+            closeSQLProperties(conn, pstm, rs);
         }
         {
             // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html

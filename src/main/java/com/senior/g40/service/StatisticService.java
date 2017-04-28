@@ -40,13 +40,13 @@ public class StatisticService {
         Date iterDate = null;
         SimpleDateFormat sdf = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
             sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sqlCmd;
-            PreparedStatement pstm;
-            ResultSet rs;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
@@ -72,6 +72,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
@@ -83,13 +85,14 @@ public class StatisticService {
         Date iterDate = null;
         SimpleDateFormat sdf = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
             sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sqlCmd;
-            PreparedStatement pstm;
-            ResultSet rs;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
@@ -113,6 +116,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
@@ -124,14 +129,13 @@ public class StatisticService {
         Date iterDate = null;
         SimpleDateFormat sdf = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
             sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sqlCmd;
-            PreparedStatement pstm;
-            ResultSet rs;
-
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('1');";
@@ -154,6 +158,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
@@ -165,14 +171,13 @@ public class StatisticService {
         Date iterDate = null;
         SimpleDateFormat sdf = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
             sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sqlCmd;
-            PreparedStatement pstm;
-            ResultSet rs;
-
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('2');";
@@ -195,6 +200,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
@@ -204,11 +211,13 @@ public class StatisticService {
         List<GeoCoordinate> accGeoCList = null;
         GeoCoordinate accGeoC = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
 
             String sqlCmd = "SELECT latitude, longitude FROM `accident`;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 if (accGeoCList == null) {
                     accGeoCList = new ArrayList<GeoCoordinate>();
@@ -221,6 +230,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
 
         return accGeoCList;
@@ -231,13 +242,15 @@ public class StatisticService {
         List<GeoCoordinate> accGeoCList = null;
         GeoCoordinate accGeoC = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
 
             String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD));
             pstm.setDate(2, new Date(System.currentTimeMillis()));
-            ResultSet rs = pstm.executeQuery();
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 if (accGeoCList == null) {
                     accGeoCList = new ArrayList<GeoCoordinate>();
@@ -250,6 +263,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
 
         return accGeoCList;
@@ -260,13 +275,15 @@ public class StatisticService {
         List<GeoCoordinate> accGeoCList = null;
         GeoCoordinate accGeoC = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
 
             String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, beginDate);
             pstm.setDate(2, lastDate);
-            ResultSet rs = pstm.executeQuery();
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 if (accGeoCList == null) {
                     accGeoCList = new ArrayList<GeoCoordinate>();
@@ -279,6 +296,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
 
         return accGeoCList;
@@ -288,11 +307,13 @@ public class StatisticService {
     public List<String> getByDayTimePeriodOfAccidentStatistic(Date date) {
         List<String> byDateAccStatHassMap = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
             String sqlCmd = "SELECT time FROM `accident` WHERE date = ?;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, date);
-            ResultSet rs = pstm.executeQuery();
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 if (byDateAccStatHassMap == null) {
                     byDateAccStatHassMap = new ArrayList<String>();
@@ -302,6 +323,8 @@ public class StatisticService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return byDateAccStatHassMap;
     }
@@ -310,10 +333,12 @@ public class StatisticService {
     public Map<Float, Integer> getTotalCrashSpeedStatistic() {
         Map<Float, Integer> crashSpeedMap = null;
         Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
             String sqlCmd = "SELECT `speedDetect`, COUNT(`speedDetect`) AS amount FROM `accident` GROUP BY `speedDetect` ORDER BY `speedDetect`;";
-            PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-            ResultSet rs = pstm.executeQuery();
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
             while (rs.next()) {
                 if (crashSpeedMap == null) {
                     crashSpeedMap = new LinkedHashMap<Float, Integer>();
@@ -322,6 +347,8 @@ public class StatisticService {
             }
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return crashSpeedMap;
     }
@@ -377,5 +404,22 @@ public class StatisticService {
             this.longitude = longitude;
         }
 
+    }
+    
+     //Close the SQLProperties for preventing conection and memory leak.
+    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstm != null) {
+                pstm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

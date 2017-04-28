@@ -32,10 +32,11 @@ public class SettingService {
     }
     
     public Result storeOpertingLocation(LatLng latLng, float boundRadius, long userId) {
-        Result rs = null;
+        Result result = null;
+        Connection conn = null;
         PreparedStatement pstm = null;
-        Connection conn = ConnectionBuilder.getConnection();
         try {
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "INSERT INTO `properties`(`opLat`, `opLng`, `opBound`, `userId`) VALUES (?, ?, ?, ?)";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDouble(1, latLng.getLatitude());
@@ -43,21 +44,24 @@ public class SettingService {
             pstm.setDouble(3, boundRadius);
             pstm.setLong(4, userId);
             if (pstm.executeUpdate() == 1) {
-                rs = new Result(true, "Storing Operating Location accomplished.");
+                result = new Result(true, "Storing Operating Location accomplished.");
             }
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
-            rs = new Result(false, "Storing Operating Location failed.", ex);
+            result = new Result(false, "Storing Operating Location failed.", ex);
+        } finally {
+            closeSQLProperties(conn, pstm, null);
         }
-        return rs;
+        return result;
     }
     
     public Result updateOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result result = null;
-        Connection conn = ConnectionBuilder.getConnection();
+        Connection conn = null;
         PreparedStatement pstm = null;
         try {
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "UPDATE `properties` SET `opLat`= ?,`opLng`= ?,`opBound`= ? WHERE `userId`= ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDouble(1, latLng.getLatitude());
@@ -72,19 +76,23 @@ public class SettingService {
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Operating Location update is failed.", ex);
+        } finally {
+            closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
     
     public Result getOpertingLocation(long userId) {
         Result result = null;
-        Connection conn = ConnectionBuilder.getConnection();
+        Connection conn = null;
         PreparedStatement pstm = null;
+        ResultSet rs = null;
         try {
+            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `properties` WHERE userId = ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setLong(1, userId);
-            ResultSet rs = pstm.executeQuery();
+            rs = pstm.executeQuery();
             if (rs.next()) {
                 result = new Result(true, "Getting Operating Laocation Success", new OperatingLocation(
                         new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
@@ -94,8 +102,26 @@ public class SettingService {
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Getting Operating Location Failed.", ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
         return result;
     }
     
+     //Close the SQLProperties for preventing conection and memory leak.
+    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstm != null) {
+                pstm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

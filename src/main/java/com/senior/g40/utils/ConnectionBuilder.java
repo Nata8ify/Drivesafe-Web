@@ -21,7 +21,7 @@ public class ConnectionBuilder {
 
         try { //Connect to (Real)Database on Server First.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://103.253.146.87/drivesafe?useUnicode=true&characterEncoding=UTF-8";
+            String dbUrl = "jdbc:mysql://localhost/drivesafe?useUnicode=true&characterEncoding=UTF-8";
             String user = "drvsafeany";
             String pw = "@Qwerty69";
             try {
@@ -31,7 +31,6 @@ public class ConnectionBuilder {
             }
             con = DriverManager.getConnection(dbUrl, user, pw);
         } catch (SQLException ex1) {
-//            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex1);
             System.out.println("Try... Connected with Localhost.");
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";
