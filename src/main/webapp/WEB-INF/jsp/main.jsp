@@ -77,6 +77,7 @@
                                         <th>Time</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>
+                                        <th>Go to accident</th>
                                         <th>Accident Status</th>
                                         <th>Nearest Hospital</th> 
                                     </tr>
