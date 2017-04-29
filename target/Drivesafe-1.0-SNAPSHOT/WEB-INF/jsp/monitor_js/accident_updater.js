@@ -15,13 +15,17 @@ $('document').ready(function () {
             "dataSrc": ""
         },
         "columns": [
-            {"data": "date", "width": "10%"},
-            {"data": "time", "width": "10%"},
+            {"data": "time", "width": "15%"},
             {"data": "latitude", "width": "25%"},
             {"data": "longitude", "width": "25%"},
-            {"data": "accCode", "width": "10%"},
-            {"data": "accidentId", "width": "10%"}
+            {"data": "accStatus", "width": "15%"},
+            {"data": "hospital", "width": "10%"}
         ],
+        "columnDefs": [{ 
+                            "targets": -1, 
+                            "data": null, 
+                            "defaultContent" : "<button>Go!</button>"//< ปุ่มกดไปโรงบาล โค้ดอันล่างสุด 
+        }], 
         "language": {
             "loadingRecords": "Pending ... ",
             "zeroRecords": "No Accident Rescue Request (For Now)" //<- Not Work?
@@ -42,5 +46,11 @@ $('#acctable tbody').on('click', 'tr', function () {
     $("#callback-msg").html("Selected Accident Location is on "+lat + " : " + lng);
     crashLatLng = {lat: lat, lng: lng};
     navigate(crashLatLng);
+});
+
+$('#acctable tbody').on( 'click', 'button', function () {
+    //2 บรรทัดนี้ไม่เกี่ยวไส่ไว้ก่อน เผื่อเปน reference อันอื่น
+    //var buttonHosp = dataTable.row($(this).data('tr')).data();
+    //alert("test!"); 
 });
 

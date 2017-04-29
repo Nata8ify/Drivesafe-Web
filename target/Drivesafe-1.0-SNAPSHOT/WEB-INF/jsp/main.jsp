@@ -73,12 +73,12 @@
                             <table id="acctable" style="width: 100%;"> 
                                 <thead> 
                                     <tr>
-                                        <th>Date</th>
+                                        
                                         <th>Time</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>
-                                        <th>Accident Code</th>
-                                        <th>Accident Id</th> 
+                                        <th>Accident Status</th>
+                                        <th>Nearest Hospital</th> 
                                     </tr>
                                 </thead>
                                 <tbody style="text-align: center">
