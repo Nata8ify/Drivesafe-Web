@@ -37,7 +37,7 @@ public class AccidentService {
         return accService;
     }
     //------------------------------------About INSERT/ADD. - START
-
+//Stage
     public Result saveAccident(Accident acc) {
         Connection conn = null;
         PreparedStatement pstm = null;
