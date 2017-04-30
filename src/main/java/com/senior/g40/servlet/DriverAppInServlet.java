@@ -55,7 +55,7 @@ public class DriverAppInServlet extends HttpServlet {
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 break; //1.END ---- 
             case "acchit": //2. Driver got an accident and save accident data Section START ----
-                rs = accService.saveAccident(getAccidentData());
+                rs = accService.saveCrashedAccident(getAccidentData());
                 if (rs.isSuccess()) {
                     // **PRIORITY** DONE! -> will system return 'Accident' Data back? 
                     Accident acc = (Accident) rs.getObj();

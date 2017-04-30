@@ -74,12 +74,11 @@
 
                                     <form action="Login" method="POST">
                                         <center> Username : <input name="usrn" type="text" required="" value="root"/> <br/><br/>
-                                            Password : <input name="pswd" type="password"  required="" value="root"/><br/><br/>
+                                            Password : <input name="pswd" type="password"  required="" value="master"/><br/><br/>
                                             <input name="utyp" type="hidden"  value="T" required=""/>
                                             <button type="submit" class="btn btn-success">Submit</button>&nbsp;&nbsp;<button type="reset" class="btn btn-warning">Reset</button><br/><br/>
                                             <a href="#regis">Register for Driving User</a></center> &nbsp;&nbsp;
                                     </form>
-
                                 </fieldset>
                             </div> 
                         </div>

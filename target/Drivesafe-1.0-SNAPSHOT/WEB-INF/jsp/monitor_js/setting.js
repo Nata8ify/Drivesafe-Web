@@ -9,7 +9,7 @@ var opMarker;
 var OpLocation;
 function initMap() {
     OpLocation = {lat: parseFloat($('#spec-location-lat-input').val()), lng: parseFloat($('#spec-location-lng-input').val())};
-    
+
     opLocationMap = new google.maps.Map(document.getElementById('spec-location-map'), {
         zoom: 5,
         center: OpLocation,
@@ -50,36 +50,32 @@ function initMap() {
 }
 
 function setNewOpMarker(opLocationMap, OpLocation) {
-        opMarker.setMap(null);
-        opMarker = new google.maps.Marker({position: OpLocation,
-            map: opLocationMap,
-            draggable: true,
-            title: "Drag into new Operting Location",
-            icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
-        opLocationMap.setCenter(OpLocation);
+    opMarker.setMap(null);
+    opMarker = new google.maps.Marker({position: OpLocation,
+        map: opLocationMap,
+        draggable: true,
+        title: "Drag into new Operting Location",
+        icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
+    opLocationMap.setCenter(OpLocation);
     setInputLatLng(OpLocation.lat, OpLocation.lng);
 }
 
 /* Initialize Function*/
-function initialSearchBox(opLocationMap, opMarker) {
+function initialSearchBox(opLocationMap, OpLocation) {
     var placeInput = $('#spec-location-input')[0];
-    var searchBox = new google.maps.places.SearchBox(placeInput);
-    opLocationMap.addListener('bounds_changed', function () {
-        searchBox.setBounds(opLocationMap.getBounds());
-    });
-    searchBox.addListener('places_changed', function () {
-        var searchPlace = this.getPlaces();
-        if (searchPlace == 0) {
-            return;
-        }
-        var bounds = new google.maps.LatLngBounds();
-
-//        setNewOpMarker(opLocationMap, opMarker);
+    var autocomplete = new google.maps.places.Autocomplete(placeInput);
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var searchLat = autocomplete.getPlace().geometry.location.lat();
+        var searchLng = autocomplete.getPlace().geometry.location.lng();
+        setInputLatLng(searchLat, searchLng);
+        OpLocation = {lat: searchLat, lng: searchLng};
+        setNewOpMarker(opLocationMap, OpLocation);
     });
 }
 
+
 /* Setting Function */
-function setInputLatLng(lat, lng){
+function setInputLatLng(lat, lng) {
     $('#spec-location-lat-input').val(lat);
     $('#spec-location-lng-input').val(lng);
 }
@@ -115,7 +111,8 @@ $('#update-location-submit').click(function () {
             lat: lat,
             lng: lng,
             boundRds: boundRadius
-        }}).done(function (aresult) {setNewOpMarker(opLocationMap, OpLocation);
+        }}).done(function (aresult) {
+        setNewOpMarker(opLocationMap, OpLocation);
         callbackMessage(aresult);
     });
 });

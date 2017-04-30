@@ -39,7 +39,7 @@ public class UserService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM drivesafe.user WHERE username = ? AND password = ? AND userType = ?;";
+            String sqlCmd = "SELECT * FROM user WHERE username = ? AND password = ? AND userType = ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, username);
             pstm.setString(2, Encrypt.toMD5(password));
@@ -47,7 +47,6 @@ public class UserService {
             rs = pstm.executeQuery();
             if (rs.next()) {//If there is account existed.
                 //TODO
-                System.out.println("LOGIN!");
                 Profile pf = getProfileByUserId(rs.getLong("userId"));
                 conn.close();
                 return pf;
@@ -97,7 +96,7 @@ public class UserService {
 
     public boolean createUser(String username, String password, char userType) throws SQLException {
         Connection conn = ConnectionBuilder.getConnection();
-        String sqlCmd = "INSERT INTO `user` (`userId`, `username`, `password`, `userType`) VALUES (?, ?, ?, ?);";
+        String sqlCmd = "INSERT INTO `user` (`accidentId`, `username`, `password`, `userType`) VALUES (?, ?, ?, ?);";
         PreparedStatement pstm = conn.prepareStatement(sqlCmd);
         pstm.setLong(1, getLatestUserId());
         pstm.setString(2, username);

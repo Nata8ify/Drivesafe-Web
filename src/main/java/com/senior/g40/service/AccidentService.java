@@ -36,9 +36,10 @@ public class AccidentService {
         }
         return accService;
     }
+
     //------------------------------------About INSERT/ADD. - START
 //Stage
-    public Result saveAccident(Accident acc) {
+    public Result saveCrashedAccident(Accident acc) {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -46,19 +47,65 @@ public class AccidentService {
             Result result = null;
             conn = ConnectionBuilder.getConnection();
             String sqlCmd = "INSERT INTO `accident` "
-                    + "(`userId`, `date`, `time`, `latitude`, `longitude`, `forceDetect`, `speedDetect`, `accCode`) "
+                    + "(`userId`, `date`, `time`, `latitude`, `longitude`, `accCode`, `accType`) "
                     + "VALUES "
-                    + "(?, ?, ?, ?, ?, ?, ?, ?);";
+                    + "(?, ?, ?, ?, ?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setLong(1, acc.getUserId());
             pstm.setDate(2, acc.getDate());
             pstm.setString(3, acc.getTime());
             pstm.setDouble(4, acc.getLatitude());
             pstm.setDouble(5, acc.getLongitude());
-            pstm.setDouble(6, acc.getForceDetect());
-            pstm.setFloat(7, acc.getSpeedDetect());
-            pstm.setString(8, String.valueOf(Accident.ACC_CODE_A));
+            pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
+            pstm.setByte(7, Accident.ACC_TYPE_TRAFFIC);
             if (pstm.executeUpdate() != 0) {
+
+                sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
+                pstm = conn.prepareStatement(sqlCmd);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    setAccident(rs, acc);
+                    result = new Result(true, "Saved", acc);
+                    sqlCmd = "INSERT INTO `crash_accdetails` (`accidentId`, `forceDetect`, `speedDetect`) "
+                            + "VALUES (?, ?, ?);";
+                    pstm = conn.prepareStatement(sqlCmd);
+                    pstm.setLong(1, acc.getAccidentId());
+                    pstm.setDouble(2, acc.getForceDetect());
+                    pstm.setFloat(3, acc.getSpeedDetect());
+                    pstm.executeUpdate();
+                }
+                return result;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result(false, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
+        }
+        return new Result(false, "saveAccident is NO EXCEPTION and row is 0 updated.");
+    }
+
+    public Result saveNonCrashAccident(Accident acc, byte accType){
+     Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            Result result = null;
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "INSERT INTO `accident` "
+                    + "(`userId`, `date`, `time`, `latitude`, `longitude`, `accCode`, `accType`) "
+                    + "VALUES "
+                    + "(?, ?, ?, ?, ?, ?, ?);";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, acc.getUserId());
+            pstm.setDate(2, acc.getDate());
+            pstm.setString(3, acc.getTime());
+            pstm.setDouble(4, acc.getLatitude());
+            pstm.setDouble(5, acc.getLongitude());
+            pstm.setString(8, String.valueOf(Accident.ACC_CODE_A));
+            pstm.setByte(9, accType);
+            if (pstm.executeUpdate() != 0) {
+
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
                 pstm = conn.prepareStatement(sqlCmd);
                 rs = pstm.executeQuery();
@@ -76,7 +123,7 @@ public class AccidentService {
         }
         return new Result(false, "saveAccident is NO EXCEPTION and row is 0 updated.");
     }
-
+    
     //------------------------------------About INSERT/ADD. - END
     //------------------------------------About UPDATE. - START
     public Result updateOnRequestRescueAccc(long accId) {
@@ -141,7 +188,7 @@ public class AccidentService {
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 accidents.add(accident);
@@ -173,7 +220,7 @@ public class AccidentService {
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 accidents.add(accident);
@@ -207,7 +254,7 @@ public class AccidentService {
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 if (isBoundWithin(rescueSideUserId, accident)) {
@@ -243,7 +290,7 @@ public class AccidentService {
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 accidents.add(accident);
@@ -274,7 +321,7 @@ public class AccidentService {
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 accidents.add(accident);
@@ -305,7 +352,7 @@ public class AccidentService {
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 accidents.add(accident);
@@ -331,12 +378,12 @@ public class AccidentService {
             conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `accident` WHERE accCode = ?;";
             pstm = conn.prepareStatement(sqlCmd);
-            pstm.setString(1, String.valueOf(Accident.ACC_CODE_R ));
+            pstm.setString(1, String.valueOf(Accident.ACC_CODE_R));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
                 if (accidents == null) {
-                    accidents = new ArrayList<Accident>();
+                    accidents = new ArrayList<>();
                 }
                 setAccident(rs, accident);
                 accidents.add(accident);
@@ -395,10 +442,11 @@ public class AccidentService {
         ac.setTime(rs.getString("time"));
         ac.setLatitude(rs.getFloat("latitude"));
         ac.setLongtitude(rs.getFloat("longitude"));
-        ac.setForceDetect(rs.getFloat("forceDetect"));
-        ac.setSpeedDetect(rs.getFloat("speedDetect"));
+//        ac.setForceDetect(rs.getFloat("forceDetect"));
+//        ac.setSpeedDetect(rs.getFloat("speedDetect"));
         ac.setAccCode(rs.getString("accCode").charAt(0));
         ac.setAccidentId(rs.getLong("accidentId"));
+        ac.setAccType(rs.getByte("accType"));
     }
 //    --------------------------------- Dealing with JSON
 
@@ -411,9 +459,10 @@ public class AccidentService {
                 jsonObj.put("time", accident.getTime());
                 jsonObj.put("latitude", Double.valueOf(accident.getLatitude()));
                 jsonObj.put("longitude", Double.valueOf(accident.getLongitude()));
-                jsonObj.put("forceDetect", Double.valueOf(accident.getForceDetect()));
-                jsonObj.put("speedDetect", Float.valueOf(accident.getSpeedDetect()));
+//                jsonObj.put("forceDetect", Double.valueOf(accident.getForceDetect()));
+//                jsonObj.put("speedDetect", Float.valueOf(accident.getSpeedDetect()));
                 jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
+                jsonObj.put("accType", accident.getAccType());
                 jsonObj.put("accidentId", accident.getAccidentId());
                 return jsonObj;
             }
