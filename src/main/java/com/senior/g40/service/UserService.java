@@ -37,6 +37,7 @@ public class UserService {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
+        Profile pf = null;
         try {
             conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM user WHERE username = ? AND password = ? AND userType = ?;";
@@ -47,16 +48,14 @@ public class UserService {
             rs = pstm.executeQuery();
             if (rs.next()) {//If there is account existed.
                 //TODO
-                Profile pf = getProfileByUserId(rs.getLong("userId"));
-                conn.close();
-                return pf;
+                pf = getProfileByUserId(rs.getLong("userId"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeSQLProperties(conn, pstm, rs);
         }
-        return null;
+        return pf;
     }
 
     // Need to improve the code -> too many parameters need to receive value as Profile Object instead.
@@ -81,7 +80,7 @@ public class UserService {
             pstm.setInt(7, age);
             pstm.setString(8, String.valueOf(gender));
             if (pstm.executeUpdate() != 0) {
-                conn.close();
+                closeSQLProperties(conn, pstm, null);
                 createUser(username, password, userType);
                 return true;
             }
@@ -142,11 +141,9 @@ public class UserService {
         if (rs.next()) {
             pf = new Profile();
             setProfile(rs, pf);
-            closeSQLProperties(conn, pstm, rs);
-            return pf;
         }
         closeSQLProperties(conn, pstm, rs);
-        return null;
+        return pf;
     }
 
     private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
@@ -203,14 +200,14 @@ public class UserService {
     // Other 
     private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
         try {
-            if (conn != null) {
-                conn.close();
+            if (rs != null) {
+                rs.close();
             }
             if (pstm != null) {
                 pstm.close();
             }
-            if (rs != null) {
-                rs.close();
+            if (conn != null) {
+                conn.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);

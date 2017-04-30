@@ -46,7 +46,6 @@ public class SettingService {
             if (pstm.executeUpdate() == 1) {
                 result = new Result(true, "Storing Operating Location accomplished.");
             }
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Storing Operating Location failed.", ex);
@@ -71,8 +70,6 @@ public class SettingService {
             if (pstm.executeUpdate() == 1) {
                 result = new Result(true, "Operating Location updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
             }
-            
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Operating Location update is failed.", ex);
@@ -98,7 +95,6 @@ public class SettingService {
                         new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
                         rs.getInt("opBound")));
             }
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Getting Operating Location Failed.", ex);
@@ -111,14 +107,14 @@ public class SettingService {
      //Close the SQLProperties for preventing conection and memory leak.
     private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
         try {
-            if (conn != null) {
-                conn.close();
+            if (rs != null) {
+                rs.close();
             }
             if (pstm != null) {
                 pstm.close();
             }
-            if (rs != null) {
-                rs.close();
+            if (conn != null) {
+                conn.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);

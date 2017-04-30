@@ -63,6 +63,7 @@ public class Accident {
         this.accCode = accCode;
     }
 
+    //Dedicating Crash Detection.
     public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect) {
         this.userId = userId;
         this.date = date;
@@ -73,6 +74,17 @@ public class Accident {
         this.speedDetect = speedDetect;
     }
 
+    //Dedicating Non-Crash Detection.
+        public Accident( long userId, Date date, String time, double latitude, double longitude,  byte accType, char accCode) {
+        this.userId = userId;
+        this.date = date;
+        this.time = time;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.accType = accType;
+        this.accCode = accCode;
+    }
+        
     public static Accident getInsatance() {
         if (accident == null) {
             accident = new Accident();
