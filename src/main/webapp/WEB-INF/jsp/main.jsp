@@ -79,7 +79,6 @@
                             <table id="acctable" style="width: 100%;"> 
                                 <thead> 
                                     <tr>
-
                                         <th>Time</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>
@@ -98,18 +97,18 @@
             </div>                               
             <div class="main">
                 <div class="section text-center landing-section">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
                             <br/>
                             <i id="callback-msg"></i>
                             <!--<div class="col-md-8 col-md-offset-2">-->
-                            <div style="padding:5px">
-                                <div id="map" style="background-color: #ddd;width: 100%;height: 400px;"></div><br/>
+                            <div style="padding:0px">
+                                <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>
                                 <button id="btn-go-top" >Back to Top</button>
                                 <br/><hr/>
                                 <script>
-                                    <%@include file="monitor_js/map_navigate.js"  %>
-                                    <%@include file="monitor_js/accident_updater.js"  %>
+                                    <%@include file="monitor_js/main_accnavigate.js"  %>
+                                    <%@include file="monitor_js/main_accupdater.js"  %>
                                 </script>
                                 <script async defer
                                         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
