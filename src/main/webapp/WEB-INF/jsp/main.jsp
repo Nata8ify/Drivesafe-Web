@@ -104,7 +104,7 @@
                                     <%@include file="monitor_js/map_navigate.js"  %>
                                 </script>
                                 <script async defer
-                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&callback=initMap">
+                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
                                 </script>
                                 <script>
                                     <%@include file="monitor_js/accident_updater.js"  %>

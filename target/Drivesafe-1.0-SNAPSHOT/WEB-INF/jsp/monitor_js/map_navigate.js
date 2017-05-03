@@ -20,7 +20,7 @@ var opLatLng; // Operating Center LatLng
 
 function navigate(crashLatLng) {
     $.getJSON("RescuerIn?opt=getaccs").done(function () {
-       directionsService.route({
+        directionsService.route({
             origin: opLatLng,
             destination: crashLatLng,
             travelMode: 'DRIVING'
@@ -90,8 +90,51 @@ function setDefaultOpProperties(lat, lng, boundRadius) {
             lat: lat,
             lng: lng,
             boundRds: boundRadius
-        }}).done(function () {initMap();
-        });
+        }}).done(function () {
+        initMap();
+    });
+}
+
+function searchHospital(crashLatLng) {
+    opMap = new google.maps.Map(document.getElementById('map'), {
+        center: crashLatLng,
+        zoom: 12
+    });
+    
+    new google.maps.Marker({
+        position: crashLatLng,
+        map: opMap,
+        title: "Accident Location"
+    });
+    
+    var request = {
+        location: crashLatLng,
+        radius: '500',
+        query: 'hospital'
+    };
+    infowindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(opMap);
+    service.textSearch(request, callback);
+}
+
+function callback(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+        }
+    }
+}
+
+function createMarker(place) {
+    var marker = new google.maps.Marker({
+        map: opMap,
+        position: place.geometry.location
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(place.name);
+        infowindow.open(opMap, this);
+    });
 }
 
 /* Other */

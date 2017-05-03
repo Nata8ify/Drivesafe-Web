@@ -80,9 +80,11 @@ $('#acctable tbody ').on('click', 'tr .accident', function () {
 });
 
 $('#acctable tbody').on( 'click', 'tr .hospital', function () {
-    //2 บรรทัดนี้ไม่เกี่ยวไส่ไว้ก่อน เผื่อเปน reference อันอื่น
-    //var buttonHosp = dataTable.row($(this).data('tr')).data();
-    //alert("test!"); 
+    var buttonHosp = dataTable.row($(this).data('tr')).data();
+    var lat = buttonHosp.latitude;
+    var lng = buttonHosp.longitude;
+    crashLatLng = {lat: lat, lng: lng};
+    searchHospital(crashLatLng);
 });
 
 
