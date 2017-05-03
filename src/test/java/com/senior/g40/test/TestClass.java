@@ -5,7 +5,10 @@
  */
 package com.senior.g40.test;
 
+import com.senior.g40.model.Accident;
+import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.StatisticService;
+import java.sql.Date;
 import org.junit.Test;
 
 /**
@@ -17,6 +20,7 @@ public class TestClass {
     public TestClass() {
     }
 
+    
 //    @Test
 //    public void isRootLogin(){
 ////        assert(UserService.getInstance().login("root", "root", 'T'));

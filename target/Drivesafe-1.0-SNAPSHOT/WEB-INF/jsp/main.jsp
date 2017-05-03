@@ -24,12 +24,18 @@
         <link href="css/bootstrap.css" rel="stylesheet" />
         <link href="css/ct-paper.css" rel="stylesheet"/>
         <link href="css/demo.css" rel="stylesheet" /> 
-        
+
 
         <!--     Fonts and icons     -->
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <style>
             #acctable tr:hover{ 
                 background-color: #FF841E;
@@ -68,12 +74,12 @@
             <div class="landing-header section" style="background-image: url('image/bg_landing.jpg');">
                 <div class="container">
 
-                    <div class="col-md-8 col-md-offset-2">                                                                              
+                    <div class="">                                                                              
                         <div>
                             <table id="acctable" style="width: 100%;"> 
                                 <thead> 
                                     <tr>
-                                        
+
                                         <th>Time</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>
@@ -96,18 +102,17 @@
                         <div class="row">
                             <br/>
                             <i id="callback-msg"></i>
-                            <div class="col-md-8 col-md-offset-2">
-                                <div id="map" style="background-color: #ddd;width: 100%;height: 400px;padding-right: 30px;">
-                                </div>
+                            <!--<div class="col-md-8 col-md-offset-2">-->
+                            <div style="padding:5px">
+                                <div id="map" style="background-color: #ddd;width: 100%;height: 400px;"></div><br/>
+                                <button id="btn-go-top" >Back to Top</button>
                                 <br/><hr/>
                                 <script>
                                     <%@include file="monitor_js/map_navigate.js"  %>
+                                    <%@include file="monitor_js/accident_updater.js"  %>
                                 </script>
                                 <script async defer
-                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&callback=initMap">
-                                </script>
-                                <script>
-                                    <%@include file="monitor_js/accident_updater.js"  %>
+                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
                                 </script>
                                 <br/>
                             </div>

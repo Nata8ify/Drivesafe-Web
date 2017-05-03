@@ -7,6 +7,7 @@
 var OPT_STORE_OL = "storeOpLocation";
 
 var opMap;
+var opMapTemp;
 var KMUTT_LATLNG = {lat: 13.651553, lng: 100.495030};
 var directionsDisplay;
 var directionsService;
@@ -20,7 +21,10 @@ var opLatLng; // Operating Center LatLng
 
 function navigate(crashLatLng) {
     $.getJSON("RescuerIn?opt=getaccs").done(function () {
-       directionsService.route({
+        if(opMapTemp !== undefined){
+            opMap = opMapTemp;
+        }
+        directionsService.route({
             origin: opLatLng,
             destination: crashLatLng,
             travelMode: 'DRIVING'
@@ -90,9 +94,50 @@ function setDefaultOpProperties(lat, lng, boundRadius) {
             lat: lat,
             lng: lng,
             boundRds: boundRadius
-        }}).done(function () {initMap();
-        });
+        }}).done(function () {
+        initMap();
+    });
 }
+
+$('#acctable tbody').on('<disabled>', 'tr .btnNearHospital', function () {
+    //2 บรรทัดนี้ไม่เกี่ยวไส่ไว้ก่อน เผื่อเปน reference อันอื่น
+    var accRow = dataTable.row($(this).parents('tr')).data();
+    var lat = accRow.latitude;
+    var lng = accRow.longitude;
+    console.log(parseFloat(lat), parseFloat(lng));
+    var req = {
+        location: new google.maps.LatLng(lat, lng),
+        radius: '5000',
+        types: ['hospital']
+    };
+//    var domOpMap = $('#map')[0];
+    opMapTemp = opMap;
+    opMap = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: 15
+    });
+    var pService = new google.maps.places.PlacesService(opMap); //map_navigate.js's opMap.
+    pService.nearbySearch(req, function (results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+                console.log(results[i]);
+                var place = results[i];
+//                var marker = new google.maps.Marker({
+//                    map: opMap,
+//                    position: place.geometry.location
+//                });
+            }
+        } else {
+            console.log("not ok" + status);
+
+        }
+    });
+});
+
+/* Event Listener */
+$('#btn-go-top').click(function () {
+    document.location = '#demo-navbar';
+});
 
 /* Other */
 

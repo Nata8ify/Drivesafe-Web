@@ -5,11 +5,13 @@
  */
 package com.senior.g40.service;
 
+import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.Result;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,6 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,6 +89,7 @@ public class AccidentService {
         } finally {
             closeSQLProperties(conn, pstm, rs);
         }
+        boardcastRescueRequest(acc);
         return result;
     }
 
@@ -119,6 +127,7 @@ public class AccidentService {
         } finally {
             closeSQLProperties(conn, pstm, rs);
         }
+        boardcastRescueRequest(acc);
         return result;
     }
 
@@ -168,6 +177,26 @@ public class AccidentService {
     }
 
     //------------------------------------About UPDATE. - END
+    
+    //------------------------------------About DELETE. - START
+    public Result deleteIncidentById(long accId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        Result result = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "DELETE FROM accident WHERE accidentId = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(2, accId);
+            result = new Result(pstm.executeUpdate() != 0, "Delete Success!");
+        } catch (SQLException ex) {
+            result = new Result(false, "Delete Failed", ex);
+        } finally {
+            closeSQLProperties(conn, pstm, null);
+        }
+        return result;
+    }
+    //------------------------------------About DELETE. - END
     //-------------------------------- About QUERY - START
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
     public List<Accident> getAllAccidents() {
@@ -483,7 +512,6 @@ public class AccidentService {
     private OperatingLocation ol;
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
-    private final int KM = 1000;
 
     private boolean isBoundWithin(long userId, Accident acc) throws SQLException {
         Connection conn = null;
@@ -523,15 +551,57 @@ public class AccidentService {
         this.ol = null;
     }
 
+    //Boardcast Rescue Request to Rescuer-Mobile Application [WheeWhor-Rescuer]
+    private final String WW_FB_KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
+    private final String TOPIC = "/topics/news";
+    private final String FIXED_ = "euCknmtSS_Q:APA91bHHzC1QPn_uCtfMROGoHu22Gp2ipXuYsNSIkdew4yfR6JTGwSNSuxJrc5DCzzRku_k0OnpZIRi0HVOh6sucviNM69goOc7Gb45TRzjJC5X_Z8RlK_JikMnxxhfUaLyUobyKdWJ0";
+
+    public Result boardcastRescueRequest(Accident acc) {
+        Result result = null;
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send");
+        httpPost.setHeader("Content-Type", "application/json");
+        httpPost.setHeader("Authorization", WW_FB_KEY_SERVER);
+        try {
+
+            JSONObject message = new JSONObject();
+            message.put("to", FIXED_); //<-- What App Auth>
+            message.put("priority", "high");
+
+            JSONObject notification = new JSONObject();
+            notification.put("title", "Accident Alert!");
+            notification.put("body", "Location : "+acc.getLatitude()+", "+acc.getLongitude());
+            message.put("notification", notification);
+            httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            System.out.println("Response : " + httpResponse);
+            System.out.println("Message : " + message.toString());
+            return result;
+        } catch (JSONException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
     //Close the SQLProperties for preventing conection and memory leak.
     private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
         try {
             if (rs != null) {
                 rs.close();
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
             if (pstm != null) {
                 pstm.close();
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
             if (conn != null) {
                 conn.close();
             }
@@ -539,5 +609,6 @@ public class AccidentService {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 //    --------------------------------- Other
 }
