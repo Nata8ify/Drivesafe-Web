@@ -178,7 +178,6 @@ public class AccidentService {
     }
 
     //------------------------------------About UPDATE. - END
-    
     //------------------------------------About DELETE. - START
     public Result deleteIncidentById(long accId) {
         Connection conn = null;
@@ -197,6 +196,7 @@ public class AccidentService {
         }
         return result;
     }
+
     //------------------------------------About DELETE. - END
     //-------------------------------- About QUERY - START
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
@@ -271,9 +271,12 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date = ?;";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = ? AND  accCode IN (?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, today);
+            pstm.setString(2, String.valueOf(Accident.ACC_CODE_A));
+            pstm.setString(3, String.valueOf(Accident.ACC_CODE_G));
+            pstm.setString(4, String.valueOf(Accident.ACC_CODE_R));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();
@@ -571,7 +574,7 @@ public class AccidentService {
 
             JSONObject notification = new JSONObject();
             notification.put("title", "Accident Alert!");
-            notification.put("body", "Location : "+acc.getLatitude()+", "+acc.getLongitude());
+            notification.put("body", "Location : " + acc.getLatitude() + ", " + acc.getLongitude());
             message.put("notification", notification);
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
