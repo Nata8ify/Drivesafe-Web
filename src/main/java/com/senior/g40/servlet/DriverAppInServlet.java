@@ -60,18 +60,24 @@ public class DriverAppInServlet extends HttpServlet {
                     // **PRIORITY** DONE! -> will system return 'Accident' Data back? 
                     Accident acc = (Accident) rs.getObj();
                     request.setAttribute("result", accService.convertAccidentToJSON(acc));
+                } else {
+                    request.setAttribute("result", rs.getExcp());
                 }
                 break; //2. END ---- 
             case "usr_accfalse": //3. for receive/acknowledge user false positive data.
                 rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", rs.getExcp());
                 }
                 break;// 3. END ------
             case "sys_accfalse": //4. for receive/acknowledge system false positive data.
                 rs = accService.updateOnSystemFalseAccc(Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", rs.getExcp());
                 }
                 break;//4. END ------
             default:

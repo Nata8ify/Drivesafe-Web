@@ -9,7 +9,7 @@
     <head>
         <link rel="icon" type="image/png" href="../assets/paper_img/favicon.ico">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Drivesafe</title>
+        <title>WeeWorh</title>
 
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
@@ -62,7 +62,6 @@
                 </div>
             </div><!-- /.container-->
         </nav> 
-
         <div class="wrapper">
             <div class="landing-header section" style="background-image: url('image/bg_landing.jpg');">
                 <div class="container">

@@ -73,6 +73,7 @@ public class AccidentService {
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     setAccident(rs, acc);
+                    System.out.println(acc.toString());
                     result = new Result(true, "Saved", acc);
                     sqlCmd = "INSERT INTO `crash_accdetails` (`accidentId`, `forceDetect`, `speedDetect`) "
                             + "VALUES (?, ?, ?);";
@@ -454,6 +455,7 @@ public class AccidentService {
     //-------------------------------- Accident Value Setup
 //    private static final DecimalFormat fmtLatLng = new DecimalFormat("#.####");
     private void setAccident(ResultSet rs, Accident ac) throws SQLException {
+        ac.setAccidentId(rs.getLong("accidentId"));
         ac.setUserId(rs.getInt("userId"));
         ac.setDate(rs.getDate("date"));
         ac.setTime(rs.getString("time"));
@@ -462,7 +464,6 @@ public class AccidentService {
 //        ac.setForceDetect(rs.getFloat("forceDetect"));
 //        ac.setSpeedDetect(rs.getFloat("speedDetect"));
         ac.setAccCode(rs.getString("accCode").charAt(0));
-        ac.setAccidentId(rs.getLong("accidentId"));
         ac.setAccType(rs.getByte("accType"));
     }
 //    --------------------------------- Dealing with JSON
@@ -526,13 +527,13 @@ public class AccidentService {
             rs = pstm.executeQuery();
             if (rs.next()) {
                 ol = new OperatingLocation(new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                        rs.getInt("opBound"));
+                        rs.getInt("opNeutralBound"));
             }
         }
         closeSQLProperties(conn, pstm, rs);
         {
             // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
-            int opBound = ol.getBound();
+            int opBound = ol.getNeutralBound();
             double dLat = DR * (ol.getLatLng().getLatitude() - acc.getLatitude());
             double dLng = DR * (ol.getLatLng().getLongitude() - acc.getLongitude());
             double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))

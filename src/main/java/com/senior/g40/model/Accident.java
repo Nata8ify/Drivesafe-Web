@@ -25,10 +25,10 @@ public class Accident {
     private byte accType;
     private char accCode;
 
-    public static final byte ACC_TYPE_TRAFFIC = '1';
-    public static final byte ACC_TYPE_FIRE = '2';
-    public static final byte ACC_TYPE_BRAWL = '3';
-    public static final byte ACC_TYPE_ANIMAL = '4';
+    public static final byte ACC_TYPE_TRAFFIC = 1;
+    public static final byte ACC_TYPE_FIRE = 2;
+    public static final byte ACC_TYPE_BRAWL = 3;
+    public static final byte ACC_TYPE_ANIMAL = 4;
     
     public static final char ACC_CODE_A = 'A';
     public static final char ACC_CODE_G = 'G';
@@ -171,10 +171,12 @@ public class Accident {
     public void setAccType(byte accType) {
         this.accType = accType;
     }
-    
+
     @Override
     public String toString() {
-        return "Accident{" + "userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longtitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accCode=" + accCode + '}';
+        return "Accident{" + "accidentId=" + accidentId + ", userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accType=" + accType + ", accCode=" + accCode + '}';
     }
+    
+    
 
 }

@@ -37,7 +37,7 @@ public class SettingService {
         PreparedStatement pstm = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "INSERT INTO `properties`(`opLat`, `opLng`, `opBound`, `userId`) VALUES (?, ?, ?, ?)";
+            String sqlCmd = "INSERT INTO `properties`(`opLat`, `opLng`, `opNeutralBound`, `userId`) VALUES (?, ?, ?, ?)";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDouble(1, latLng.getLatitude());
             pstm.setDouble(2, latLng.getLongitude());
@@ -61,12 +61,37 @@ public class SettingService {
         PreparedStatement pstm = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "UPDATE `properties` SET `opLat`= ?,`opLng`= ?,`opBound`= ? WHERE `userId`= ?;";
+            String sqlCmd = "UPDATE `properties` SET `opLat`= ?,`opLng`= ?,`opNeutralBound`= ? WHERE `userId`= ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDouble(1, latLng.getLatitude());
             pstm.setDouble(2, latLng.getLongitude());
             pstm.setDouble(3, boundRadius);
             pstm.setLong(4, userId);
+            if (pstm.executeUpdate() == 1) {
+                result = new Result(true, "Operating Location updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+            result = new Result(false, "Operating Location update is failed.", ex);
+        } finally {
+            closeSQLProperties(conn, pstm, null);
+        }
+        return result;
+    }
+    
+    public Result update2LevelBoundOpertingLocation(LatLng latLng, int nuetralBoundRadius, int mainBoundRadius,long userId) {
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "UPDATE `properties` SET `opLat`= ?,`opLng`= ?,`opNeutralBound`= ?,`opMainBound`= ? WHERE `userId`= ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDouble(1, latLng.getLatitude());
+            pstm.setDouble(2, latLng.getLongitude());
+            pstm.setInt(3, nuetralBoundRadius);
+            pstm.setInt(4, mainBoundRadius);
+            pstm.setLong(5, userId);
             if (pstm.executeUpdate() == 1) {
                 result = new Result(true, "Operating Location updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
             }
@@ -93,7 +118,7 @@ public class SettingService {
             if (rs.next()) {
                 result = new Result(true, "Getting Operating Laocation Success", new OperatingLocation(
                         new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                        rs.getInt("opBound")));
+                        rs.getInt("opNeutralBound"),rs.getInt("opMainBound") ));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);

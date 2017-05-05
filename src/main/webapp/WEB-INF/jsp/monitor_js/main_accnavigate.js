@@ -49,7 +49,7 @@ function getOpLatLng(opMap) {
             .done(function (json) {
                 var opLocationJSON = $.parseJSON(json);
                 opLatLng = {lat: opLocationJSON['latLng']['latitude'], lng: opLocationJSON['latLng']['longitude']};
-                opBound = opLocationJSON['bound'];
+                opBound = opLocationJSON['neutralBound'];
 
                 settingMap(opMap, opLatLng, opBound);
             })
@@ -57,7 +57,6 @@ function getOpLatLng(opMap) {
                 setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
                 return;
             });
-
 }
 
 function settingMap(opMap, opLatLng, bound) {

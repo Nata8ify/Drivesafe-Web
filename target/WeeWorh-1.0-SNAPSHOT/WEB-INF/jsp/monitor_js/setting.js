@@ -123,7 +123,7 @@ $('#getcur-location-submit').click(function () {
         var opProperties = $.parseJSON(aresult);
         $('#spec-location-lat-input').val(opProperties['latLng']['latitude']);
         $('#spec-location-lng-input').val(opProperties['latLng']['longitude']);
-        $('#spec-location-boundrds-input').val(opProperties['bound']);
+        $('#spec-location-boundrds-input').val(opProperties['neutralBound']);
         callbackMessage("Current Operating Location is " + aresult);
     });
 });
