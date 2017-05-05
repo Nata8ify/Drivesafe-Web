@@ -47,9 +47,12 @@ public class SettingServlet extends HttpServlet {
                 request.setAttribute(attrName, result.getMessage());
                 break;
             case "updateOpLocation":
-                result = settingService.updateOpertingLocation(
+                result = request.getParameter("mBoundRds").equals("") ? settingService.updateOpertingLocation(
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
+                        pf.getUserId()) : settingService.update2LevelBoundOpertingLocation(new LatLng(request.getParameter("lat"), request.getParameter("lng")),
+                        Integer.valueOf(request.getParameter("boundRds")),
+                        Integer.valueOf(request.getParameter("mBoundRds")),
                         pf.getUserId());
                 attrName = A.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());

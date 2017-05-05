@@ -21,7 +21,7 @@ var opLatLng; // Operating Center LatLng
 
 function navigate(crashLatLng) {
     $.getJSON("RescuerIn?opt=getaccs").done(function () {
-        if(opMapTemp !== undefined){
+        if (opMapTemp !== undefined) {
             opMap = opMapTemp;
         }
         directionsService.route({
@@ -50,16 +50,16 @@ function getOpLatLng(opMap) {
                 var opLocationJSON = $.parseJSON(json);
                 opLatLng = {lat: opLocationJSON['latLng']['latitude'], lng: opLocationJSON['latLng']['longitude']};
                 opBound = opLocationJSON['neutralBound'];
-
-                settingMap(opMap, opLatLng, opBound);
+                mainOpBound = opLocationJSON['mainBound'];
+                settingMap(opMap, opLatLng, opBound, mainOpBound);
             })
             .fail(function () {
-                setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
+                setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10, 0);
                 return;
             });
 }
 
-function settingMap(opMap, opLatLng, bound) {
+function settingMap(opMap, opLatLng, bound, mainBound) {
     opMap = new google.maps.Map(document.getElementById('map'), {
         zoom: 9,
         center: opLatLng
@@ -78,12 +78,20 @@ function settingMap(opMap, opLatLng, bound) {
         center: opLatLng,
         radius: bound * 1000
     });
-    setSettingRefProperties(opLatLng, bound);
+    if (mainBound !== 0) {
+        new google.maps.Circle({
+            fillColor: '#FAA',
+            map: opMap,
+            center: opLatLng,
+            radius: mainBound * 1000
+        });
+    }
+    setSettingRefProperties(opLatLng, bound, mainBound);
 }
 
 
-function setSettingRefProperties(opLatLng, bound) {
-    $('a[href*=sett]').attr('href', 'To?opt=sett&lat=' + opLatLng['lat'] + "&lng=" + opLatLng['lng'] + "&bound=" + bound);
+function setSettingRefProperties(opLatLng, bound, mainBound) {
+    $('a[href*=sett]').attr('href', 'To?opt=sett&lat=' + opLatLng['lat'] + "&lng=" + opLatLng['lng'] + "&bound=" + bound+"&mainBound=" + mainBound);
 }
 
 function setDefaultOpProperties(lat, lng, boundRadius) {

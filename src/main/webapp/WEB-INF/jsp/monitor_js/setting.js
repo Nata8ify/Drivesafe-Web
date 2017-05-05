@@ -27,7 +27,8 @@ function initMap() {
             data: {
                 lat: this.getPosition().lat(),
                 lng: this.getPosition().lng(),
-                boundRds: $('#spec-location-boundrds-input').val()
+                boundRds: $('#spec-location-boundrds-input').val(),
+                mBoundRds: $('#spec-location-mboundrds-input').val()
             }}).done(function (aresult) {
             callbackMessage(aresult);
         });
@@ -40,7 +41,8 @@ function initMap() {
             data: {
                 lat: evt.latLng.lat(),
                 lng: evt.latLng.lng(),
-                boundRds: $('#spec-location-boundrds-input').val()
+                boundRds: $('#spec-location-boundrds-input').val(),
+                mBoundRds: $('#spec-location-mboundrds-input').val()
             }}).done(function (aresult) {
             callbackMessage(aresult);
         });
@@ -94,7 +96,8 @@ $('#spec-location-submit').click(function () {
         data: {
             lat: lat,
             lng: lng,
-            boundRds: boundRadius
+            boundRds: boundRadius,
+            mBoundRds: $('#spec-location-mboundrds-input').val()
         }}).done(function (aresult) {
         callbackMessage(aresult);
     });
@@ -110,7 +113,8 @@ $('#update-location-submit').click(function () {
         data: {
             lat: lat,
             lng: lng,
-            boundRds: boundRadius
+            boundRds: boundRadius,
+            mBoundRds: $('#spec-location-mboundrds-input').val()
         }}).done(function (aresult) {
         setNewOpMarker(opLocationMap, OpLocation);
         callbackMessage(aresult);

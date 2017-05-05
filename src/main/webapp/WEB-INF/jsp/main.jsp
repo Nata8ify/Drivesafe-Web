@@ -120,10 +120,6 @@
                 </div>    
             </div>     
         </div>
-
-
-
-
         <footer class="footer-demo section-dark">
             <div class="container">
                 <nav class="pull-left">
@@ -134,6 +130,5 @@
                 </div>
             </div>
         </footer>
-
     </body>
 </html>

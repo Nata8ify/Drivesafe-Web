@@ -22,7 +22,7 @@
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation-demo" id="demo-navbar">
             <div class="container">
-                <a class="navbar-brand">WeeWorh Setting</a>
+                <a class="navbar-brand">Weeworh Setting</a>
                 <div class="collapse navbar-collapse" id="navigation-example-2">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -53,7 +53,8 @@
                             <hr/>
                             <input type="number" id="spec-location-lat-input" placeholder="Enter the Latitude" required="" value="${param.lat}" class="form-control"/><br/>
                             <input type="number" id="spec-location-lng-input" placeholder="Enter the Longitude" required="" value="${param.lng}" class="form-control"/><br/>
-                            <input type="number" id="spec-location-boundrds-input" placeholder="Enter the Bound Radius" required="" value="${param.bound}" class="form-control"/><br/>
+                            <input type="number" id="spec-location-boundrds-input" placeholder="Enter the Bound Radius (Km.)" required="" value="${param.bound}" class="form-control"/><br/>
+                            <input type="number" id="spec-location-mboundrds-input" placeholder="Enter the Main Bound Radius (Km.)" value="${param.mainBound}" class="form-control"/><br/>
                             <div class="row">
                                 <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
                                 <div class="col-sm-6"><input type="button" id="update-location-submit" value="Update" class="btn btn-primary" style="width: 100%"/><br/><br/></div>

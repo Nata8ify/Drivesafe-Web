@@ -59,9 +59,17 @@ $('document').ready(function () {
     });
 });
 
-
+var recCount;
+var NEWCOMING_ALARM_URL = "https://c41.pcloud.com/dHZG60WzXZ4yFq8XZtKvkZZe6XG67Z2ZZt6zZkZS1UNZS3r9LfxUlzR6HnltMnnCo42Aiyhy/incalarm.mp3";
 setInterval(function () {
-    dataTable.ajax.reload(null, false);
+    recCount = dataTable.data().count();
+    dataTable.ajax.reload(function () {
+        if (recCount < dataTable.data().count()) {
+            alert("New Coming Incident!");
+            new Audio(NEWCOMING_ALARM_URL).play();
+        }
+    }, false);
+
     $.fn.dataTable.ext.errMode = 'none'; //Disable the Error Dialog Only.
 }, 3000);
 
