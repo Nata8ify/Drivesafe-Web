@@ -86,7 +86,6 @@ public class MonitoringServlet extends HttpServlet {
                             }
                             accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
                         }
-                        System.out.println(accsJson);
                         request.setAttribute("result", accsJson);
 
                     } else {

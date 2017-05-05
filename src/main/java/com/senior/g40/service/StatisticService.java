@@ -6,6 +6,7 @@
 package com.senior.g40.service;
 
 import com.google.gson.Gson;
+import com.senior.g40.model.Accident;
 import com.senior.g40.utils.A;
 import com.senior.g40.utils.ConnectionBuilder;
 import java.sql.Connection;
@@ -33,7 +34,7 @@ public class StatisticService {
         return statisticService;
     }
 
-    // Get Number of Accident Statistic on Specific Period Date.  -- Still need to reform the code better.  
+    // Get Number All of Accident Type Statistic on Specific Period Date.  -- Still need to reform the code better.  
     public HashMap<Date, Integer> getNumberOfAccidentViaDate(Date beginDate, Date lastDate) {
         LinkedHashMap<Date, Integer> accStatHashMap = null;
         Calendar cal = null;
@@ -50,7 +51,6 @@ public class StatisticService {
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
-//                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?;";
 //                Only select accidents that isn't cause by UserFalse or SystemFalse.
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
                 pstm = conn.prepareStatement(sqlCmd);
@@ -62,20 +62,81 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
+                    closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
-
-                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
             } while (iterDate.compareTo(lastDate) != 1);
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
+    }
+
+    // Get Number All of Accident Type Statistic on Specific Period Date.  -- Still need to reform the code better.  
+    public HashMap<Date, Integer> getNumberOfSelectedAccidentTypeViaDate(Date beginDate, Date lastDate, byte type) {
+        LinkedHashMap<Date, Integer> accStatHashMap = null;
+        Calendar cal = null;
+        Date iterDate = null;
+        SimpleDateFormat sdf = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            cal = Calendar.getInstance();
+            cal.setTime(beginDate);
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sqlCmd;
+
+            iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            do {
+//                Only select accidents that isn't cause by UserFalse or SystemFalse.
+                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
+                pstm = conn.prepareStatement(sqlCmd);
+                pstm.setDate(1, iterDate);
+                pstm.setByte(2, type);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    if (accStatHashMap == null) {
+                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                    }
+                    accStatHashMap.put(iterDate, rs.getInt(1));
+                } else {
+                    closeSQLProperties(conn, pstm, rs);
+                    return accStatHashMap;
+                }
+                cal.add(Calendar.DATE, 1);
+                iterDate = Date.valueOf(sdf.format(cal.getTime()));
+            } while (iterDate.compareTo(lastDate) != 1);
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
+        }
+        return accStatHashMap;
+    }
+
+//    Get Number of Total Crashed/Traffic Accident Statistic.
+    public HashMap<Date, Integer> getNumberOfCrashAccidentTypeViaDate(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_TRAFFIC);
+    }
+//    Get Number of Total Brawl Statistic.
+
+    public HashMap<Date, Integer> getNumberOfBrawlTypeViaDate(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_BRAWL);
+    }
+//    Get Number of Total Fire Statistic.
+
+    public HashMap<Date, Integer> getNumberOfFireTypeViaDate(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_FIRE);
+    }
+//    Get Number of Total Animal Statistic.
+
+    public HashMap<Date, Integer> getNumberOfAnimalTypeViaDate(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_ANIMAL);
     }
 
     // Get Number of False Accident Statistic (including UserFalse and SystemFalse) on Specific Period Date.  -- Still need to reform the code better.  
@@ -87,7 +148,7 @@ public class StatisticService {
         Connection conn = ConnectionBuilder.getConnection();
         PreparedStatement pstm = null;
         ResultSet rs = null;
-        
+
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
@@ -106,17 +167,15 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
+                    closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
-
-                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
             } while (iterDate.compareTo(lastDate) != 1);
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
@@ -148,17 +207,16 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
+                    closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
-
-                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
             } while (iterDate.compareTo(lastDate) != 1);
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
@@ -190,17 +248,16 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
+                    closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
-
-                System.out.println(sdf.format(cal.getTime()) + " => " + rs.getInt(1));
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
             } while (iterDate.compareTo(lastDate) != 1);
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
@@ -227,10 +284,9 @@ public class StatisticService {
                 accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
                 accGeoCList.add(accGeoC);
             }
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
 
@@ -256,14 +312,13 @@ public class StatisticService {
                     accGeoCList = new ArrayList<GeoCoordinate>();
                 }
                 accGeoC = new GeoCoordinate();
-                accGeoC.setLatitude(Double.valueOf(rs.getFloat("latitude")));
-                accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
+                accGeoC.setLatitude(rs.getFloat("latitude"));
+                accGeoC.setLongitude(rs.getFloat("longitude"));
                 accGeoCList.add(accGeoC);
             }
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
 
@@ -293,10 +348,9 @@ public class StatisticService {
                 accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
                 accGeoCList.add(accGeoC);
             }
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
 
@@ -320,10 +374,9 @@ public class StatisticService {
                 }
                 byDateAccStatHassMap.add(rs.getString("time"));
             }
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             closeSQLProperties(conn, pstm, rs);
         }
         return byDateAccStatHassMap;
@@ -376,7 +429,7 @@ public class StatisticService {
     public String parseCrashSpeedStatisticToJSON(Map<Float, Integer> crashSpeedMap) {
         return new Gson().toJson(crashSpeedMap);
     }
-    
+
     /**
      * ***Debug Out*****
      */
@@ -405,18 +458,27 @@ public class StatisticService {
         }
 
     }
-    
-     //Close the SQLProperties for preventing conection and memory leak.
+
+    //Close the SQLProperties for preventing conection and memory leak.
     private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
         try {
-            if (conn != null) {
-                conn.close();
+            if (rs != null) {
+                rs.close();
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
             if (pstm != null) {
                 pstm.close();
             }
-            if (rs != null) {
-                rs.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            if (conn != null) {
+                conn.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);

@@ -13,11 +13,18 @@ import com.google.gson.Gson;
  */
 public class OperatingLocation {
     private LatLng latLng;
-    private int bound;
+    private int neutralBound;
+    private int mainBound;
 
-    public OperatingLocation(LatLng latLng, int bound) {
+    public OperatingLocation(LatLng latLng, int neutralBound) {
         this.latLng = latLng;
-        this.bound = bound;
+        this.neutralBound = neutralBound;
+    }
+    
+     public OperatingLocation(LatLng latLng, int neutralBound, int mainBound) {
+        this.latLng = latLng;
+        this.neutralBound = neutralBound;
+        this.mainBound = mainBound;
     }
     
     public LatLng getLatLng() {
@@ -28,13 +35,23 @@ public class OperatingLocation {
         this.latLng = latLng;
     }
 
-    public int getBound() {
-        return bound;
+    public int getNeutralBound() {
+        return neutralBound;
     }
 
-    public void setBound(int bound) {
-        this.bound = bound;
+    public void setNeutralBound(int neutralBound) {
+        this.neutralBound = neutralBound;
     }
+
+    public int getMainBound() {
+        return mainBound;
+    }
+
+    public void setMainBound(int mainBound) {
+        this.mainBound = mainBound;
+    }
+    
+    
     
     public String toJSON(){
         return new Gson().toJson(this);

@@ -34,7 +34,7 @@ public class SettingServlet extends HttpServlet {
         if (request.getParameter("mode") != null) {
             mode = request.getParameter("mode").charAt(0);
         }
-        String attrName = null;
+        String attrName = "";
         Result result;
         SettingService settingService = SettingService.getInstance();
         switch (option) {

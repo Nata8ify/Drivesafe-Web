@@ -21,28 +21,37 @@ public class Accident {
     private double longitude;
     private double forceDetect;
     private float speedDetect;
-
-    //-- accCode is have very importance role.
+    //-- accCode & accType is have very importance role.
+    private byte accType;
     private char accCode;
 
+    public static final byte ACC_TYPE_TRAFFIC = 1;
+    public static final byte ACC_TYPE_FIRE = 2;
+    public static final byte ACC_TYPE_BRAWL = 3;
+    public static final byte ACC_TYPE_ANIMAL = 4;
+    
     public static final char ACC_CODE_A = 'A';
     public static final char ACC_CODE_G = 'G';
     public static final char ACC_CODE_R = 'R';
     public static final char ACC_CODE_C = 'C';
-    public static final char ACC_CODE_ERRU = '1';
-    public static final char ACC_CODE_ERRS = '2';
+    public static final char ACC_CODE_ERRU = 'U';
+    public static final char ACC_CODE_ERRS = 'S';
     //A[Accident]: Pending for rescue, 
     //G[Going]: Rescuer is on the way, 
     //R[Resecue]: Rescuer is rescuing, 
     //C[Clear]: Rescue received, marking will be cleared next time.  
     //1[False on User]
     //2[False on System]
+    
+    
+    
     private static Accident accident;
 
     public Accident() {
     }
 
-    public Accident(long userId, Date date, String time, float latitude, float longitude, float forceDetect, float speedDetect, char accCode) {
+    public Accident(long accidentId, long userId, Date date, String time, double latitude, double longitude, double forceDetect, float speedDetect, byte accType, char accCode) {
+        this.accidentId = accidentId;
         this.userId = userId;
         this.date = date;
         this.time = time;
@@ -50,9 +59,11 @@ public class Accident {
         this.longitude = longitude;
         this.forceDetect = forceDetect;
         this.speedDetect = speedDetect;
+        this.accType = accType;
         this.accCode = accCode;
     }
 
+    //Dedicating Crash Detection.
     public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect) {
         this.userId = userId;
         this.date = date;
@@ -63,6 +74,17 @@ public class Accident {
         this.speedDetect = speedDetect;
     }
 
+    //Dedicating Non-Crash Detection.
+        public Accident( long userId, Date date, String time, double latitude, double longitude,  byte accType, char accCode) {
+        this.userId = userId;
+        this.date = date;
+        this.time = time;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.accType = accType;
+        this.accCode = accCode;
+    }
+        
     public static Accident getInsatance() {
         if (accident == null) {
             accident = new Accident();
@@ -142,9 +164,19 @@ public class Accident {
         this.accCode = accCode;
     }
 
+    public byte getAccType() {
+        return accType;
+    }
+
+    public void setAccType(byte accType) {
+        this.accType = accType;
+    }
+
     @Override
     public String toString() {
-        return "Accident{" + "userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longtitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accCode=" + accCode + '}';
+        return "Accident{" + "accidentId=" + accidentId + ", userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accType=" + accType + ", accCode=" + accCode + '}';
     }
+    
+    
 
 }

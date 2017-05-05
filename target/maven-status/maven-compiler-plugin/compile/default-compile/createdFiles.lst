@@ -5,6 +5,7 @@ com\senior\g40\servlet\SettingServlet.class
 com\senior\g40\servlet\ToServlet.class
 com\senior\g40\servlet\SignupServlet.class
 com\senior\g40\model\Accident.class
+com\senior\g40\model\extras\CrashData.class
 com\senior\g40\service\StatisticService.class
 com\senior\g40\model\Profile.class
 com\senior\g40\servlet\RescuerAppInServlet.class

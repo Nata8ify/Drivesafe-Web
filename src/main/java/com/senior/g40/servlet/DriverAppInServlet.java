@@ -55,23 +55,29 @@ public class DriverAppInServlet extends HttpServlet {
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 break; //1.END ---- 
             case "acchit": //2. Driver got an accident and save accident data Section START ----
-                rs = accService.saveAccident(getAccidentData());
+                rs = accService.saveCrashedAccident(getAccidentData());
                 if (rs.isSuccess()) {
                     // **PRIORITY** DONE! -> will system return 'Accident' Data back? 
                     Accident acc = (Accident) rs.getObj();
                     request.setAttribute("result", accService.convertAccidentToJSON(acc));
+                } else {
+                    request.setAttribute("result", rs.getExcp());
                 }
                 break; //2. END ---- 
             case "usr_accfalse": //3. for receive/acknowledge user false positive data.
                 rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", rs.getExcp());
                 }
                 break;// 3. END ------
             case "sys_accfalse": //4. for receive/acknowledge system false positive data.
                 rs = accService.updateOnSystemFalseAccc(Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", rs.getExcp());
                 }
                 break;//4. END ------
             default:
@@ -105,6 +111,7 @@ public class DriverAppInServlet extends HttpServlet {
         return Float.valueOf(request.getParameter(param));
     }
 
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
