@@ -65,7 +65,6 @@ setInterval(function () {
     recCount = dataTable.data().count();
     dataTable.ajax.reload(function () {
         if (recCount < dataTable.data().count()) {
-            alert("New Coming Incident!");
             new Audio(NEWCOMING_ALARM_URL).play();
         }
     }, false);
