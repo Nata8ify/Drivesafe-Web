@@ -15,6 +15,9 @@ public class User {
     private String username;
     private String password;
     private char userType;
+    //User Type are specify by 
+    //'T' is a Rescuer/Monitoring and 
+    //'M' is a General User.
 
     private static User user;
 
@@ -26,7 +29,7 @@ public class User {
 
     public User() {
     }
-    
+
     public static User getInsatance() {
         if (user == null) {
             user = new User();
