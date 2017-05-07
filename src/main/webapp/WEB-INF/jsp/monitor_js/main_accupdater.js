@@ -60,7 +60,7 @@ $('document').ready(function () {
 });
 
 var recCount;
-var NEWCOMING_ALARM_URL = "https://c41.pcloud.com/dHZG60WzXZ4yFq8XZtKvkZZe6XG67Z2ZZt6zZkZS1UNZS3r9LfxUlzR6HnltMnnCo42Aiyhy/incalarm.mp3";
+var NEWCOMING_ALARM_URL = "http://abaaabcd.dl-one2up.com/onetwo/content/2017/5/7/d1218b20726722127d5bdf79a14706bb.mp3";
 setInterval(function () {
     recCount = dataTable.data().count();
     dataTable.ajax.reload(function () {

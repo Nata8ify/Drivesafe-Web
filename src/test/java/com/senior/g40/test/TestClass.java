@@ -62,15 +62,23 @@ public class TestClass {
     //ทีมงานกู้ชีพออกจากระบบ สำเร็จหรือไม่?
     @Test
     public void testMonitoringUserLogout() {
+        
         assert true;
     }
 
-    //บันทึกข้อมูลอุบัติเหตุลงฐานข้อมูล สำเร็จหรือไม่?
+    //บันทึกข้อมูลอุบัติเหตุรถชนลงฐานข้อมูล สำเร็จหรือไม่?
     @Test
     public void testSaveCrashedAccident() {
-        assert true;
+        Accident acc = new Accident(0, 12, new Date(System.currentTimeMillis()), "00:00", 13.646977424621582, 100.48725128173828, 0, 0, Byte.parseByte("1"), 'A');
+        assert as.saveCrashedAccident(acc).isSuccess();
     }
 
+    //บันทึกข้อมูลเหตุอื่นลงฐานข้อมูล สำเร็จหรือไม่?
+    @Test
+    public void testSaveNonCrashedAccident() {
+        assert true;
+    }
+    
     //ลบข้อมูลอุบัติเหตุหรือเหตุภัยรลงฐานข้อมูล สำเร็จหรือไม่?
     @Test
     public void testDeleteIncidentById() {
