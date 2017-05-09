@@ -67,13 +67,11 @@ public class AccidentService {
             pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
             pstm.setByte(7, Accident.ACC_TYPE_TRAFFIC);
             if (pstm.executeUpdate() != 0) {
-
+                closeSQLProperties(conn, pstm, rs);
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
-                pstm = conn.prepareStatement(sqlCmd);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     setAccident(rs, acc);
-                    System.out.println(acc.toString());
                     result = new Result(true, "Saved", acc);
                     sqlCmd = "INSERT INTO `crash_accdetails` (`accidentId`, `forceDetect`, `speedDetect`) "
                             + "VALUES (?, ?, ?);";
@@ -114,6 +112,7 @@ public class AccidentService {
             pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
             pstm.setByte(7, accType);
             if (pstm.executeUpdate() != 0) {
+                closeSQLProperties(conn, pstm, rs);
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
                 pstm = conn.prepareStatement(sqlCmd);
                 rs = pstm.executeQuery();
@@ -187,7 +186,7 @@ public class AccidentService {
             conn = ConnectionBuilder.getConnection();
             String sqlCmd = "DELETE FROM accident WHERE accidentId = ?;";
             pstm = conn.prepareStatement(sqlCmd);
-            pstm.setLong(2, accId);
+            pstm.setLong(1, accId);
             result = new Result(pstm.executeUpdate() != 0, "Delete Success!");
         } catch (SQLException ex) {
             result = new Result(false, "Delete Failed", ex);
@@ -517,23 +516,28 @@ public class AccidentService {
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
 
-    private boolean isBoundWithin(long userId, Accident acc) throws SQLException {
+    private boolean isBoundWithin(long userId, Accident acc) {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
         boolean isBoundWithin = false;
         if (ol == null) {
-            conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
-            pstm = conn.prepareStatement(sqlCmd);
-            pstm.setLong(1, userId);
-            rs = pstm.executeQuery();
-            if (rs.next()) {
-                ol = new OperatingLocation(new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                        rs.getInt("opNeutralBound"));
+            try {
+                conn = ConnectionBuilder.getConnection();
+                String sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
+                pstm = conn.prepareStatement(sqlCmd);
+                pstm.setLong(1, userId);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    ol = new OperatingLocation(new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                            rs.getInt("opNeutralBound"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                closeSQLProperties(conn, pstm, rs);
             }
         }
-        closeSQLProperties(conn, pstm, rs);
         {
             // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
             int opBound = ol.getNeutralBound();
@@ -608,6 +612,7 @@ public class AccidentService {
         try {
             if (conn != null) {
                 conn.close();
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);

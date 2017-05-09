@@ -66,7 +66,7 @@ public class RescuerAppInServlet extends HttpServlet {
                         accsJson.put(accService.convertAccidentToJSON(acc));
                     }
                     System.out.println(accsJson);
-                    request.setAttribute("result", accsJson.toString());
+                    request.setAttribute("result", accsJson);
                 } else {
                     request.setAttribute("result", "WOW");
                 }
@@ -83,7 +83,7 @@ public class RescuerAppInServlet extends HttpServlet {
                         accsJson.put(accService.convertAccidentToJSON(acc));
                     }
                     System.out.println(accsJson);
-                    request.setAttribute("result", accsJson.toString());
+                    request.setAttribute("result", accsJson);
                 } else {
                     request.setAttribute("result", "WOW");
                 }

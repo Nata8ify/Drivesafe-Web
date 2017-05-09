@@ -57,6 +57,7 @@ public class MonitoringServlet extends HttpServlet {
                         request.setAttribute("result", accsJson);
 
                     }
+                    break;
                 case "currentDate":
                     //แสดงเฉพาะวันที่นั้นๆ
                     accidents = accService.getCurrentDateAccidents();
@@ -92,6 +93,7 @@ public class MonitoringServlet extends HttpServlet {
                         request.setAttribute("result", "WOW");
                     }
                     break;
+                default : //TODO
             }
 
             getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);

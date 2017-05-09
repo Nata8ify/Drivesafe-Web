@@ -44,7 +44,7 @@ public class Area51 {
 //        System.out.println(String.format("%.5f", f));
 //        System.out.println(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
 //        StatisticService statService = StatisticService.getInstance();
-        AccidentService accidentService = AccidentService.getInstance();
+//        AccidentService accidentService = AccidentService.getInstance();
 //        System.out.println(StatisticService.getInstance().getQuantitiesOfAccidentViaDate(null, null));
 //        System.out.println("isEmpty: " + (StatisticService.getInstance().getQuantitiesOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())) == null));
 //          Gson gson = new Gson();
@@ -53,7 +53,11 @@ public class Area51 {
 //        System.out.println("getTotalAccidentGeoStatistic() : " + St//                AccidentService.getInstance().getOnRequestAccidents());atisticService.getInstance().parseAccidentGeoCStatisticToJSON(StatisticService.getInstance().getTotalAccidentGeoStatistic()));
 //        System.out.println("Stat TimeDay : " + statService.parseAccidentTimeDayStatisticToJSON(statService.getByDayTimePeriodOfAccidentStatistic(Date.valueOf("2017-03-19"))));
 //        System.out.println(AccidentService.getInstance().getCurrentDateInBoundAccidents(1));
-System.out.println(((Accident)accidentService.saveCrashedAccident(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f,100.000f, 13, 13)).getObj()).toString());;
+//System.out.println(((Accident)accidentService.saveCrashedAccident(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f,100.000f, 13, 13)).getObj()).toString());;
 //        accidentService.boardcastRescueRequest(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f, 100.000f, 13, 13));
+        System.out.println(Date.valueOf("2017-03-30").compareTo(Date.valueOf("2017-04-02")));
+        System.out.println(Date.valueOf("2017-03-31").compareTo(Date.valueOf("2017-04-02")));
+        System.out.println(Date.valueOf("2017-04-01").compareTo(Date.valueOf("2017-04-02")));
+        System.out.println(Date.valueOf("2017-04-02").compareTo(Date.valueOf("2017-04-02")));
     }
 }

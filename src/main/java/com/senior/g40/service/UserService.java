@@ -93,56 +93,81 @@ public class UserService {
         return false;
     }
 
-    public boolean createUser(String username, String password, char userType) throws SQLException {
-        Connection conn = ConnectionBuilder.getConnection();
-        String sqlCmd = "INSERT INTO `user` (`accidentId`, `username`, `password`, `userType`) VALUES (?, ?, ?, ?);";
-        PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-        pstm.setLong(1, getLatestUserId());
-        pstm.setString(2, username);
-        pstm.setString(3, Encrypt.toMD5(password));
-        pstm.setString(4, String.valueOf(userType));
-        if (pstm.executeUpdate() != 0) {
+    public boolean createUser(String username, String password, char userType) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        boolean isSuccess = false;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "INSERT INTO `user` (`accidentId`, `username`, `password`, `userType`) VALUES (?, ?, ?, ?);";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, getLatestUserId());
+            pstm.setString(2, username);
+            pstm.setString(3, Encrypt.toMD5(password));
+            pstm.setString(4, String.valueOf(userType));
+            if (pstm.executeUpdate() != 0) {
+                closeSQLProperties(conn, pstm, null);
+                isSuccess = true;
+            } else {
+                closeSQLProperties(conn, pstm, null);
+                isSuccess = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
             closeSQLProperties(conn, pstm, null);
-            return true;
-        } else {
-            closeSQLProperties(conn, pstm, null);
-            return false;
         }
+        return isSuccess;
     }
 
     public boolean createAbsAccount() {
         return false;
     }
 
-    private long getLatestUserId() throws SQLException {
-        Connection conn = ConnectionBuilder.getConnection();
-        String sqlCmd = "SELECT MAX(userId) AS latestId FROM `profile`;";
-        PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-        ResultSet rs = pstm.executeQuery();
-        if (rs.next()) {
-            long latestId = rs.getLong("latestId");
+    private long getLatestUserId() {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        long latestId = 0L;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT MAX(userId) AS latestId FROM `profile`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                latestId = rs.getLong("latestId");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             closeSQLProperties(conn, pstm, rs);
-            return latestId;
-        } else {
-            closeSQLProperties(conn, pstm, rs);
-            throw new SQLException("Latest userId is N/A.");
         }
+        return latestId;
     }
 
-    public Profile getProfileByUserId(long userId) throws SQLException {
+    public Profile getProfileByUserId(long userId) {
         Profile pf = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `profile` WHERE userId = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, userId);
+            rs = pstm.executeQuery();
 
-        Connection conn = ConnectionBuilder.getConnection();
-        String sqlCmd = "SELECT * FROM `profile` WHERE userId = ?;";
-        PreparedStatement pstm = conn.prepareStatement(sqlCmd);
-        pstm.setLong(1, userId);
-        ResultSet rs = pstm.executeQuery();
-
-        if (rs.next()) {
-            pf = new Profile();
-            setProfile(rs, pf);
+            if (rs.next()) {
+                pf = new Profile();
+                setProfile(rs, pf);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
         }
-        closeSQLProperties(conn, pstm, rs);
         return pf;
     }
 

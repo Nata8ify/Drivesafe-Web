@@ -53,12 +53,16 @@ public class StatisticService {
             do {
 //                Only select accidents that isn't cause by UserFalse or SystemFalse.
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
-                pstm = conn.prepareStatement(sqlCmd);
+                if (pstm == null) {
+                    pstm = conn.prepareStatement(sqlCmd);
+                } else {
+                    pstm.clearParameters();
+                }
                 pstm.setDate(1, iterDate);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                        accStatHashMap = new LinkedHashMap<>();
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
@@ -67,7 +71,7 @@ public class StatisticService {
                 }
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) != 1);
+            } while (iterDate.compareTo(lastDate) <= 0);
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -95,22 +99,27 @@ public class StatisticService {
             do {
 //                Only select accidents that isn't cause by UserFalse or SystemFalse.
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
-                pstm = conn.prepareStatement(sqlCmd);
+                if (pstm == null) {
+                    pstm = conn.prepareStatement(sqlCmd);
+                } else {
+                    pstm.clearParameters();
+                }
                 pstm.setDate(1, iterDate);
                 pstm.setByte(2, type);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                        accStatHashMap = new LinkedHashMap<>();
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
                     closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
+                closeSQLProperties(conn, pstm, rs);
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) != 1);
+            } while (iterDate.compareTo(lastDate) <= 0);
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -158,12 +167,16 @@ public class StatisticService {
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode IN('1', '2');";
-                pstm = conn.prepareStatement(sqlCmd);
+                if (pstm == null) {
+                    pstm = conn.prepareStatement(sqlCmd);
+                } else {
+                    pstm.clearParameters();
+                }
                 pstm.setDate(1, iterDate);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                        accStatHashMap = new LinkedHashMap<>();
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
@@ -172,7 +185,7 @@ public class StatisticService {
                 }
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) != 1);
+            } while (iterDate.compareTo(lastDate) <= 0);
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -198,12 +211,16 @@ public class StatisticService {
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('1');";
-                pstm = conn.prepareStatement(sqlCmd);
+                if (pstm == null) {
+                    pstm = conn.prepareStatement(sqlCmd);
+                } else {
+                    pstm.clearParameters();
+                }
                 pstm.setDate(1, iterDate);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                        accStatHashMap = new LinkedHashMap<>();
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
@@ -212,7 +229,7 @@ public class StatisticService {
                 }
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) != 1);
+            } while (iterDate.compareTo(lastDate) <= 0);
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
@@ -239,12 +256,16 @@ public class StatisticService {
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
                 sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('2');";
-                pstm = conn.prepareStatement(sqlCmd);
+                if (pstm == null) {
+                    pstm = conn.prepareStatement(sqlCmd);
+                } else {
+                    pstm.clearParameters();
+                }
                 pstm.setDate(1, iterDate);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<Date, Integer>();
+                        accStatHashMap = new LinkedHashMap<>();
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
@@ -253,7 +274,7 @@ public class StatisticService {
                 }
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) != 1);
+            } while (iterDate.compareTo(lastDate) <= 0);
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
@@ -280,8 +301,8 @@ public class StatisticService {
                     accGeoCList = new ArrayList<GeoCoordinate>();
                 }
                 accGeoC = new GeoCoordinate();
-                accGeoC.setLatitude(Double.valueOf(rs.getFloat("latitude")));
-                accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
+                accGeoC.setLatitude(rs.getFloat("latitude"));
+                accGeoC.setLongitude(rs.getFloat("longitude"));
                 accGeoCList.add(accGeoC);
             }
         } catch (SQLException ex) {
@@ -344,8 +365,8 @@ public class StatisticService {
                     accGeoCList = new ArrayList<GeoCoordinate>();
                 }
                 accGeoC = new GeoCoordinate();
-                accGeoC.setLatitude(Double.valueOf(rs.getFloat("latitude")));
-                accGeoC.setLongitude(Double.valueOf(rs.getFloat("longitude")));
+                accGeoC.setLatitude(rs.getFloat("latitude"));
+                accGeoC.setLongitude(rs.getFloat("longitude"));
                 accGeoCList.add(accGeoC);
             }
         } catch (SQLException ex) {
