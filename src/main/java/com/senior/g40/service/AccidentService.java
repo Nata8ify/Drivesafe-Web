@@ -5,7 +5,6 @@
  */
 package com.senior.g40.service;
 
-import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;

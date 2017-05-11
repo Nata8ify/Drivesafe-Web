@@ -46,7 +46,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
             String sqlCmd;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
@@ -92,7 +92,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
             String sqlCmd;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
@@ -161,7 +161,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
             String sqlCmd;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
@@ -206,7 +206,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
             String sqlCmd;
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
@@ -251,7 +251,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
             String sqlCmd;
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
