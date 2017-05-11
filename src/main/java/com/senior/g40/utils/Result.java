@@ -89,4 +89,12 @@ public class Result {
         this.excp = excp;
     }
 
+    public String toReformedResult(){
+        return "--------Result HEAD---------"+
+                "\nStatus : "+success+
+                "\n Message : "+message+
+                "\n Exception : "+excp+
+                "\n Object Print : "+obj+
+                "--------Result END---------";
+    }
 }

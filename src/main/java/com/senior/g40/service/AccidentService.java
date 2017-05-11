@@ -80,6 +80,7 @@ public class AccidentService {
                     pstm.setDouble(2, acc.getForceDetect());
                     pstm.setFloat(3, acc.getSpeedDetect());
                     pstm.executeUpdate();
+                closeSQLProperties(null, pstm, null);
                 }
             }
         } catch (SQLException ex) {
@@ -560,30 +561,30 @@ public class AccidentService {
     }
 
     //Boardcast Rescue Request to Rescuer-Mobile Application [WheeWhor-Rescuer]
-    private final String WW_FB_KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
-    private final String TOPIC = "/topics/news";
-    private final String FIXED_ = "euCknmtSS_Q:APA91bHHzC1QPn_uCtfMROGoHu22Gp2ipXuYsNSIkdew4yfR6JTGwSNSuxJrc5DCzzRku_k0OnpZIRi0HVOh6sucviNM69goOc7Gb45TRzjJC5X_Z8RlK_JikMnxxhfUaLyUobyKdWJ0";
-
+    private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
+    private final String TOPIC = "/topics/accident";
+    
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send");
         httpPost.setHeader("Content-Type", "application/json");
-        httpPost.setHeader("Authorization", WW_FB_KEY_SERVER);
+        httpPost.setHeader("Authorization", KEY_SERVER);
         try {
 
             JSONObject message = new JSONObject();
-            message.put("to", FIXED_); //<-- What App Auth>
+            message.put("to", TOPIC); //<-- What App Auth>
             message.put("priority", "high");
 
             JSONObject notification = new JSONObject();
-            notification.put("title", "Accident Alert!");
-            notification.put("body", "Location : " + acc.getLatitude() + ", " + acc.getLongitude());
+            notification.put("title", "Accident ID "+acc.getAccidentId());
+            notification.put("body", "Reported Date : " + acc.getDate().toString()+" | "+acc.getTime());
             message.put("notification", notification);
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             System.out.println("Response : " + httpResponse);
             System.out.println("Message : " + message.toString());
+            result = new Result(true, httpResponse.toString());
             return result;
         } catch (JSONException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);

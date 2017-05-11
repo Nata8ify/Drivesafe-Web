@@ -23,6 +23,7 @@ com\senior\g40\model\extras\LatLng.class
 com\senior\g40\servlet\StatisticServlet.class
 com\senior\g40\servlet\TestConnectServlet.class
 com\senior\g40\utils\A$Attr.class
+com\senior\g40\service\TestServlet.class
 com\senior\g40\utils\ConnectionBuilder.class
 com\senior\g40\servlet\DriverAppInServlet.class
 com\senior\g40\utils\Encrypt.class

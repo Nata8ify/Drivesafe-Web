@@ -55,9 +55,5 @@ public class Area51 {
 //        System.out.println(AccidentService.getInstance().getCurrentDateInBoundAccidents(1));
 //System.out.println(((Accident)accidentService.saveCrashedAccident(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f,100.000f, 13, 13)).getObj()).toString());;
 //        accidentService.boardcastRescueRequest(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f, 100.000f, 13, 13));
-        System.out.println(Date.valueOf("2017-03-30").compareTo(Date.valueOf("2017-04-02")));
-        System.out.println(Date.valueOf("2017-03-31").compareTo(Date.valueOf("2017-04-02")));
-        System.out.println(Date.valueOf("2017-04-01").compareTo(Date.valueOf("2017-04-02")));
-        System.out.println(Date.valueOf("2017-04-02").compareTo(Date.valueOf("2017-04-02")));
     }
 }
