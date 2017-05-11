@@ -66,8 +66,9 @@ public class AccidentService {
             pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
             pstm.setByte(7, Accident.ACC_TYPE_TRAFFIC);
             if (pstm.executeUpdate() != 0) {
-                closeSQLProperties(conn, pstm, rs);
+                closeSQLProperties(null, pstm, null);
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
+                pstm = conn.prepareStatement(sqlCmd);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     setAccident(rs, acc);
@@ -111,7 +112,7 @@ public class AccidentService {
             pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
             pstm.setByte(7, accType);
             if (pstm.executeUpdate() != 0) {
-                closeSQLProperties(conn, pstm, rs);
+                closeSQLProperties(null, pstm, null);
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
                 pstm = conn.prepareStatement(sqlCmd);
                 rs = pstm.executeQuery();
