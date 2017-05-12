@@ -10,6 +10,7 @@ import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.StatisticService;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import org.json.JSONException;
 
 /**
@@ -44,7 +45,8 @@ public class Area51 {
 //        System.out.println(String.format("%.5f", f));
 //        System.out.println(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
 //        StatisticService statService = StatisticService.getInstance();
-//        AccidentService accidentService = AccidentService.getInstance();
+        AccidentService accidentService = AccidentService.getInstance();
+        Date current = new Date(System.currentTimeMillis());
 //        System.out.println(StatisticService.getInstance().getQuantitiesOfAccidentViaDate(null, null));
 //        System.out.println("isEmpty: " + (StatisticService.getInstance().getQuantitiesOfAccidentViaDate(Date.valueOf("2017-03-19"), new Date(System.currentTimeMillis())) == null));
 //          Gson gson = new Gson();
@@ -54,6 +56,6 @@ public class Area51 {
 //        System.out.println("Stat TimeDay : " + statService.parseAccidentTimeDayStatisticToJSON(statService.getByDayTimePeriodOfAccidentStatistic(Date.valueOf("2017-03-19"))));
 //        System.out.println(AccidentService.getInstance().getCurrentDateInBoundAccidents(1));
 //System.out.println(((Accident)accidentService.saveCrashedAccident(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f,100.000f, 13, 13)).getObj()).toString());;
-//        accidentService.boardcastRescueRequest(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f, 100.000f, 13, 13));
+        accidentService.boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 100.11104f, 100.000f, 13, 13));
     }
 }

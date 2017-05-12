@@ -29,6 +29,7 @@ public class Accident {
     public static final byte ACC_TYPE_FIRE = 2;
     public static final byte ACC_TYPE_BRAWL = 3;
     public static final byte ACC_TYPE_ANIMAL = 4;
+    public static final byte ACC_TYPE_OTHER = 5;
     
     public static final char ACC_CODE_A = 'A';
     public static final char ACC_CODE_G = 'G';

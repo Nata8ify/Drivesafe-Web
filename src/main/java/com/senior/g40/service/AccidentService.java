@@ -562,7 +562,7 @@ public class AccidentService {
 
     //Boardcast Rescue Request to Rescuer-Mobile Application [WheeWhor-Rescuer]
     private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
-    private final String TOPIC = "/topics/accident";
+    private final String TOPIC = "/topics/incident";
     
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
@@ -580,6 +580,18 @@ public class AccidentService {
             notification.put("title", "Accident ID "+acc.getAccidentId());
             notification.put("body", "Reported Date : " + acc.getDate().toString()+" | "+acc.getTime());
             message.put("notification", notification);
+            
+            JSONObject data = new JSONObject();
+            data.put("accidentId", acc.getAccidentId());
+            data.put("date", acc.getDate());
+            data.put("time", acc.getTime());
+            data.put("latitude", acc.getLatitude());
+            data.put("longitude", acc.getLongitude());
+            data.put("accType", acc.getAccType());
+            data.put("accCode", acc.getAccCode());
+            data.put("userId", acc.getUserId());
+            message.put("data", data);
+            
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             System.out.println("Response : " + httpResponse);

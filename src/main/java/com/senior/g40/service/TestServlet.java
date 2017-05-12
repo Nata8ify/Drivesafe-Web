@@ -11,6 +11,7 @@ import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,15 +41,15 @@ public class TestServlet extends HttpServlet {
         Result result = null;
         switch (test) {
             case "fcmtest":
-                result = AccidentService.getInstance().boardcastRescueRequest(new Accident(12, Date.valueOf("2017-04-30"), "11:22", 100.11104f, 100.000f, 13, 13));
+                Date current = new Date(System.currentTimeMillis());
+                result = AccidentService.getInstance().boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 13.646727561950684F, 100.48721313476562F, 99, 99));
                 request.setAttribute("msg", result.toReformedResult());
                 break;
             default: //TODO
         }
-        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR+"message.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
     }
 
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

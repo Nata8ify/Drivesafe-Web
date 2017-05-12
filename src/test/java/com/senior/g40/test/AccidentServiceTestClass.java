@@ -25,7 +25,9 @@ public class AccidentServiceTestClass {
 
     @Test
     public void testStoreAccident() {
-        tempAccident = (Accident) ACC_SERVICE.saveCrashedAccident(new Accident(12L, Date.valueOf("2017-05-01"), "23:50", 13.646636962890625, 100.48831176757812, (byte)1, 'A')).getObj();
+        Date current = new Date(System.currentTimeMillis());
+        tempAccident = (Accident) ACC_SERVICE
+                .saveCrashedAccident(new Accident(12L, current, "23:50", 13.646636962890625, 100.48831176757812, (byte)1, 'A')).getObj();
         System.out.println(tempAccident.getAccidentId());
         ACC_SERVICE.deleteIncidentById(tempAccident.getAccidentId()).isSuccess();
         assert tempAccident != null;

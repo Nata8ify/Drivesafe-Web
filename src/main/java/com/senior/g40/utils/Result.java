@@ -91,10 +91,10 @@ public class Result {
 
     public String toReformedResult(){
         return "--------Result HEAD---------"+
-                "\nStatus : "+success+
-                "\n Message : "+message+
-                "\n Exception : "+excp+
-                "\n Object Print : "+obj+
+                "\n\n Status : "+success+
+                "\n\n Message : "+message+
+                "\n\n Exception : "+excp+
+                "\n\n Object Print : "+obj+
                 "--------Result END---------";
     }
 }
