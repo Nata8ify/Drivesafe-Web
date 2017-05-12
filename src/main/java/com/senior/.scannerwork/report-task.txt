@@ -1,0 +1,6 @@
+organization=sit-kmutt
+projectKey=sit:int353:drivesafe:web
+serverUrl=https://sonarqube.com
+dashboardUrl=https://sonarqube.com/dashboard/index/sit:int353:drivesafe:web
+ceTaskId=AVv9vuJkEt-OMRBFM0SQ
+ceTaskUrl=https://sonarqube.com/api/ce/task?id=AVv9vuJkEt-OMRBFM0SQ

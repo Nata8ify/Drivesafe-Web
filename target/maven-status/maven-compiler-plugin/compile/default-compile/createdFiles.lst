@@ -12,7 +12,6 @@ com\senior\g40\servlet\RescuerAppInServlet.class
 com\senior\g40\service\AccidentService.class
 com\senior\g40\service\StatisticService$GeoCoordinate.class
 com\senior\g40\utils\A$Path.class
-com\senior\g40\utils\Area51$accCode.class
 com\senior\g40\servlet\MonitoringServlet.class
 com\senior\g40\model\extras\OperatingLocation.class
 com\senior\g40\model\User.class

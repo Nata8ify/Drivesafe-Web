@@ -99,7 +99,7 @@ public class UserService {
         boolean isSuccess = false;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "INSERT INTO `user` (`accidentId`, `username`, `password`, `userType`) VALUES (?, ?, ?, ?);";
+            String sqlCmd = "INSERT INTO `user` (`userId`, `username`, `password`, `userType`) VALUES (?, ?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setLong(1, getLatestUserId());
             pstm.setString(2, username);

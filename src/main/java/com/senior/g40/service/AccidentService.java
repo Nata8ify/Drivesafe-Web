@@ -66,13 +66,8 @@ public class AccidentService {
             pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
             pstm.setByte(7, Accident.ACC_TYPE_TRAFFIC);
             if (pstm.executeUpdate() != 0) {
-                closeSQLProperties(null, pstm, null);
-                sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
-                pstm = conn.prepareStatement(sqlCmd);
-                rs = pstm.executeQuery();
-                if (rs.next()) {
-                    setAccident(rs, acc);
-                    result = new Result(true, "Saved", acc);
+            closeSQLProperties(null, pstm, null);
+                    result = new Result(true, "Crash Information Saved", getLatestAccident());
                     sqlCmd = "INSERT INTO `crash_accdetails` (`accidentId`, `forceDetect`, `speedDetect`) "
                             + "VALUES (?, ?, ?);";
                     pstm = conn.prepareStatement(sqlCmd);
@@ -80,8 +75,7 @@ public class AccidentService {
                     pstm.setDouble(2, acc.getForceDetect());
                     pstm.setFloat(3, acc.getSpeedDetect());
                     pstm.executeUpdate();
-                closeSQLProperties(null, pstm, null);
-                }
+            closeSQLProperties(conn, pstm, rs);
             }
         } catch (SQLException ex) {
             result = new Result(false, ex);
@@ -199,6 +193,29 @@ public class AccidentService {
 
     //------------------------------------About DELETE. - END
     //-------------------------------- About QUERY - START
+    public Accident getLatestAccident(){
+        Accident accident = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        String sqlCmd;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
+                pstm = conn.prepareStatement(sqlCmd);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    setAccident(rs, accident);
+                }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
+        }
+        return accident;
+    }
+    
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = null;
@@ -590,6 +607,7 @@ public class AccidentService {
             data.put("accType", acc.getAccType());
             data.put("accCode", acc.getAccCode());
             data.put("userId", acc.getUserId());
+//            Add more for User Profile.
             message.put("data", data);
             
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
