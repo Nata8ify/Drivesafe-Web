@@ -66,16 +66,10 @@ public class AccidentService {
             pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
             pstm.setByte(7, Accident.ACC_TYPE_TRAFFIC);
             if (pstm.executeUpdate() != 0) {
-            closeSQLProperties(null, pstm, null);
-                    result = new Result(true, "Crash Information Saved", getLatestAccident());
-                    sqlCmd = "INSERT INTO `crash_accdetails` (`accidentId`, `forceDetect`, `speedDetect`) "
-                            + "VALUES (?, ?, ?);";
-                    pstm = conn.prepareStatement(sqlCmd);
-                    pstm.setLong(1, acc.getAccidentId());
-                    pstm.setDouble(2, acc.getForceDetect());
-                    pstm.setFloat(3, acc.getSpeedDetect());
-                    pstm.executeUpdate();
-            closeSQLProperties(conn, pstm, rs);
+                acc = getLatestAccident(conn);
+                System.out.println(acc);
+                result = new Result(true, "Crash Information Saved", acc);
+                saveCrashDetail(acc.getAccidentId(), acc.getForceDetect(), acc.getSpeedDetect());
             }
         } catch (SQLException ex) {
             result = new Result(false, ex);
@@ -85,6 +79,26 @@ public class AccidentService {
         }
         boardcastRescueRequest(acc);
         return result;
+    }
+
+    public void saveCrashDetail(long accId, double forceDetect, float speedDetect) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        String sqlCmd = "INSERT INTO `crash_accdetails` (`accidentId`, `forceDetect`, `speedDetect`) "
+                + "VALUES (?, ?, ?);";
+        try {
+            conn = ConnectionBuilder.getConnection();
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, accId);
+            pstm.setDouble(2, forceDetect);
+            pstm.setFloat(3, speedDetect);
+            pstm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm, rs);
+        }
     }
 
     public Result saveNonCrashAccident(Accident acc, byte accType) {
@@ -193,29 +207,28 @@ public class AccidentService {
 
     //------------------------------------About DELETE. - END
     //-------------------------------- About QUERY - START
-    public Accident getLatestAccident(){
+    public Accident getLatestAccident(Connection conn) {
         Accident accident = null;
-        Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
         String sqlCmd;
         try {
-            conn = ConnectionBuilder.getConnection();
             sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
-                pstm = conn.prepareStatement(sqlCmd);
-                rs = pstm.executeQuery();
-                if (rs.next()) {
-                    setAccident(rs, accident);
-                }
-            
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                accident = new Accident();
+                setAccident(rs, accident);
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            closeSQLProperties(null, pstm, rs);
         }
         return accident;
     }
-    
+
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = null;
@@ -580,7 +593,7 @@ public class AccidentService {
     //Boardcast Rescue Request to Rescuer-Mobile Application [WheeWhor-Rescuer]
     private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
     private final String TOPIC = "/topics/incident";
-    
+
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -594,10 +607,10 @@ public class AccidentService {
             message.put("priority", "high");
 
             JSONObject notification = new JSONObject();
-            notification.put("title", "Accident ID "+acc.getAccidentId());
-            notification.put("body", "Reported Date : " + acc.getDate().toString()+" | "+acc.getTime());
+            notification.put("title", "Accident ID " + acc.getAccidentId());
+            notification.put("body", "Reported Date : " + acc.getDate().toString() + " | " + acc.getTime());
             message.put("notification", notification);
-            
+
             JSONObject data = new JSONObject();
             data.put("accidentId", acc.getAccidentId());
             data.put("date", acc.getDate());
@@ -609,7 +622,7 @@ public class AccidentService {
             data.put("userId", acc.getUserId());
 //            Add more for User Profile.
             message.put("data", data);
-            
+
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             System.out.println("Response : " + httpResponse);

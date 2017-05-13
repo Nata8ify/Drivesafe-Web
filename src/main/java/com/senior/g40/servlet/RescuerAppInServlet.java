@@ -5,6 +5,7 @@
  */
 package com.senior.g40.servlet;
 
+import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
@@ -89,9 +90,20 @@ public class RescuerAppInServlet extends HttpServlet {
                 }
                 goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
+            case "get_boundactacc":
+                long rescuerId = Long.parseLong(request.getParameter("userId"));
+                List<Accident> boundActiveAccidents = accService.getCurrentDateInBoundAccidents(rescuerId);
+                if (boundActiveAccidents != null) {
+                    request.setAttribute("result", new Gson().toJson(boundActiveAccidents));
+                } else {
+                    request.setAttribute("result", "WOW");
+                }
+                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
             case "sys_accfalse":
                 break;
             default:
+                    request.setAttribute("result", "WOW");
                 return;
         }
     }
