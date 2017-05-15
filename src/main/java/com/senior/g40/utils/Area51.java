@@ -21,7 +21,9 @@ public class Area51 {
     // For test a thing.
     public static void main(String[] args) throws SQLException, JSONException {
         AccidentService accidentService = AccidentService.getInstance();
-        Date current = new Date(System.currentTimeMillis());
-        accidentService.boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 100.11104f, 100.000f, 13, 13));
+//        Date current = new Date(System.currentTimeMillis());
+//        accidentService.boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 100.11104f, 100.000f, 13, 13));
+        System.out.println("accId "+accidentService.getLatestAccidentId());;
+        System.out.println(accidentService.getCurrentDateInBoundAccidents(1));
     }
 }

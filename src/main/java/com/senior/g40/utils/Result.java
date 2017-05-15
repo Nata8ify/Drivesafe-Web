@@ -28,6 +28,11 @@ public class Result {
     private Object obj;
     private Exception excp;
 
+    public Result(boolean success) {
+        this.success = success;
+    }
+
+    
     public Result(boolean isSuccess, String message, Object obj, Exception excp) {
         this.success = isSuccess;
         this.message = message;

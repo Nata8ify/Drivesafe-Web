@@ -36,48 +36,37 @@ public class StatisticService {
 
     // Get Number All of Accident Type Statistic on Specific Period Date.  -- Still need to reform the code better.  
     public HashMap<Date, Integer> getNumberOfAccidentViaDate(Date beginDate, Date lastDate) {
-        LinkedHashMap<Date, Integer> accStatHashMap = null;
-        Calendar cal = null;
-        Date iterDate = null;
-        SimpleDateFormat sdf = null;
-        Connection conn = ConnectionBuilder.getConnection();
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-            cal = Calendar.getInstance();
-            cal.setTime(beginDate);
-            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
-            String sqlCmd;
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Byte.valueOf("0"));
+    }
 
-            iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            do {
-//                Only select accidents that isn't cause by UserFalse or SystemFalse.
-                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
-                if (pstm == null) {
-                    pstm = conn.prepareStatement(sqlCmd);
-                } else {
-                    pstm.clearParameters();
-                }
-                pstm.setDate(1, iterDate);
-                rs = pstm.executeQuery();
-                if (rs.next()) {
-                    if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<>();
-                    }
-                    accStatHashMap.put(iterDate, rs.getInt(1));
-                } else {
-                    closeSQLProperties(conn, pstm, rs);
-                    return accStatHashMap;
-                }
-                cal.add(Calendar.DATE, 1);
-                iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) <= 0);
-        } catch (SQLException ex) {
-            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeSQLProperties(conn, pstm, rs);
-        }
-        return accStatHashMap;
+    //    Get Number of Total Crashed/Traffic Accident Statistic.
+    public HashMap<Date, Integer> getNumberOfCrashTypeAccident(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_TRAFFIC);
+    }
+
+    //    Get Number of Total Fire Statistic.
+    public HashMap<Date, Integer> getNumberOfFireTypeAccident(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_FIRE);
+    }
+
+    //    Get Number of Total Brawl Statistic.
+    public HashMap<Date, Integer> getNumberOfBrawlTypeAccident(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_BRAWL);
+    }
+
+    //    Get Number of Total Animal Statistic.
+    public HashMap<Date, Integer> getNumberOfAnimalTypeAccident(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_ANIMAL);
+    }
+
+    //    Get Number of Total Patient Statistic.
+    public HashMap<Date, Integer> getNumberOfPatientTypeAccident(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_PATIENT);
+    }
+
+    //    Get Number of Total Other Statistic.
+    public HashMap<Date, Integer> getNumberAnotherTypeAccident(Date beginDate, Date lastDate) {
+        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_OTHER);
     }
 
     // Get Number All of Accident Type Statistic on Specific Period Date.  -- Still need to reform the code better.  
@@ -97,15 +86,20 @@ public class StatisticService {
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
-//                Only select accidents that isn't cause by UserFalse or SystemFalse.
-                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
+
                 if (pstm == null) {
-                    pstm = conn.prepareStatement(sqlCmd);
+                    if (type != 0) {
+                        sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
+                        pstm = conn.prepareStatement(sqlCmd);
+                        pstm.setByte(2, type);
+                    } else {
+                        sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
+                        pstm = conn.prepareStatement(sqlCmd);
+                    }
                 } else {
                     pstm.clearParameters();
                 }
                 pstm.setDate(1, iterDate);
-                pstm.setByte(2, type);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
@@ -126,26 +120,6 @@ public class StatisticService {
             closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
-    }
-
-//    Get Number of Total Crashed/Traffic Accident Statistic.
-    public HashMap<Date, Integer> getNumberOfCrashAccidentTypeViaDate(Date beginDate, Date lastDate) {
-        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_TRAFFIC);
-    }
-//    Get Number of Total Brawl Statistic.
-
-    public HashMap<Date, Integer> getNumberOfBrawlTypeViaDate(Date beginDate, Date lastDate) {
-        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_BRAWL);
-    }
-//    Get Number of Total Fire Statistic.
-
-    public HashMap<Date, Integer> getNumberOfFireTypeViaDate(Date beginDate, Date lastDate) {
-        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_FIRE);
-    }
-//    Get Number of Total Animal Statistic.
-
-    public HashMap<Date, Integer> getNumberOfAnimalTypeViaDate(Date beginDate, Date lastDate) {
-        return getNumberOfSelectedAccidentTypeViaDate(beginDate, lastDate, Accident.ACC_TYPE_ANIMAL);
     }
 
     // Get Number of False Accident Statistic (including UserFalse and SystemFalse) on Specific Period Date.  -- Still need to reform the code better.  
@@ -195,7 +169,7 @@ public class StatisticService {
     }
 
     // Get Number of User False Accident Statistic on Specific Period Date.  -- Still need to reform the code better.  
-    public HashMap<Date, Integer> getNumberOfUserFalseAccidentViaDate(Date beginDate, Date lastDate) {
+    public HashMap<Date, Integer> getNumberOfAccidentViaDateAndCode(Date beginDate, Date lastDate, char accCode) {
         LinkedHashMap<Date, Integer> accStatHashMap = null;
         Calendar cal = null;
         Date iterDate = null;
@@ -210,9 +184,10 @@ public class StatisticService {
             String sqlCmd;
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
-                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('1');";
+                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode IN(?);";
                 if (pstm == null) {
                     pstm = conn.prepareStatement(sqlCmd);
+                    pstm.setString(2, String.valueOf(accCode));
                 } else {
                     pstm.clearParameters();
                 }
@@ -237,113 +212,12 @@ public class StatisticService {
             closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
-    }
-
-    // Get Number of System False Accident Statistic on Specific Period Date.  -- Still need to reform the code better.  
-    public HashMap<Date, Integer> getNumberOfSysFalseAccidentViaDate(Date beginDate, Date lastDate) {
-        LinkedHashMap<Date, Integer> accStatHashMap = null;
-        Calendar cal = null;
-        Date iterDate = null;
-        SimpleDateFormat sdf = null;
-        Connection conn = ConnectionBuilder.getConnection();
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-            cal = Calendar.getInstance();
-            cal.setTime(beginDate);
-            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
-            String sqlCmd;
-            iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            do {
-                sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('2');";
-                if (pstm == null) {
-                    pstm = conn.prepareStatement(sqlCmd);
-                } else {
-                    pstm.clearParameters();
-                }
-                pstm.setDate(1, iterDate);
-                rs = pstm.executeQuery();
-                if (rs.next()) {
-                    if (accStatHashMap == null) {
-                        accStatHashMap = new LinkedHashMap<>();
-                    }
-                    accStatHashMap.put(iterDate, rs.getInt(1));
-                } else {
-                    closeSQLProperties(conn, pstm, rs);
-                    return accStatHashMap;
-                }
-                cal.add(Calendar.DATE, 1);
-                iterDate = Date.valueOf(sdf.format(cal.getTime()));
-            } while (iterDate.compareTo(lastDate) <= 0);
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeSQLProperties(conn, pstm, rs);
-        }
-        return accStatHashMap;
-    }
-
-    //Get Total Accident Location via GeoCoordinate.
-    public List<GeoCoordinate> getTotalAccidentGeoStatistic() {
-        List<GeoCoordinate> accGeoCList = null;
-        GeoCoordinate accGeoC = null;
-        Connection conn = ConnectionBuilder.getConnection();
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-
-            String sqlCmd = "SELECT latitude, longitude FROM `accident`;";
-            pstm = conn.prepareStatement(sqlCmd);
-            rs = pstm.executeQuery();
-            while (rs.next()) {
-                if (accGeoCList == null) {
-                    accGeoCList = new ArrayList<GeoCoordinate>();
-                }
-                accGeoC = new GeoCoordinate();
-                accGeoC.setLatitude(rs.getFloat("latitude"));
-                accGeoC.setLongitude(rs.getFloat("longitude"));
-                accGeoCList.add(accGeoC);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeSQLProperties(conn, pstm, rs);
-        }
-
-        return accGeoCList;
     }
 
     //Get Total Accident Location via GeoCoordinate.
     public List<GeoCoordinate> getWeekAccidentGeoStatistic() {
-        List<GeoCoordinate> accGeoCList = null;
-        GeoCoordinate accGeoC = null;
-        Connection conn = ConnectionBuilder.getConnection();
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-
-            String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
-            pstm = conn.prepareStatement(sqlCmd);
-            pstm.setDate(1, new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD));
-            pstm.setDate(2, new Date(System.currentTimeMillis()));
-            rs = pstm.executeQuery();
-            while (rs.next()) {
-                if (accGeoCList == null) {
-                    accGeoCList = new ArrayList<GeoCoordinate>();
-                }
-                accGeoC = new GeoCoordinate();
-                accGeoC.setLatitude(rs.getFloat("latitude"));
-                accGeoC.setLongitude(rs.getFloat("longitude"));
-                accGeoCList.add(accGeoC);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeSQLProperties(conn, pstm, rs);
-        }
-
-        return accGeoCList;
+        return getByDatePeriodAccidentGeoStatistic(new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD),
+                new Date(System.currentTimeMillis()));
     }
 
     //Get Total Accident Location via GeoCoordinate.
@@ -362,7 +236,7 @@ public class StatisticService {
             rs = pstm.executeQuery();
             while (rs.next()) {
                 if (accGeoCList == null) {
-                    accGeoCList = new ArrayList<GeoCoordinate>();
+                    accGeoCList = new ArrayList<>();
                 }
                 accGeoC = new GeoCoordinate();
                 accGeoC.setLatitude(rs.getFloat("latitude"));

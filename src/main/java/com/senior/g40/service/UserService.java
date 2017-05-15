@@ -9,6 +9,8 @@ import com.senior.g40.model.Profile;
 import com.senior.g40.model.User;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.Encrypt;
+import com.senior.g40.utils.Result;
+import java.lang.annotation.Documented;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -125,7 +127,7 @@ public class UserService {
         return false;
     }
 
-    private long getLatestUserId() {
+    public long getLatestUserId() {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -171,6 +173,27 @@ public class UserService {
         return pf;
     }
 
+    public Result deleteProfileByUserId(long userId) {
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "DELETE FROM `profile` WHERE userId = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, userId);
+            if (pstm.executeUpdate() == 1) {
+                result = new Result(true);
+            }
+        } catch (SQLException ex) {
+            result = new Result(false, ex.toString());
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(conn, pstm,null );
+        }
+        return result;
+    }
+    
     private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
         pf.setUserId(rs.getLong("userId"));
         pf.setFirstName(rs.getString("firstName"));

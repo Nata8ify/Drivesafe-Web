@@ -68,8 +68,10 @@ public class AccidentService {
             if (pstm.executeUpdate() != 0) {
                 acc = getLatestAccident(conn);
                 System.out.println(acc);
-                result = new Result(true, "Crash Information Saved", acc);
-                saveCrashDetail(acc.getAccidentId(), acc.getForceDetect(), acc.getSpeedDetect());
+                if (acc != null) {
+                    result = new Result(true, "Crash Information Saved", acc);
+                    saveCrashDetail(acc.getAccidentId(), acc.getForceDetect(), acc.getSpeedDetect());
+                }
             }
         } catch (SQLException ex) {
             result = new Result(false, ex);
@@ -207,7 +209,7 @@ public class AccidentService {
 
     //------------------------------------About DELETE. - END
     //-------------------------------- About QUERY - START
-    public Accident getLatestAccident(Connection conn) {
+    private Accident getLatestAccident(Connection conn) {
         Accident accident = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -227,6 +229,29 @@ public class AccidentService {
             closeSQLProperties(null, pstm, rs);
         }
         return accident;
+    }
+
+    public long getLatestAccidentId() {
+        Connection conn = null;
+        long accidentId = 0L;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        String sqlCmd;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            sqlCmd = "SELECT MAX(accidentId) FROM `accident`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                accidentId = rs.getLong(1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeSQLProperties(null, pstm, rs);
+        }
+        return accidentId;
     }
 
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
@@ -301,7 +326,7 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date = ? AND  accCode IN (?, ?, ?);";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = ? AND  accCode IN (?, ?, ?) ORDER BY accCode;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, today);
             pstm.setString(2, String.valueOf(Accident.ACC_CODE_A));
