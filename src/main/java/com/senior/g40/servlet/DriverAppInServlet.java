@@ -88,6 +88,7 @@ public class DriverAppInServlet extends HttpServlet {
                 getF("lng"),
                 getF("fdt"),
                 getF("sdt"),
+                Accident.ACC_CODE_A,
                 Accident.ACC_TYPE_TRAFFIC);
     }
 

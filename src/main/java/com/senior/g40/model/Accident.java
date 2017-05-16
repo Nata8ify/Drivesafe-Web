@@ -81,6 +81,17 @@ public class Accident {
         this.speedDetect = speedDetect;
     }
 
+    /** Dedicating Crash Detection. */
+    public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect, char accCode ,  byte accType) {
+        this.userId = userId;
+        this.date = date;
+        this.time = time;
+        this.latitude = latitude;
+        this.longitude = longtitude;
+        this.forceDetect = forceDetect;
+        this.speedDetect = speedDetect;
+    }
+    
     /** Dedicating Non-Crash Detection. */
         public Accident( long userId, Date date, String time, double latitude, double longitude,  byte accType, char accCode) {
         this.userId = userId;
@@ -99,9 +110,6 @@ public class Accident {
         return accident;
     }
 
-    public Accident(long l, Date currentDate, String format, float f, float f0, float f1, float f2, byte ACC_TYPE_TRAFFIC) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public long getAccidentId() {
         return accidentId;
