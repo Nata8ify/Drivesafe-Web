@@ -47,7 +47,33 @@ public class StatisticServlet extends HttpServlet {
                     request.setAttribute("result", nAccPeriodStatJSON);
                     goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
-
+                /* ----Number of Accident which Distinguish by Type START --- */
+                case "statSpecPeriodCrash":
+                    request.setAttribute("result", statService
+                            .parseDateAccidentStatisticToJSON(statService.getNumberOfCrashTypeAccident(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
+                    goTo(App.Path.JSP_RESULT_DIR + "/statrs_ch1.jsp");
+                    break;
+                case "statSpecPeriodFire":
+                    request.setAttribute("result", statService
+                            .parseDateAccidentStatisticToJSON(statService.getNumberOfFireTypeAccident(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
+                    goTo(App.Path.JSP_RESULT_DIR + "/statrs_ch2.jsp");
+                    break;
+                case "statSpecPeriodAnimal":
+                    request.setAttribute("result", statService
+                            .parseDateAccidentStatisticToJSON(statService.getNumberOfAnimalTypeAccident(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
+                    goTo(App.Path.JSP_RESULT_DIR + "/statrs_ch3.jsp");
+                    break;
+                case "statSpecPeriodPatient":
+                    request.setAttribute("result", statService
+                            .parseDateAccidentStatisticToJSON(statService.getNumberOfPatientTypeAccident(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
+                    goTo(App.Path.JSP_RESULT_DIR + "/statrs_ch4.jsp");
+                    break;
+                case "statSpecPeriodOther":
+                    request.setAttribute("result", statService
+                            .parseDateAccidentStatisticToJSON(statService.getNumberAnotherTypeAccident(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
+                    goTo(App.Path.JSP_RESULT_DIR + "/statrs_ch5.jsp");
+                    break;
+                /* ----Number of Accident which Distinguish by Type END --- */
                 case "statFalseAcc":
                     String nFalseAccPeriodStatJSON
                             = statService

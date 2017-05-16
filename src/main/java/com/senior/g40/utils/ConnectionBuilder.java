@@ -21,9 +21,12 @@ public class ConnectionBuilder {
 
         try { //Connect to (Real)Database on Server First.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://nata8ify.me/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
-            String user = "drvsafeany";
-            String pw = "@Qwerty69";
+//            String dbUrl = "jdbc:mysql://nata8ify.me/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
+//            String user = "drvsafeany";
+//            String pw = "@Qwerty69";
+            String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
+            String user = "root";
+            String pw = "";
             try {
                 Class.forName(dbDriver);
             } catch (ClassNotFoundException ex) {

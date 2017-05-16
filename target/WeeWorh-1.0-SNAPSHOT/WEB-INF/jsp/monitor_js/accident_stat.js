@@ -3,8 +3,6 @@ var labelsDate = [];
 var seriesAccTimes = [];
 var beginDate;
 var endDate;
-
-
 var SEVLT_STATOPT_SPEC_PERIOD = "statSpecPeriodAcc";
 var SEVLT_STATOPT_FLASE_USER = "statUserFalseAcc";
 var SEVLT_STATOPT_FALSE_SYSTEM = "statSysFalseAcc";
@@ -13,37 +11,34 @@ var SEVLT_STATOPT_ACCGEO_WEEK = "statWeekAccGeo";
 var SEVLT_STATOPT_ACCGEO_PERIOD = "statPeriodAccGeo";
 var SEVLT_STATOPT_SPEC_WEEK_PERIOD = "statWeekendAcc";
 var SEVLT_STATOPT_CRASH_SPEED_ALL = "statSpeedDetected";
-
-
 /* Initialize Section */
-$.when($.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD})).done(function (json) {
-    $.each(json, function (index, element) {
-        labelsDate.push(index);
-        seriesAccTimes.push(element);
-        if (beginDate === undefined) {
-            beginDate = index;
-        } else {
-            endDate = index;
-        }
-    });
-    $('#acc-period-title').html(" [" + beginDate + " To " + endDate + " (Week)]");
-    $('#input-b-date').val(beginDate);
-    $('#input-e-date').val(endDate);
-    var data = {
-        // A labels array that can contain any sort of values
-        labels: labelsDate,
-        // Our series array that contains series objects or in this case series data arrays
-        series: [
-            seriesAccTimes
-        ]
-    };
-    postAccidentStatChart(data);
-});
-
+var incidentSeries = [];
+//$.when($.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD})).done(function (json) {
+//    $.each(json, function (index, element) {
+//        labelsDate.push(index);
+//        seriesAccTimes.push(element);
+//        if (beginDate === undefined) {
+//            beginDate = index;
+//        } else {
+//            endDate = index;
+//        }
+//    });
+//    $('#acc-period-title').html(" [" + beginDate + " To " + endDate + " (Week)]");
+//    $('#input-b-date').val(beginDate);
+//    $('#input-e-date').val(endDate);
+//    var data = {
+//        // A labels array that can contain any sort of values
+//        labels: labelsDate,
+//        // Our series array that contains series objects or in this case series data arrays
+//        series: [
+//            seriesAccTimes
+//        ]
+//    };
+//    postAccidentStatChart(data);
+//});
 //Do Geo Accident Map Stat
 var nAccStatMap;
 var NEARSIT_LATLNG = {lat: 13.652277, lng: 100.494457};
-
 var opt = "";
 function initMap() {
     nAccStatMap = new google.maps.Map(document.getElementById('acc-stat-map'), {
@@ -56,6 +51,12 @@ function initMap() {
 /* End-Initialize Section */
 
 /* Event Listener */
+$('document').ready(function(){
+    $('#input-b-date').val(moment(new Date()).subtract(7,'d').format("YYYY-MM-DD"));
+    $('#input-e-date').val(moment(new Date()).format("YYYY-MM-DD"));
+    prepareNumIncidentData(true,false,false,false,false);
+});
+
 $('#input-b-date, #input-e-date').change(function () {
     var now = moment(new Date()).format("YYYY-MM-DD");
     var beginInputDate = $('#input-b-date').val();
@@ -72,25 +73,20 @@ $('#input-b-date, #input-e-date').change(function () {
         $('#input-e-date').val(endDate);
     }
 });
-
+/* By False Case */
 $('#acc-opt-normalacc').click(function () {
     prepareNumAccidentData(SEVLT_STATOPT_SPEC_PERIOD, null);
 });
-
 $('#acc-opt-false').click(function () {
     prepareNumAccidentData(SEVLT_STATOPT_FALSE_ALL, null);
-
 });
-
 $('#acc-opt-sysfalse').click(function () {
     prepareNumAccidentData(SEVLT_STATOPT_FALSE_SYSTEM, null);
-
 });
-
 $('#acc-opt-usrfalse').click(function () {
     prepareNumAccidentData(SEVLT_STATOPT_FLASE_USER, null);
-
 });
+/* By Incicdent Type */
 
 /** Function **/
 /* Post to Page section */
@@ -115,7 +111,7 @@ function postAccidentStatChart(data) {
             state = true;
         }
     }, 500);
-    postCrashSpeedStatisticChart(); //<-- Post crash speed stat after postAccidentStatChart job is done.
+//    postCrashSpeedStatisticChart(); //<-- Post crash speed stat after postAccidentStatChart job is done.
 }
 
 var markers = [];
@@ -176,9 +172,6 @@ function prepareNumAccidentData(opt, params) {
                 endDate = index;
             }
         });
-    });
-    $('#acc-period-title').html("(" + $('#input-b-date').val() + " To " + $('#input-e-date').val() + ")");
-    setTimeout(function () {
         postByDatePeriodAccidentGeoMap();
         postAccidentStatChart({
             labels: labelsDate,
@@ -188,8 +181,64 @@ function prepareNumAccidentData(opt, params) {
         });
         //Hide Alert.
         $('#alrt-invalid-period').fadeOut();
+    });
+    $('#acc-period-title').html("(" + $('#input-b-date').val() + " To " + $('#input-e-date').val() + ")");
+    setTimeout(function () {
+
     }
     , 500);
+}
+
+var NUM_STAT_TYPE_CRASH_SERV = "Statistic?opt=statSpecPeriodCrash";
+var NUM_STAT_TYPE_FIRE_SERV = "Statistic?opt=statSpecPeriodFire";
+var NUM_STAT_TYPE_ANIMAL_SERV = "Statistic?opt=statSpecPeriodAnimal";
+var NUM_STAT_TYPE_PATIENT_SERV = "Statistic?opt=statSpecPeriodPatient";
+var NUM_STAT_TYPE_OTHER_SERV = "Statistic?opt=statSpecPeriodOther";
+var optionCount = 0;
+function prepareNumIncidentData(isIncludeCrash, isIncludeFire, isIncludeAnimal, isIncludePatient, isIncludeOther) {
+    console.log(isIncludeCrash+" : "+isIncludeFire+" : "+isIncludeAnimal+" : "+isIncludePatient+" : "+isIncludeOther)
+    incidentSeries = [];
+    if (isIncludeCrash) {
+        addSeries(incidentSeries, NUM_STAT_TYPE_CRASH_SERV);
+    }
+    if (isIncludeFire) {
+        addSeries(incidentSeries, NUM_STAT_TYPE_FIRE_SERV);
+    }
+    if (isIncludeAnimal) {
+        addSeries(incidentSeries, NUM_STAT_TYPE_ANIMAL_SERV);
+    }
+    if (isIncludePatient) {
+        addSeries(incidentSeries, NUM_STAT_TYPE_PATIENT_SERV);
+    }
+    if (isIncludeOther) {
+        addSeries(incidentSeries, NUM_STAT_TYPE_OTHER_SERV);
+    }
+    var data = {
+        labels: labelsDate,
+        series: incidentSeries
+        
+    };
+    postAccidentStatChart(data);
+}
+
+function addSeries(incidentSeries, url) {
+    var tempSeries = [];
+    $.when($.getJSON({url: url}, {
+        bDate: $('#input-b-date').val(),
+        eDate: $('#input-e-date').val()
+    })).done(function (json) {
+        $.each(json, function (index, element) {
+            labelsDate.push(index);
+            tempSeries.push(element);
+            if (beginDate === undefined) {
+                beginDate = index;
+            } else {
+                endDate = index;
+            }
+        });
+        console.log(tempSeries);
+        incidentSeries.push(tempSeries);
+    });
 }
 
 /*Utilities Function*/
@@ -215,17 +264,14 @@ function setMarker(json) {
 
 /* Chartist.js Properties*/
 var seq = 0, delays = 80, durations = 500;
-
 // Once the chart is fully created we reset the sequence
 function  animate() {
     nAccidentChart.on('created', function () {
         seq = 0;
     });
-
 // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
     nAccidentChart.on('draw', function (data) {
         seq++;
-
         if (data.type === 'line') {
             // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
             data.element.animate({
@@ -294,7 +340,6 @@ function  animate() {
                 to: data[data.axis.units.pos + '1'],
                 easing: 'easeOutQuart'
             };
-
             var pos2Animation = {
                 begin: seq * delays,
                 dur: durations,
@@ -302,7 +347,6 @@ function  animate() {
                 to: data[data.axis.units.pos + '2'],
                 easing: 'easeOutQuart'
             };
-
             var animations = {};
             animations[data.axis.units.pos + '1'] = pos1Animation;
             animations[data.axis.units.pos + '2'] = pos2Animation;
@@ -313,7 +357,6 @@ function  animate() {
                 to: 1,
                 easing: 'easeOutQuart'
             };
-
             data.element.animate(animations);
         }
     });

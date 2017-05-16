@@ -98,7 +98,7 @@ public class AccidentService {
         }
     }
 
-    public Result saveNonCrashAccident(Accident acc, byte accType) {
+    public Result saveNonCrashAccident(Accident acc) {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
