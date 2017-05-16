@@ -5,7 +5,7 @@
  */
 package com.senior.g40.servlet;
 
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +31,7 @@ public class ToServlet extends HttpServlet {
 
         switch (option) {
             case "main":
-                to(A.Path.JSP_DIR + "main.jsp");
+                to(App.Path.JSP_DIR + "main.jsp");
                 break;
             case "index":
                 to("/index.jsp");
@@ -40,10 +40,10 @@ public class ToServlet extends HttpServlet {
                 to("/Statistic");
                 break;
             case "sett":
-                to(A.Path.JSP_DIR + "/setting.jsp");
+                to(App.Path.JSP_DIR + "/setting.jsp");
                 break;
             case "rregis":
-                to(A.Path.JSP_OTHER_DIR + "rregis.jsp");
+                to(App.Path.JSP_OTHER_DIR + "rregis.jsp");
                 break;
             default:
                 return;

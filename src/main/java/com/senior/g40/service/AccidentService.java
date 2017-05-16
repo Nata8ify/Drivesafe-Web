@@ -9,6 +9,7 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.ConnectionBuilder;
+import com.senior.g40.utils.ConnectionHandler;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.sql.Connection;
@@ -58,13 +59,7 @@ public class AccidentService {
                     + "VALUES "
                     + "(?, ?, ?, ?, ?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
-            pstm.setLong(1, acc.getUserId());
-            pstm.setDate(2, acc.getDate());
-            pstm.setString(3, acc.getTime());
-            pstm.setDouble(4, acc.getLatitude());
-            pstm.setDouble(5, acc.getLongitude());
-            pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
-            pstm.setByte(7, Accident.ACC_TYPE_TRAFFIC);
+            prepareIncidentStatement(pstm, acc);
             if (pstm.executeUpdate() != 0) {
                 acc = getLatestAccident(conn);
                 System.out.println(acc);
@@ -77,7 +72,7 @@ public class AccidentService {
             result = new Result(false, ex);
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         boardcastRescueRequest(acc);
         return result;
@@ -99,7 +94,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
     }
 
@@ -115,15 +110,9 @@ public class AccidentService {
                     + "VALUES "
                     + "(?, ?, ?, ?, ?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
-            pstm.setLong(1, acc.getUserId());
-            pstm.setDate(2, acc.getDate());
-            pstm.setString(3, acc.getTime());
-            pstm.setDouble(4, acc.getLatitude());
-            pstm.setDouble(5, acc.getLongitude());
-            pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
-            pstm.setByte(7, accType);
+            prepareIncidentStatement(pstm, acc);
             if (pstm.executeUpdate() != 0) {
-                closeSQLProperties(null, pstm, null);
+                ConnectionHandler.closeSQLProperties(null, pstm, null);
                 sqlCmd = "SELECT * FROM `accident` WHERE accidentId = LAST_INSERT_ID();";
                 pstm = conn.prepareStatement(sqlCmd);
                 rs = pstm.executeQuery();
@@ -136,7 +125,7 @@ public class AccidentService {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         boardcastRescueRequest(acc);
         return result;
@@ -182,7 +171,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             result = new Result(false, "Update 'accCode' Failed", ex);
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
@@ -202,7 +191,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             result = new Result(false, "Delete Failed", ex);
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
@@ -226,7 +215,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(null, pstm, rs);
+            ConnectionHandler.closeSQLProperties(null, pstm, rs);
         }
         return accident;
     }
@@ -249,7 +238,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(null, pstm, rs);
+            ConnectionHandler.closeSQLProperties(null, pstm, rs);
         }
         return accidentId;
     }
@@ -278,7 +267,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -310,7 +299,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -347,7 +336,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -379,7 +368,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -409,7 +398,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -439,7 +428,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -469,7 +458,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -504,7 +493,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accidents;
     }
@@ -523,6 +512,16 @@ public class AccidentService {
 //        ac.setSpeedDetect(rs.getFloat("speedDetect"));
         ac.setAccCode(rs.getString("accCode").charAt(0));
         ac.setAccType(rs.getByte("accType"));
+    }
+
+    private void prepareIncidentStatement(PreparedStatement pstm, Accident acc) throws SQLException {
+        pstm.setLong(1, acc.getUserId());
+        pstm.setDate(2, acc.getDate());
+        pstm.setString(3, acc.getTime());
+        pstm.setDouble(4, acc.getLatitude());
+        pstm.setDouble(5, acc.getLongitude());
+        pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
+        pstm.setByte(7, acc.getAccType());
     }
 //    --------------------------------- Dealing with JSON
 
@@ -591,21 +590,23 @@ public class AccidentService {
             } catch (SQLException ex) {
                 Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
-                closeSQLProperties(conn, pstm, rs);
+                ConnectionHandler.closeSQLProperties(conn, pstm, rs);
             }
         }
         {
             // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
-            int opBound = ol.getNeutralBound();
-            double dLat = DR * (ol.getLatLng().getLatitude() - acc.getLatitude());
-            double dLng = DR * (ol.getLatLng().getLongitude() - acc.getLongitude());
-            double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
-                    + (Math.cos(acc.getLatitude() * DR) * Math.cos(ol.getLatLng().getLatitude() * DR))
-                    * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            double distance = c * RADIAN_OF_EARTH_IN_KM;
-            if (distance < opBound) {
-                isBoundWithin = true;
+            if (ol != null) {
+                int opBound = ol.getNeutralBound();
+                double dLat = DR * (ol.getLatLng().getLatitude() - acc.getLatitude());
+                double dLng = DR * (ol.getLatLng().getLongitude() - acc.getLongitude());
+                double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                        + (Math.cos(acc.getLatitude() * DR) * Math.cos(ol.getLatLng().getLatitude() * DR))
+                        * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
+                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                double distance = c * RADIAN_OF_EARTH_IN_KM;
+                if (distance < opBound) {
+                    isBoundWithin = true;
+                }
             }
         }
         return isBoundWithin;
@@ -660,32 +661,6 @@ public class AccidentService {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
-    }
-
-    //Close the SQLProperties for preventing conection and memory leak.
-    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            if (pstm != null) {
-                pstm.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            if (conn != null) {
-                conn.close();
-
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 //    --------------------------------- Other

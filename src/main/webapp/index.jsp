@@ -1,4 +1,4 @@
-<%@page import="com.senior.g40.utils.A"%>
+<%@page import="com.senior.g40.utils.App"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% if (session.getAttribute("pf") != null) {
         response.sendRedirect("To?opt=main");

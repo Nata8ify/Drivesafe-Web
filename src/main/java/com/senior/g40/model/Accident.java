@@ -21,7 +21,7 @@ public class Accident {
     private double longitude;
     private double forceDetect;
     private float speedDetect;
-    //-- accCode & accType is have very importance role.
+    /*-- accCode & accType is have very importance role.*/
     private byte accType;
     private char accCode;
 
@@ -32,18 +32,23 @@ public class Accident {
     public static final byte ACC_TYPE_PATIENT = 5;
     public static final byte ACC_TYPE_OTHER = 99;
     
+    /** A[Accident]: Pending for rescue */
     public static final char ACC_CODE_A = 'A';
+    
+    /**G[Going]: Rescuer is on the way,  */
     public static final char ACC_CODE_G = 'G';
+    
+    /**R[Resecue]: Rescuer is rescuing,  */
     public static final char ACC_CODE_R = 'R';
+    
+    /**C[Clear]: Rescue received, marking will be cleared next time.   */
     public static final char ACC_CODE_C = 'C';
+    
+    /**1[False on User] */
     public static final char ACC_CODE_ERRU = 'U';
+    
+    /**2[False on System] */
     public static final char ACC_CODE_ERRS = 'S';
-    //A[Accident]: Pending for rescue, 
-    //G[Going]: Rescuer is on the way, 
-    //R[Resecue]: Rescuer is rescuing, 
-    //C[Clear]: Rescue received, marking will be cleared next time.  
-    //1[False on User]
-    //2[False on System]
     
     
     
@@ -65,7 +70,7 @@ public class Accident {
         this.accCode = accCode;
     }
 
-    //Dedicating Crash Detection.
+    /** Dedicating Crash Detection. */
     public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect) {
         this.userId = userId;
         this.date = date;
@@ -76,7 +81,7 @@ public class Accident {
         this.speedDetect = speedDetect;
     }
 
-    //Dedicating Non-Crash Detection.
+    /** Dedicating Non-Crash Detection. */
         public Accident( long userId, Date date, String time, double latitude, double longitude,  byte accType, char accCode) {
         this.userId = userId;
         this.date = date;
@@ -92,6 +97,10 @@ public class Accident {
             accident = new Accident();
         }
         return accident;
+    }
+
+    public Accident(long l, Date currentDate, String format, float f, float f0, float f1, float f2, byte ACC_TYPE_TRAFFIC) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public long getAccidentId() {

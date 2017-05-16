@@ -6,7 +6,7 @@
 package com.senior.g40.servlet;
 
 import com.senior.g40.service.StatisticService;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -36,16 +36,16 @@ public class StatisticServlet extends HttpServlet {
 
             switch (opt) {
                 case "statWeekendAcc":
-                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD), new Date(System.currentTimeMillis())));
+                    String numberOfTotalAccStatJSON = statService.parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(new Date(System.currentTimeMillis() - App.Const.DATE_WEEK_FOR_SQLCMD), new Date(System.currentTimeMillis())));
                     request.setAttribute("result", numberOfTotalAccStatJSON);
-                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                     return;
                 case "statSpecPeriodAcc":
                     String nAccPeriodStatJSON
                             = statService
                                     .parseDateAccidentStatisticToJSON(statService.getNumberOfAccidentViaDate(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
                     request.setAttribute("result", nAccPeriodStatJSON);
-                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
 
                 case "statFalseAcc":
@@ -70,24 +70,24 @@ public class StatisticServlet extends HttpServlet {
                     String weekAccLatLngStatJSOn = statService
                             .parseAccidentGeoCStatisticToJSON(statService.getWeekAccidentGeoStatistic());
                     request.setAttribute("result", weekAccLatLngStatJSOn);
-                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
                 case "statPeriodAccGeo":
                     String periodAccLatLngStatJSON = statService
                             .parseAccidentGeoCStatisticToJSON(statService.getByDatePeriodAccidentGeoStatistic(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
                     request.setAttribute("result", periodAccLatLngStatJSON);
-                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
                 case "statSpeedDetected":
                     String statSpeedDEtectedJSON = statService
                             .parseCrashSpeedStatisticToJSON(statService
                                     .getTotalCrashSpeedStatistic());
                     request.setAttribute("result", statSpeedDEtectedJSON);
-                    goTo(A.Path.JSP_RESULT_DIR + "/result.jsp");
+                    goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                     break;
                 default:
                     System.out.println("Redirect to stat.jsp");
-                    getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "/stat.jsp").forward(request, response);
+                    getServletContext().getRequestDispatcher(App.Path.JSP_DIR + "/stat.jsp").forward(request, response);
             }
         }
     }

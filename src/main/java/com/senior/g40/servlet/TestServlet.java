@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.senior.g40.service;
+package com.senior.g40.servlet;
 
 import com.senior.g40.model.Accident;
-import com.senior.g40.utils.A;
+import com.senior.g40.service.AccidentService;
+import com.senior.g40.utils.App;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,7 +48,7 @@ public class TestServlet extends HttpServlet {
                 break;
             default: //TODO
         }
-        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

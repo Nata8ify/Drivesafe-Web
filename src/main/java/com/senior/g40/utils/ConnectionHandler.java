@@ -26,19 +26,19 @@ public class ConnectionHandler {
         return connectionHandler;
     }
     //Close the SQLProperties for preventing conection and memory leak.
-//    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
-//        try {
-//            if (conn != null) {
-//                conn.close();
-//            }
-//            if (pstm != null) {
-//                pstm.close();
-//            }
-//            if (rs != null) {
-//                rs.close();
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    public static void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstm != null) {
+                pstm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

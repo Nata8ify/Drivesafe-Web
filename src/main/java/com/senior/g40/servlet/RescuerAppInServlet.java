@@ -10,7 +10,7 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -43,7 +43,7 @@ public class RescuerAppInServlet extends HttpServlet {
                         request.getParameter("pswd"),
                         request.getParameter("utyp").charAt(0)); //Or constant 'T'
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
-                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break; //1.END ---- 
             case "getaccs":
                 List<Accident> accidents = accService.getAllAccidents();
@@ -60,7 +60,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 } else {
                     request.setAttribute("result", "WOW");
                 }
-                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "get_activeaccs":
                 List<Accident> activeAccidents = accService.getActiveAccidents();
@@ -77,7 +77,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 } else {
                     request.setAttribute("result", "WOW");
                 }
-                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "get_boundactacc":
                 long rescuerId = Long.parseLong(request.getParameter("userId"));
@@ -87,7 +87,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 } else {
                     request.setAttribute("result", "WOW");
                 }
-                goTo(A.Path.JSP_RESULT_DIR + "result.jsp");
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "sys_accfalse":
                 break;

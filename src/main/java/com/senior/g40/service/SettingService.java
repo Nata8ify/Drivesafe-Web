@@ -8,6 +8,7 @@ package com.senior.g40.service;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.ConnectionBuilder;
+import com.senior.g40.utils.ConnectionHandler;
 import com.senior.g40.utils.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,7 +51,7 @@ public class SettingService {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Storing Operating Location failed.", ex);
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
@@ -74,7 +75,7 @@ public class SettingService {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Operating Location update is failed.", ex);
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
@@ -99,7 +100,7 @@ public class SettingService {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Operating Location update is failed.", ex);
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
@@ -124,25 +125,8 @@ public class SettingService {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
             result = new Result(false, "Getting Operating Location Failed.", ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return result;
-    }
-    
-     //Close the SQLProperties for preventing conection and memory leak.
-    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstm != null) {
-                pstm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

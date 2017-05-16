@@ -54,7 +54,7 @@ function getOpLatLng(opMap) {
                 settingMap(opMap, opLatLng, opBound, mainOpBound);
             })
             .fail(function () {
-                setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10, 0);
+                setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
                 return;
             });
 }
@@ -128,11 +128,6 @@ $('#acctable tbody').on('<disabled>', 'tr .btnNearHospital', function () {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
                 console.log(results[i]);
-                var place = results[i];
-//                var marker = new google.maps.Marker({
-//                    map: opMap,
-//                    position: place.geometry.location
-//                });
             }
         } else {
             console.log("not ok" + status);

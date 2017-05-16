@@ -7,7 +7,7 @@ package com.senior.g40.servlet;
 
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.UserService;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
         if (pf != null) {
             request.setAttribute("msg", username);
             request.getSession(true).setAttribute("pf", pf);          
-            getServletContext().getRequestDispatcher(A.Path.JSP_DIR + "main.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher(App.Path.JSP_DIR + "main.jsp").forward(request, response);
            
             
         } else {

@@ -8,6 +8,7 @@ package com.senior.g40.service;
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.User;
 import com.senior.g40.utils.ConnectionBuilder;
+import com.senior.g40.utils.ConnectionHandler;
 import com.senior.g40.utils.Encrypt;
 import com.senior.g40.utils.Result;
 import java.lang.annotation.Documented;
@@ -55,7 +56,7 @@ public class UserService {
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return pf;
     }
@@ -82,7 +83,7 @@ public class UserService {
             pstm.setInt(7, age);
             pstm.setString(8, String.valueOf(gender));
             if (pstm.executeUpdate() != 0) {
-                closeSQLProperties(conn, pstm, null);
+                ConnectionHandler.closeSQLProperties(conn, pstm, null);
                 createUser(username, password, userType);
                 return true;
             }
@@ -90,7 +91,7 @@ public class UserService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return false;
     }
@@ -108,17 +109,17 @@ public class UserService {
             pstm.setString(3, Encrypt.toMD5(password));
             pstm.setString(4, String.valueOf(userType));
             if (pstm.executeUpdate() != 0) {
-                closeSQLProperties(conn, pstm, null);
+                ConnectionHandler.closeSQLProperties(conn, pstm, null);
                 isSuccess = true;
             } else {
-                closeSQLProperties(conn, pstm, null);
+                ConnectionHandler.closeSQLProperties(conn, pstm, null);
                 isSuccess = false;
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
-            closeSQLProperties(conn, pstm, null);
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return isSuccess;
     }
@@ -144,7 +145,7 @@ public class UserService {
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return latestId;
     }
@@ -168,7 +169,7 @@ public class UserService {
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return pf;
     }
@@ -189,7 +190,7 @@ public class UserService {
             result = new Result(false, ex.toString());
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm,null );
+            ConnectionHandler.closeSQLProperties(conn, pstm,null );
         }
         return result;
     }
@@ -245,20 +246,4 @@ public class UserService {
     }
 //    --------------------------------- Dealing with JSON
 
-    // Other 
-    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstm != null) {
-                pstm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

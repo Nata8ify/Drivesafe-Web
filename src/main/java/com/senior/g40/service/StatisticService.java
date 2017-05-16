@@ -7,8 +7,9 @@ package com.senior.g40.service;
 
 import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import com.senior.g40.utils.ConnectionBuilder;
+import com.senior.g40.utils.ConnectionHandler;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -81,12 +82,11 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
+            sdf = new SimpleDateFormat(App.Const.DATE_FMT);
             String sqlCmd;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
-
                 if (pstm == null) {
                     if (type != 0) {
                         sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
@@ -107,17 +107,16 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
-                    closeSQLProperties(conn, pstm, rs);
+                    ConnectionHandler.closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
-                closeSQLProperties(conn, pstm, rs);
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
             } while (iterDate.compareTo(lastDate) <= 0);
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
@@ -135,7 +134,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
+            sdf = new SimpleDateFormat(App.Const.DATE_FMT);
             String sqlCmd;
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
@@ -154,7 +153,7 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
-                    closeSQLProperties(conn, pstm, rs);
+                    ConnectionHandler.closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
                 cal.add(Calendar.DATE, 1);
@@ -163,7 +162,7 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
@@ -180,7 +179,7 @@ public class StatisticService {
         try {
             cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            sdf = new SimpleDateFormat(A.Const.DATE_FMT);
+            sdf = new SimpleDateFormat(App.Const.DATE_FMT);
             String sqlCmd;
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
@@ -199,7 +198,7 @@ public class StatisticService {
                     }
                     accStatHashMap.put(iterDate, rs.getInt(1));
                 } else {
-                    closeSQLProperties(conn, pstm, rs);
+                    ConnectionHandler.closeSQLProperties(conn, pstm, rs);
                     return accStatHashMap;
                 }
                 cal.add(Calendar.DATE, 1);
@@ -209,14 +208,14 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accStatHashMap;
     }
 
     //Get Total Accident Location via GeoCoordinate.
     public List<GeoCoordinate> getWeekAccidentGeoStatistic() {
-        return getByDatePeriodAccidentGeoStatistic(new Date(System.currentTimeMillis() - A.Const.DATE_WEEK_FOR_SQLCMD),
+        return getByDatePeriodAccidentGeoStatistic(new Date(System.currentTimeMillis() - App.Const.DATE_WEEK_FOR_SQLCMD),
                 new Date(System.currentTimeMillis()));
     }
 
@@ -246,7 +245,7 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
 
         return accGeoCList;
@@ -272,7 +271,7 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return byDateAccStatHassMap;
     }
@@ -296,7 +295,7 @@ public class StatisticService {
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeSQLProperties(conn, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return crashSpeedMap;
     }
@@ -354,29 +353,4 @@ public class StatisticService {
 
     }
 
-    //Close the SQLProperties for preventing conection and memory leak.
-    private void closeSQLProperties(Connection conn, PreparedStatement pstm, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            if (pstm != null) {
-                pstm.close();
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

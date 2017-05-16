@@ -9,7 +9,7 @@ import com.senior.g40.model.Profile;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.service.SettingService;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,7 +43,7 @@ public class SettingServlet extends HttpServlet {
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
                         pf.getUserId());
-                attrName = A.Attr.MESSAGE;
+                attrName = App.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
             case "updateOpLocation":
@@ -54,26 +54,26 @@ public class SettingServlet extends HttpServlet {
                         Integer.valueOf(request.getParameter("boundRds")),
                         Integer.valueOf(request.getParameter("mBoundRds")),
                         pf.getUserId());
-                attrName = A.Attr.MESSAGE;
+                attrName = App.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
             case "getOpLocation":
                 result = settingService.getOpertingLocation(pf.getUserId());
-                attrName = A.Attr.RESULT;
+                attrName = App.Attr.RESULT;
                 OperatingLocation ol = ((OperatingLocation) result.getObj());
-                if (mode == A.Mode.NORMAL) {
+                if (mode == App.Mode.NORMAL) {
                     request.setAttribute(attrName, ol.toJSON());
-                } else if (mode == A.Mode.VERBOSE) {
+                } else if (mode == App.Mode.VERBOSE) {
                     request.setAttribute(attrName, result.getMessage() + " \"" + ol.toString() + "\"");
                 }
                 break;
             default: ;
         }
-        if (attrName.equals(A.Attr.MESSAGE)) {
-            System.out.println((A.Path.JSP_RESULT_DIR) + "msg.jsp");
-            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
+        if (attrName.equals(App.Attr.MESSAGE)) {
+            System.out.println((App.Path.JSP_RESULT_DIR) + "msg.jsp");
+            getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
         } else {
-            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
 

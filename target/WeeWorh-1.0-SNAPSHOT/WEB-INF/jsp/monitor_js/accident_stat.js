@@ -60,7 +60,7 @@ $('#input-b-date, #input-e-date').change(function () {
     var now = moment(new Date()).format("YYYY-MM-DD");
     var beginInputDate = $('#input-b-date').val();
     var endInputDate = $('#input-e-date').val();
-    if (beginInputDate < endInputDate & endInputDate <= now) {
+    if (beginInputDate < endInputDate && endInputDate <= now) {
         prepareNumAccidentData(SEVLT_STATOPT_SPEC_PERIOD, null);
     } else if (endInputDate < beginInputDate) {
         $('#alrt-ip-msg').html("Begin Date shouldn't be after the present date. (" + moment(new Date()).format("YYYY-MM-DD") + ")");

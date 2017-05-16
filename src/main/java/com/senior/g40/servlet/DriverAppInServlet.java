@@ -9,7 +9,7 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.sql.Date;
@@ -76,7 +76,7 @@ public class DriverAppInServlet extends HttpServlet {
                 return;
         }
 
-        getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
     }
 
     private Accident getAccidentData() {
@@ -87,7 +87,8 @@ public class DriverAppInServlet extends HttpServlet {
                 getF("lat"),
                 getF("lng"),
                 getF("fdt"),
-                getF("sdt"));
+                getF("sdt"),
+                Accident.ACC_TYPE_TRAFFIC);
     }
 
     private String getS(String param) {

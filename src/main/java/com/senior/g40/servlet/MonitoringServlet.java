@@ -8,7 +8,7 @@ package com.senior.g40.servlet;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
-import com.senior.g40.utils.A;
+import com.senior.g40.utils.App;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -87,7 +87,7 @@ public class MonitoringServlet extends HttpServlet {
                 default : //TODO
             }
 
-            getServletContext().getRequestDispatcher(A.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
 
