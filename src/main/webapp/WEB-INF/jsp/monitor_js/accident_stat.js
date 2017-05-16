@@ -223,6 +223,7 @@ function prepareNumIncidentData(isIncludeCrash, isIncludeFire, isIncludeAnimal, 
 
 function addSeries(incidentSeries, url) {
     var tempSeries = [];
+    labelsDate = [];
     $.when($.getJSON({url: url}, {
         bDate: $('#input-b-date').val(),
         eDate: $('#input-e-date').val()
