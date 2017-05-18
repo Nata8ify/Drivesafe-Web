@@ -91,15 +91,17 @@ public class StatisticService {
                     if (type != 0) {
                         sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
                         pstm = conn.prepareStatement(sqlCmd);
+                         pstm.setDate(1, iterDate);
+                         pstm.setByte(2, type);
                     } else {
                         sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
                         pstm = conn.prepareStatement(sqlCmd);
+                         pstm.setDate(1, iterDate);
                     }
                 } else {
                     pstm.clearParameters();
                 }
-                pstm.setDate(1, iterDate);
-                if(type != 0){pstm.setByte(2, type);}
+              
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
