@@ -65,8 +65,8 @@
         <servlet-class>com.senior.g40.servlet.SettingServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UserAppInServlet</servlet-name>
-        <servlet-class>com.senior.g40.servlet.UserAppInServlet</servlet-class>
+        <servlet-name>ReporterAppInServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.ReporterAppInServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ToServlet</servlet-name>
@@ -109,8 +109,8 @@
         <url-pattern>/Setting</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UserAppInServlet</servlet-name>
-        <url-pattern>/UserAppIn</url-pattern>
+        <servlet-name>ReporterAppInServlet</servlet-name>
+        <url-pattern>/ReporterAppIn</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

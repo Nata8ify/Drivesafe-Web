@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author PNattawut
  */
-public class UserAppInServlet extends HttpServlet {
+public class ReporterAppInServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -81,8 +81,6 @@ public class UserAppInServlet extends HttpServlet {
                 new SimpleDateFormat("HH:mm").format(currentDate),
                 getAsFloat("lat"),
                 getAsFloat("lng"),
-                getAsFloat("fdt"),
-                getAsFloat("sdt"),
                 Accident.ACC_CODE_A,
                 getAsByte("acctype"));
     }
