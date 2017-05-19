@@ -46,6 +46,8 @@ public class TestServlet extends HttpServlet {
                 result = AccidentService.getInstance().boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 13.646727561950684F, 100.48721313476562F, 99, 99));
                 request.setAttribute("msg", result.toReformedResult());
                 break;
+            case "buildchk":
+                request.setAttribute("msg", "19-05-2017-17:25");
             default: //TODO
         }
         getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);

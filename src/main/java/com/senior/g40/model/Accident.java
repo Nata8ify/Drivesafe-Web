@@ -5,6 +5,7 @@
  */
 package com.senior.g40.model;
 
+import com.google.gson.Gson;
 import java.sql.Date;
 
 /**
@@ -196,6 +197,8 @@ public class Accident {
         return "Accident{" + "accidentId=" + accidentId + ", userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accType=" + accType + ", accCode=" + accCode + '}';
     }
     
-    
+    public String toJson(){
+       return new Gson().toJson(this);
+    }
 
 }

@@ -9,6 +9,7 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
+import com.senior.g40.utils.App;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,9 +58,9 @@ public class ReporterAppInServlet extends HttpServlet {
                 rs = accService.saveNonCrashAccident(getAccidentData());
                 if (rs.isSuccess()) {
                     Accident acc = (Accident) rs.getObj();
-                    request.setAttribute("result", accService.convertAccidentToJSON(acc));
+                    request.setAttribute("result", acc.toJson());
                 } else {
-                    request.setAttribute("result", rs.getExcp());
+                    request.setAttribute("result","Err");
                 }
                 break;
             case "usr_accfalse": /*3. for receive/acknowledge user false positive data.*/
@@ -72,6 +73,7 @@ public class ReporterAppInServlet extends HttpServlet {
                 break;// 3. END ------
             default: //TODO
         }
+        getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_PAGE).forward(request, response);
     }
 
     private Accident getAccidentData() {
