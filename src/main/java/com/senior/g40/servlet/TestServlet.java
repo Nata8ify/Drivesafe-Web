@@ -47,7 +47,7 @@ public class TestServlet extends HttpServlet {
                 request.setAttribute("msg", result.toReformedResult());
                 break;
             case "buildchk":
-                request.setAttribute("msg", "19-05-2017-17:25");
+                request.setAttribute("msg", "19-05-2017-19:50");
             default: //TODO
         }
         getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);

@@ -6,6 +6,7 @@
 package com.senior.g40.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.sql.Date;
 
 /**
@@ -198,7 +199,7 @@ public class Accident {
     }
     
     public String toJson(){
-       return new Gson().toJson(this);
+       return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(this);
     }
 
 }
