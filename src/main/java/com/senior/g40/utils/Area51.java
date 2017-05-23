@@ -11,7 +11,7 @@ public class Area51 {
 
     @Test
     public static void main(String[] args) throws SQLException, JSONException {
-//        System.out.println(StatisticService.getInstance().getNumberOfCrashTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
+        System.out.println(StatisticService.getInstance().getNumberOfCrashTypeAccident(Date.valueOf("2017-05-17"), Date.valueOf("2017-05-23")));
 //        System.out.println(StatisticService.getInstance().getNumberOfFireTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
 //        System.out.println(StatisticService.getInstance().getNumberOfAnimalTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
 //        System.out.println(StatisticService.getInstance().getNumberOfPatientTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));

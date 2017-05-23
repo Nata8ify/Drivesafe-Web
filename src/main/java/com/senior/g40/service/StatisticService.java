@@ -87,21 +87,19 @@ public class StatisticService {
 
             iterDate = Date.valueOf(sdf.format(cal.getTime()));
             do {
-                if (pstm == null) {
-                    if (type != 0) {
-                        sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
-                        pstm = conn.prepareStatement(sqlCmd);
-                         pstm.setDate(1, iterDate);
-                         pstm.setByte(2, type);
-                    } else {
-                        sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
-                        pstm = conn.prepareStatement(sqlCmd);
-                         pstm.setDate(1, iterDate);
-                    }
+
+                if (type != 0) {
+                    sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ?  AND accType = ? AND accCode NOT IN('0', '1');";
+                    pstm = conn.prepareStatement(sqlCmd);
                 } else {
-                    pstm.clearParameters();
+                    sqlCmd = "SELECT COUNT(*) AS accCount FROM accident WHERE date = ? AND accCode NOT IN('0', '1');";
+                    pstm = conn.prepareStatement(sqlCmd);
                 }
-              
+                pstm.setDate(1, iterDate);
+                if(type != 0){
+                    pstm.setByte(2, type);
+                }
+
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     if (accStatHashMap == null) {
@@ -114,6 +112,7 @@ public class StatisticService {
                 }
                 cal.add(Calendar.DATE, 1);
                 iterDate = Date.valueOf(sdf.format(cal.getTime()));
+                pstm.clearParameters();
             } while (iterDate.compareTo(lastDate) <= 0);
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);

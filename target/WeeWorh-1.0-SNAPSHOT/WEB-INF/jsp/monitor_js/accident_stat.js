@@ -196,7 +196,7 @@ var NUM_STAT_TYPE_PATIENT_SERV = "Statistic?opt=statSpecPeriodPatient";
 var NUM_STAT_TYPE_OTHER_SERV = "Statistic?opt=statSpecPeriodOther";
 var optionCount = 0;
 function prepareNumIncidentData(isIncludeCrash, isIncludeFire, isIncludeAnimal, isIncludePatient, isIncludeOther) {
-    console.log(isIncludeCrash+" : "+isIncludeFire+" : "+isIncludeAnimal+" : "+isIncludePatient+" : "+isIncludeOther)
+    console.log(isIncludeCrash+" : "+isIncludeFire+" : "+isIncludeAnimal+" : "+isIncludePatient+" : "+isIncludeOther);
     incidentSeries = [];
     if (isIncludeCrash) {
         addSeries(incidentSeries, NUM_STAT_TYPE_CRASH_SERV);
