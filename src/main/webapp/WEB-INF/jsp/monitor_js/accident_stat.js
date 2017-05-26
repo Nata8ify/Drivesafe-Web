@@ -13,29 +13,29 @@ var SEVLT_STATOPT_SPEC_WEEK_PERIOD = "statWeekendAcc";
 var SEVLT_STATOPT_CRASH_SPEED_ALL = "statSpeedDetected";
 /* Initialize Section */
 var incidentSeries = [];
-//$.when($.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD})).done(function (json) {
-//    $.each(json, function (index, element) {
-//        labelsDate.push(index);
-//        seriesAccTimes.push(element);
-//        if (beginDate === undefined) {
-//            beginDate = index;
-//        } else {
-//            endDate = index;
-//        }
-//    });
-//    $('#acc-period-title').html(" [" + beginDate + " To " + endDate + " (Week)]");
-//    $('#input-b-date').val(beginDate);
-//    $('#input-e-date').val(endDate);
-//    var data = {
-//        // A labels array that can contain any sort of values
-//        labels: labelsDate,
-//        // Our series array that contains series objects or in this case series data arrays
-//        series: [
-//            seriesAccTimes
-//        ]
-//    };
-//    postAccidentStatChart(data);
-//});
+$.when($.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD})).done(function (json) {
+    $.each(json, function (index, element) {
+        labelsDate.push(index);
+        seriesAccTimes.push(element);
+        if (beginDate === undefined) {
+            beginDate = index;
+        } else {
+            endDate = index;
+        }
+    });
+    $('#acc-period-title').html(" [" + beginDate + " To " + endDate + " (Week)]");
+    $('#input-b-date').val(beginDate);
+    $('#input-e-date').val(endDate);
+    var data = {
+        // A labels array that can contain any sort of values
+        labels: labelsDate,
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+            seriesAccTimes
+        ]
+    };
+    postAccidentStatChart(data);
+});
 //Do Geo Accident Map Stat
 var nAccStatMap;
 var NEARSIT_LATLNG = {lat: 13.652277, lng: 100.494457};
@@ -52,9 +52,9 @@ function initMap() {
 
 /* Event Listener */
 $('document').ready(function(){
-    $('#input-b-date').val(moment(new Date()).subtract(7,'d').format("YYYY-MM-DD"));
-    $('#input-e-date').val(moment(new Date()).format("YYYY-MM-DD"));
-    prepareNumIncidentData(true,false,false,false,false);
+//    $('#input-b-date').val(moment(new Date()).subtract(7,'d').format("YYYY-MM-DD"));
+//    $('#input-e-date').val(moment(new Date()).format("YYYY-MM-DD"));
+//    prepareNumIncidentData(true,false,false,false,false);
 });
 
 $('#input-b-date, #input-e-date').change(function () {
