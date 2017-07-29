@@ -34,8 +34,10 @@ public class AuthFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpReq = ((HttpServletRequest) request);
         if (debug) {
-            if (httpReq.getSession(false).getAttribute("pf") != null) {
-                chain.doFilter(request, response);
+            if (httpReq.getSession(false) != null) {
+                if (httpReq.getSession(false).getAttribute("pf") != null) {
+                    chain.doFilter(request, response);
+                }
             } else {
                 request.setAttribute("msg", "<p style='color:red'>Only Rescuer User is Authorized.</p>");
                 httpReq.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

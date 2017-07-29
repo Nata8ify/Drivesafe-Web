@@ -92,6 +92,8 @@ public class Accident {
         this.longitude = longtitude;
         this.forceDetect = forceDetect;
         this.speedDetect = speedDetect;
+        this.accCode = accCode;
+        this.accType = accType;
     }
     
     /** Dedicating Non-Crash Detection. */
@@ -197,6 +199,8 @@ public class Accident {
     public String toString() {
         return "Accident{" + "accidentId=" + accidentId + ", userId=" + userId + ", date=" + date + ", time=" + time + ", latitude=" + latitude + ", longitude=" + longitude + ", forceDetect=" + forceDetect + ", speedDetect=" + speedDetect + ", accType=" + accType + ", accCode=" + accCode + '}';
     }
+
+   
     
     public String toJson(){
        return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(this);
