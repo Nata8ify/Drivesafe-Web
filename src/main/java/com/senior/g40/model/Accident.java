@@ -72,16 +72,6 @@ public class Accident {
         this.accCode = accCode;
     }
 
-    /** Dedicating Crash Detection. */
-    public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect) {
-        this.userId = userId;
-        this.date = date;
-        this.time = time;
-        this.latitude = latitude;
-        this.longitude = longtitude;
-        this.forceDetect = forceDetect;
-        this.speedDetect = speedDetect;
-    }
 
     /** Dedicating Crash Detection. */
     public Accident(long userId, Date date, String time, float latitude, float longtitude, float forceDetect, float speedDetect, char accCode ,  byte accType) {

@@ -43,7 +43,7 @@ public class TestServlet extends HttpServlet {
         switch (test) {
             case "fcmtest":
                 Date current = new Date(System.currentTimeMillis());
-                result = AccidentService.getInstance().boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 13.646727561950684F, 100.48721313476562F, 99, 99));
+                result = AccidentService.getInstance().boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 13.646727561950684F, 100.48721313476562F, Byte.MAX_VALUE, 'C'));
                 request.setAttribute("msg", result.toReformedResult());
                 break;
             case "buildchk":

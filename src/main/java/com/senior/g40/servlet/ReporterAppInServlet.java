@@ -12,7 +12,6 @@ import com.senior.g40.service.UserService;
 import com.senior.g40.utils.App;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
@@ -37,34 +36,50 @@ public class ReporterAppInServlet extends HttpServlet {
      */
     private HttpServletRequest request;
     private HttpServletResponse response;
+    private AccidentService accService;
+    private UserService usrService;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.request = request;
         this.response = response;
-        AccidentService accService = AccidentService.getInstance();
-        UserService usrService = UserService.getInstance();
+        accService = AccidentService.getInstance();
+        usrService = UserService.getInstance();
         String option = request.getParameter("opt");
-        Result rs;
         switch (option) {
-            case "login": //1. User Login Section (Same Driver) START ---- 
+            case "login": //1. Rescuer Login Section (Same Driver) START ---- 
                 Profile pf = usrService.login(
                         request.getParameter("usrn"),
                         request.getParameter("pswd"),
                         request.getParameter("utyp").charAt(0)); //Or constant'M'
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 break; //1.END ---- 
-            case "report": /* User Send Incident Report on their Specific Type.*/
-                rs = accService.saveNonCrashAccident(getAccidentData());
-                if (rs.isSuccess()) {
-                    Accident acc = (Accident) rs.getObj();
-                    request.setAttribute("result", acc.toJson());
-                } else {
-                    request.setAttribute("result","Err");
-                }
+            case "report":
+                /* User Send Incident Report on their Specific Type. */
+                // AccType IS NOT FUNCTION BY NOW. 
+                report(getAccidentData());
                 break;
-            case "usr_accfalse": /*3. for receive/acknowledge user false positive data.*/
-                rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("accid")));
+            case "report_crash":
+                report(getCustomAccidentData(Accident.ACC_TYPE_TRAFFIC));
+                break;
+            case "report_fire":
+                report(getCustomAccidentData(Accident.ACC_TYPE_FIRE));
+                break;
+            case "report_patient": //coma patient's case.
+                report(getCustomAccidentData(Accident.ACC_TYPE_PATIENT));
+                break;
+            case "report_animal":
+                report(getCustomAccidentData(Accident.ACC_TYPE_ANIMAL));
+                break;
+            case "report_brawl":
+                report(getCustomAccidentData(Accident.ACC_TYPE_BRAWL));
+                break;
+            case "report_other":
+                report(getCustomAccidentData(Accident.ACC_TYPE_OTHER));
+                break;
+            case "usr_accfalse":
+                /*3. for receive/acknowledge user false positive data.*/
+                Result rs = accService.updateOnUserFalseAccc(0, Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
                 } else {
@@ -76,6 +91,7 @@ public class ReporterAppInServlet extends HttpServlet {
         getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_PAGE).forward(request, response);
     }
 
+    /* Utility Methods */
     private Accident getAccidentData() {
         Date currentDate = new Date(System.currentTimeMillis());
         return new Accident(getAsLong("usrid"),
@@ -83,8 +99,29 @@ public class ReporterAppInServlet extends HttpServlet {
                 new SimpleDateFormat("HH:mm").format(currentDate),
                 getAsFloat("lat"),
                 getAsFloat("lng"),
-                Accident.ACC_CODE_A,
-                getAsByte("acctype"));
+                getAsByte("acctype"),
+                Accident.ACC_CODE_A);
+    }
+
+    private Accident getCustomAccidentData(byte accType) {
+        Date currentDate = new Date(System.currentTimeMillis());
+        return new Accident(getAsLong("usrid"),
+                currentDate,
+                new SimpleDateFormat("HH:mm").format(currentDate),
+                getAsFloat("lat"),
+                getAsFloat("lng"),
+                accType,
+                Accident.ACC_CODE_A);
+    }
+
+    private void report(Accident acc) {
+        Result rs = accService.saveNonCrashAccident(acc);
+        if (rs.isSuccess()) {
+            Accident savedAcc = (Accident) rs.getObj();
+            request.setAttribute("result", savedAcc.toJson());
+        } else {
+            request.setAttribute("result", "Err");
+        }
     }
 
     private String getAsString(String param) {

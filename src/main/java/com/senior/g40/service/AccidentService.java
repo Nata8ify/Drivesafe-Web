@@ -133,40 +133,41 @@ public class AccidentService {
 
     //------------------------------------About INSERT/ADD. - END
     //------------------------------------About UPDATE. - START
-    public Result updateOnRequestRescueAccc(long accId) {
-        return updateAccCodeStatus(accId, Accident.ACC_CODE_A);
+    public Result updateOnRequestRescueAccc(long rescuerId, long accId) {
+        return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_A);
     }
 
-    public Result updateOnGoingAccc(long accId) {
-        return updateAccCodeStatus(accId, Accident.ACC_CODE_G);
+    public Result updateOnGoingAccc(long rescuerId, long accId) {
+        return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_G);
     }
 
-    public Result updateOnRescuingAccc(long accId) {
-        return updateAccCodeStatus(accId, Accident.ACC_CODE_R);
+    public Result updateOnRescuingAccc(long rescuerId, long accId) {
+        return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_R);
     }
 
-    public Result updateClosedRescueAccc(long accId) {
-        return updateAccCodeStatus(accId, Accident.ACC_CODE_C);
+    public Result updateClosedRescueAccc(long rescuerId, long accId) {
+        return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_C);
     }
 
-    public Result updateOnUserFalseAccc(long accId) {
-        return updateAccCodeStatus(accId, Accident.ACC_CODE_ERRU);
+    public Result updateOnUserFalseAccc(long rescuerId, long accId) {
+        return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_ERRU);
     }
 
-    public Result updateOnSystemFalseAccc(long accId) {
-        return updateAccCodeStatus(accId, Accident.ACC_CODE_ERRS);
+    public Result updateOnSystemFalseAccc(long rescuerId, long accId) {
+        return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_ERRS);
     }
 
-    public Result updateAccCodeStatus(long userId, char accCode) {
+    public Result updateAccCodeStatus(long rescuerId, long accId, char accCode) {
         Connection conn = null;
         PreparedStatement pstm = null;
         Result result = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "UPDATE accident SET `accCode`= ? WHERE accidentId = ?;";
+            String sqlCmd = "UPDATE accident SET `accCode`= ?, `responsibleRescr` = ? WHERE accidentId = ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, String.valueOf(accCode));
-            pstm.setLong(2, userId);
+            pstm.setLong(2, rescuerId);
+            pstm.setLong(3, accId);
             result = new Result(pstm.executeUpdate() != 0, "Update Success!");
         } catch (SQLException ex) {
             result = new Result(false, "Update 'accCode' Failed", ex);
@@ -522,6 +523,7 @@ public class AccidentService {
         pstm.setDouble(5, acc.getLongitude());
         pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
         pstm.setByte(7, acc.getAccType());
+        System.out.println(acc.toString());
     }
 //    --------------------------------- Dealing with JSON
 

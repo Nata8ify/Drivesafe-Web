@@ -56,7 +56,7 @@ public class DriverAppInServlet extends HttpServlet {
                 }
                 break; //2. END ---- 
             case "usr_accfalse": //3. for receive/acknowledge user false positive data.
-                rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("accid")));
+                rs = accService.updateOnUserFalseAccc(0, Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
                 } else {
@@ -64,7 +64,7 @@ public class DriverAppInServlet extends HttpServlet {
                 }
                 break;// 3. END ------
             case "sys_accfalse": //4. for receive/acknowledge system false positive data.
-                rs = accService.updateOnSystemFalseAccc(Long.valueOf(request.getParameter("accid")));
+                rs = accService.updateOnSystemFalseAccc(getAsLong(App.Param.responsibleRescr) ,Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
                 } else {

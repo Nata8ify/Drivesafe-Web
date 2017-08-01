@@ -41,7 +41,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 Profile pf = usrService.login(
                         request.getParameter("usrn"),
                         request.getParameter("pswd"),
-                        request.getParameter("utyp").charAt(0)); //Or constant 'T'
+                        'T'); //Or constant 'T'
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break; //1.END ---- 
@@ -89,7 +89,17 @@ public class RescuerAppInServlet extends HttpServlet {
                 }
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
+            case "set_ongoing" :
+                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_G);
+                break;
+            case "set_onrescue" :
+                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_R);
+                break;
+            case "set_closed" : //As  a Stupid "Clear"
+                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_C);
+                break;    
             case "sys_accfalse":
+                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS);
                 break;
             default:
                     request.setAttribute("result", "WOW");
@@ -101,15 +111,15 @@ public class RescuerAppInServlet extends HttpServlet {
         getServletContext().getRequestDispatcher(destination).forward(request, response);
     }
 
-    private String getS(String param) {
+    private String getAsString(String param) {
         return request.getParameter(param);
     }
 
-    private long getL(String param) {
+    private long getAsLong(String param) {
         return Long.valueOf(request.getParameter(param));
     }
 
-    private float getF(String param) {
+    private float getAsFloat(String param) {
         return Float.valueOf(request.getParameter(param));
     }
 

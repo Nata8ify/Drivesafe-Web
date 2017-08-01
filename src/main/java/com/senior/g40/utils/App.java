@@ -30,4 +30,9 @@ public class App {
         public static final char DEBUG = 'd';
         public static final char NORMAL = 'n';
     }
+    
+    public class Param{
+        public static final String accidentId = "accidentId";
+        public static final String responsibleRescr = "responsibleRescr";
+    }
 }
