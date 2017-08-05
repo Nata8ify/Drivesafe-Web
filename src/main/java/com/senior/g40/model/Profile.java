@@ -5,11 +5,14 @@
  */
 package com.senior.g40.model;
 
+import com.google.gson.Gson;
+
 /**
  *
  * @author PNattawut
  */
 public class Profile {
+
     private long userId;
     private String firstName;
     private String lastName;
@@ -21,13 +24,14 @@ public class Profile {
     private char gender;
 
     private static Profile profile;
-    public static Profile getInsatance(){
-        if(profile == null){
+
+    public static Profile getInsatance() {
+        if (profile == null) {
             profile = new Profile();
         }
         return profile;
     }
-    
+
     public long getUserId() {
         return userId;
     }
@@ -105,6 +109,8 @@ public class Profile {
         return "Profile{" + "userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", personalId=" + personalId + ", phoneNumber=" + phoneNumber + ", address1=" + address1 + ", address2=" + address2 + ", age=" + age + ", gender=" + gender + '}';
     }
 
-    
-    
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
 }

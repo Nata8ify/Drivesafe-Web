@@ -101,6 +101,9 @@ public class RescuerAppInServlet extends HttpServlet {
             case "sys_accfalse":
                 accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS);
                 break;
+            case "get_userinfo" :
+                request.setAttribute("result", usrService.getProfileByUserId(getAsLong("userId")).toJson());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
             default:
                     request.setAttribute("result", "WOW");
                 return;

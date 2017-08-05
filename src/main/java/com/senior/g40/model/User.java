@@ -5,6 +5,8 @@
  */
 package com.senior.g40.model;
 
+import com.google.gson.Gson;
+
 /**
  *
  * @author PNattawut
@@ -74,4 +76,7 @@ public class User {
         return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", userType=" + userType + '}';
     }
 
+    public String toJson(){
+        return new Gson().toJson(this);
+    }
 }
