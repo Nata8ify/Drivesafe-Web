@@ -15,16 +15,33 @@ public class OperatingLocation {
     private LatLng latLng;
     private int neutralBound;
     private int mainBound;
-
+    private int organizationId;
+    
+    private static OperatingLocation location; 
+    
     public OperatingLocation(LatLng latLng, int neutralBound) {
         this.latLng = latLng;
         this.neutralBound = neutralBound;
     }
     
-     public OperatingLocation(LatLng latLng, int neutralBound, int mainBound) {
+    public OperatingLocation(LatLng latLng, int neutralBound, int mainBound) {
         this.latLng = latLng;
         this.neutralBound = neutralBound;
         this.mainBound = mainBound;
+    }
+
+    public OperatingLocation(LatLng latLng, int neutralBound, int mainBound, int organizationId) {
+        this.latLng = latLng;
+        this.neutralBound = neutralBound;
+        this.mainBound = mainBound;
+        this.organizationId = organizationId;
+    }
+    
+    public static OperatingLocation getInstance(OperatingLocation location){
+        if(OperatingLocation.location == null){
+            OperatingLocation.location = location;
+        }
+        return OperatingLocation.location;
     }
     
     public LatLng getLatLng() {
@@ -49,6 +66,14 @@ public class OperatingLocation {
 
     public void setMainBound(int mainBound) {
         this.mainBound = mainBound;
+    }
+
+    public int getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(int organizationId) {
+        this.organizationId = organizationId;
     }
     
     

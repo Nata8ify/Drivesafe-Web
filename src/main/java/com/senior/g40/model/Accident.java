@@ -23,6 +23,7 @@ public class Accident {
     private double longitude;
     private double forceDetect;
     private float speedDetect;
+    private long responsibleRescr;
     /*-- accCode & accType is have very importance role.*/
     private byte accType;
     private char accCode;
@@ -184,6 +185,16 @@ public class Accident {
     public void setAccType(byte accType) {
         this.accType = accType;
     }
+
+    public long getResponsibleRescr() {
+        return responsibleRescr;
+    }
+
+    public void setResponsibleRescr(long responsibleRescr) {
+        this.responsibleRescr = responsibleRescr;
+    }
+    
+    
 
     @Override
     public String toString() {

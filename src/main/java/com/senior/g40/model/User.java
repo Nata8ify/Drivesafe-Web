@@ -79,4 +79,7 @@ public class User {
     public String toJson(){
         return new Gson().toJson(this);
     }
+    
+    public static final char TYPE_GENERAL_USER = 'M';
+    public static final char TYPE_RESCUER_USER = 'T'; 
 }

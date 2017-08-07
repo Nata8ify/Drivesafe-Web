@@ -162,13 +162,17 @@ public class AccidentService {
         PreparedStatement pstm = null;
         Result result = null;
         try {
+            Accident onUpdateCodeAccident = getAccidentById(accId);
             conn = ConnectionBuilder.getConnection();
             String sqlCmd = "UPDATE accident SET `accCode`= ?, `responsibleRescr` = ? WHERE accidentId = ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, String.valueOf(accCode));
             pstm.setLong(2, rescuerId);
             pstm.setLong(3, accId);
-            result = new Result(pstm.executeUpdate() != 0, "Update Success!");
+            if(pstm.executeUpdate() != 0){
+                result = new Result(true, "Update Success!");
+                boardcastUpdateRescueRequest(onUpdateCodeAccident);
+            }
         } catch (SQLException ex) {
             result = new Result(false, "Update 'accCode' Failed", ex);
         } finally {
@@ -244,6 +248,32 @@ public class AccidentService {
         return accidentId;
     }
 
+    //Its name says anythings.
+    private Accident getAccidentById(long accidentId) {
+        Connection conn = null;
+        Accident accident = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        String sqlCmd;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            sqlCmd = "SELECT * FROM `accident` WHERE accidentId = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, accidentId);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                accident = new Accident();
+                setAccident(rs, accident);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(null, pstm, rs);
+        }
+        return accident;
+    }
+    
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = null;
@@ -513,6 +543,7 @@ public class AccidentService {
 //        ac.setSpeedDetect(rs.getFloat("speedDetect"));
         ac.setAccCode(rs.getString("accCode").charAt(0));
         ac.setAccType(rs.getByte("accType"));
+        ac.setResponsibleRescr(rs.getLong("responsibleRescr"));
     }
 
     private void prepareIncidentStatement(PreparedStatement pstm, Accident acc) throws SQLException {
@@ -620,8 +651,9 @@ public class AccidentService {
 
     //Boardcast Rescue Request to Rescuer-Mobile Application [WheeWhor-Rescuer]
     private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
-    private final String TOPIC = "/topics/incident";
-
+    private final String TOPIC_INCIDENT = "/topics/incident";
+    private final String TOPIC_UPDATE_CODE = "/topics/updatecode";
+    
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -631,7 +663,7 @@ public class AccidentService {
         try {
 
             JSONObject message = new JSONObject();
-            message.put("to", TOPIC); //<-- What App Auth>
+            message.put("to", TOPIC_INCIDENT); //<-- What App Auth>
             message.put("priority", "high");
 
             JSONObject notification = new JSONObject();
@@ -648,6 +680,50 @@ public class AccidentService {
             data.put("accType", acc.getAccType());
             data.put("accCode", acc.getAccCode());
             data.put("userId", acc.getUserId());
+//            Add more for User Profile.
+            message.put("data", data);
+
+            httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            System.out.println("Response : " + httpResponse);
+            System.out.println("Message : " + message.toString());
+            result = new Result(true, httpResponse.toString());
+            return result;
+        } catch (JSONException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public Result boardcastUpdateRescueRequest(Accident acc) {
+        Result result = null;
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send");
+        httpPost.setHeader("Content-Type", "application/json");
+        httpPost.setHeader("Authorization", KEY_SERVER);
+        try {
+
+            JSONObject message = new JSONObject();
+            message.put("to", TOPIC_UPDATE_CODE);
+            message.put("priority", "high");
+
+            JSONObject notification = new JSONObject();
+            notification.put("title", acc.getTime());
+            notification.put("body", acc.getResponsibleRescr()+" now "+acc.getAccCode()+" on "+acc.getAccType());
+            message.put("notification", notification);
+
+            JSONObject data = new JSONObject();
+            data.put("accidentId", acc.getAccidentId());
+            data.put("date", acc.getDate());
+            data.put("time", acc.getTime());
+            data.put("latitude", acc.getLatitude());
+            data.put("longitude", acc.getLongitude());
+            data.put("accType", acc.getAccType());
+            data.put("accCode", acc.getAccCode());
+            data.put("userId", acc.getUserId());
+            data.put("responsibleRescr", acc.getResponsibleRescr());
 //            Add more for User Profile.
             message.put("data", data);
 

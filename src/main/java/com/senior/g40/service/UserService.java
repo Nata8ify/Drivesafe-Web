@@ -7,6 +7,8 @@ package com.senior.g40.service;
 
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.User;
+import com.senior.g40.model.extras.LatLng;
+import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.ConnectionHandler;
 import com.senior.g40.utils.Encrypt;
@@ -52,6 +54,16 @@ public class UserService {
             if (rs.next()) {//If there is account existed.
                 //TODO
                 pf = getProfileByUserId(rs.getLong("userId"));
+                if(userType == User.TYPE_RESCUER_USER){
+                    sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
+                    pstm = conn.prepareStatement(sqlCmd);
+                    pstm.setLong(1, pf.getUserId());
+                    rs = pstm.executeQuery();
+                    rs.first();
+                    /* "rs.get..(NUMBER)" NUMBER is column number (start from 1) which can be use instead of column name  */
+                    OperatingLocation.getInstance(new OperatingLocation(new LatLng(rs.getDouble(1), rs.getDouble(2)), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
+                    System.out.println(OperatingLocation.getInstance(null));
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);

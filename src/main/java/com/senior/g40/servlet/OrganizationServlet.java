@@ -5,17 +5,9 @@
  */
 package com.senior.g40.servlet;
 
-import com.senior.g40.model.Accident;
-import com.senior.g40.model.extras.OperatingLocation;
-import com.senior.g40.service.AccidentService;
-import com.senior.g40.utils.App;
-import com.senior.g40.utils.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author PNattawut
  */
-@WebServlet(name = "TestServlet", urlPatterns = {"/Test"})
-public class TestServlet extends HttpServlet {
+public class OrganizationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,23 +30,21 @@ public class TestServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String test = request.getParameter("test");
-        Result result = null;
-        switch (test) {
-            case "fcmtest":
-                Date current = new Date(System.currentTimeMillis());
-                result = AccidentService.getInstance().boardcastRescueRequest(new Accident(12, current, new SimpleDateFormat("HH:mm").format(current), 13.646727561950684F, 100.48721313476562F, Byte.MAX_VALUE, 'C'));
-                request.setAttribute("msg", result.toReformedResult());
+        String opt = request.getParameter("opt");
+        switch(opt){
+            case "create" :
                 break;
-            case "instancetest":
-                System.out.println(OperatingLocation.getInstance(null).toJSON());
-                request.setAttribute("msg", "op ".concat(OperatingLocation.getInstance(null).toJSON()));    
+            case "update" :
                 break;
-            case "buildchk":
-                request.setAttribute("msg", "1120010817");
-            default: //TODO
+            case "delete_all" :
+                break;
+            case "delete_byid" :
+                break;    
+            case "get_all" :
+                break;
+            case "get_byid" :
+                break;
         }
-        getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -34,5 +34,6 @@ public class App {
     public class Param{
         public static final String accidentId = "accidentId";
         public static final String responsibleRescr = "responsibleRescr";
+        public static final String accCode = "accCode";
     }
 }

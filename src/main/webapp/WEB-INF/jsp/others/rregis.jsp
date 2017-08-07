@@ -4,6 +4,7 @@
     Author     : PNattawut
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!doctype html>
@@ -104,6 +105,15 @@
                                                             <option value = "F"> Female </option>
                                                             <option value = "O"> None of above </option>
                                                         </select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization</td>
+                                                    <td><select name = "organizationId" id="organizationId">
+                                                            <option value = "new"> New </option>
+                                                            <!-- append organizations -->
+                                                        </select>
+                                                    <!-- Or display new organization form if option "New" is selected -->
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">

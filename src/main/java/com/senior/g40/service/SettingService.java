@@ -7,6 +7,7 @@ package com.senior.g40.service;
 
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
+import com.senior.g40.model.extras.Organization;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.ConnectionHandler;
 import com.senior.g40.utils.Result;
@@ -103,6 +104,11 @@ public class SettingService {
             ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
+    }
+    
+    public Result createOrganixation(Organization organization){
+        String sql = "INSERT INTO `organization` (`organizationId`, `organizationName`, `organizationDesc`) VALUES (NULL, ?, ?);";
+        return null;
     }
     
     public Result getOpertingLocation(long userId) {

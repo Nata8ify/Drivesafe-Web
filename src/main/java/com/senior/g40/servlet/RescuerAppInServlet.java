@@ -8,6 +8,7 @@ package com.senior.g40.servlet;
 import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
+import com.senior.g40.model.User;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.App;
@@ -41,7 +42,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 Profile pf = usrService.login(
                         request.getParameter("usrn"),
                         request.getParameter("pswd"),
-                        'T'); //Or constant 'T'
+                        User.TYPE_RESCUER_USER); //Or constant 'T'
                 request.setAttribute("result", usrService.convertProfileToJSON(pf));
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break; //1.END ---- 
@@ -89,17 +90,25 @@ public class RescuerAppInServlet extends HttpServlet {
                 }
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
+            case "set_customcode" :
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), getAsChar(App.Param.accCode)).isSuccess());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
             case "set_ongoing" :
-                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_G);
+                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_G).isSuccess());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "set_onrescue" :
-                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_R);
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_R).isSuccess());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "set_closed" : //As  a Stupid "Clear"
-                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_C);
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;    
             case "sys_accfalse":
-                accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS);
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS).isSuccess());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "get_userinfo" :
                 request.setAttribute("result", usrService.getProfileByUserId(getAsLong("userId")).toJson());
@@ -116,6 +125,10 @@ public class RescuerAppInServlet extends HttpServlet {
 
     private String getAsString(String param) {
         return request.getParameter(param);
+    }
+    
+    private char getAsChar(String param) {
+        return request.getParameter(param).charAt(0);
     }
 
     private long getAsLong(String param) {

@@ -27,6 +27,8 @@ public class ConnectionBuilder {
             String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
             String user = "drvsafe";
             String pw = "@Qwerty69";
+//            String user = "root";
+//            String pw = "";
             try {
                 Class.forName(dbDriver);
             } catch (ClassNotFoundException ex) {
@@ -46,7 +48,7 @@ public class ConnectionBuilder {
             } catch (Exception ex) {
                 Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
 
         return con;
