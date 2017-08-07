@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,14 +27,14 @@ import java.util.logging.Logger;
 public class SettingService {
 
     private static SettingService settingService;
-    
+
     public static SettingService getInstance() {
         if (settingService == null) {
             settingService = new SettingService();
         }
         return settingService;
     }
-    
+
     public Result storeOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result result = null;
         Connection conn = null;
@@ -56,7 +58,7 @@ public class SettingService {
         }
         return result;
     }
-    
+
     public Result updateOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result result = null;
         Connection conn = null;
@@ -70,7 +72,7 @@ public class SettingService {
             pstm.setDouble(3, boundRadius);
             pstm.setLong(4, userId);
             if (pstm.executeUpdate() == 1) {
-                result = new Result(true, "Operating Location updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+"]");
+                result = new Result(true, "Operating Location updated. [" + latLng.getLatitude() + " , " + latLng.getLongitude() + "]");
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,8 +82,8 @@ public class SettingService {
         }
         return result;
     }
-    
-    public Result update2LevelBoundOpertingLocation(LatLng latLng, int nuetralBoundRadius, int mainBoundRadius,long userId) {
+
+    public Result update2LevelBoundOpertingLocation(LatLng latLng, int nuetralBoundRadius, int mainBoundRadius, long userId) {
         Result result = null;
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -95,7 +97,7 @@ public class SettingService {
             pstm.setInt(4, mainBoundRadius);
             pstm.setLong(5, userId);
             if (pstm.executeUpdate() == 1) {
-                result = new Result(true, "Operating Location updated. ["+latLng.getLatitude()+" , "+latLng.getLongitude()+", Resposible Bound (Main/Normal)"+mainBoundRadius+":"+nuetralBoundRadius+"]");
+                result = new Result(true, "Operating Location updated. [" + latLng.getLatitude() + " , " + latLng.getLongitude() + ", Resposible Bound (Main/Normal)" + mainBoundRadius + ":" + nuetralBoundRadius + "]");
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,12 +107,8 @@ public class SettingService {
         }
         return result;
     }
-    
-    public Result createOrganixation(Organization organization){
-        String sql = "INSERT INTO `organization` (`organizationId`, `organizationName`, `organizationDesc`) VALUES (NULL, ?, ?);";
-        return null;
-    }
-    
+
+
     public Result getOpertingLocation(long userId) {
         Result result = null;
         Connection conn = null;
@@ -125,7 +123,7 @@ public class SettingService {
             if (rs.next()) {
                 result = new Result(true, "Getting Operating Laocation Success", new OperatingLocation(
                         new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                        rs.getInt("opNeutralBound"),rs.getInt("opMainBound") ));
+                        rs.getInt("opNeutralBound"), rs.getInt("opMainBound")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,4 +133,52 @@ public class SettingService {
         }
         return result;
     }
+    
+    /* Organiaztion Module */
+    
+    public Result createOrganization(Organization organization) {
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "INSERT INTO `organization` (`organizationId`, `organizationName`, `organizationDesc`) VALUES (NULL, ?, ?);";
+            pstm = conn.prepareStatement(sql);
+            pstm.setString(1, organization.getOrganizationName());
+            pstm.setString(2, organization.getOrganizationDescription());
+            if(pstm.executeUpdate() == 1){
+                result = new Result(true, "Organization is Created");
+            }
+        } catch (SQLException ex) {
+            result = new Result(false, ex);
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public List<Organization> getOrganizations(){
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        List<Organization> organizations = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `organization`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+               if(organizations == null){
+                   organizations = new ArrayList<>();
+               }
+               organizations.add(new Organization(rs.getInt("organizationId"), rs.getString("organizationName"), rs.getString("organizationDesc")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        System.out.println(organizations);
+        return organizations;
+    }
+
 }

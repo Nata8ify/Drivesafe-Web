@@ -22,6 +22,11 @@ public class Organization {
         this.organizationDescription = organizationDescription;
     }
 
+    public Organization( String organizationName, String organizationDescription) {
+        this.organizationName = organizationName;
+        this.organizationDescription = organizationDescription;
+    }
+    
     public int getOrganizationId() {
         return organizationId;
     }

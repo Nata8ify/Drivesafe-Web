@@ -5,6 +5,10 @@
  */
 package com.senior.g40.servlet;
 
+import com.google.gson.Gson;
+import com.senior.g40.model.extras.Organization;
+import com.senior.g40.service.SettingService;
+import com.senior.g40.utils.App;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -27,12 +31,23 @@ public class OrganizationServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private HttpServletRequest request;
+    private HttpServletResponse response;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        this.request = request;
+        this.response = response;
+        SettingService settingService = SettingService.getInstance();
         String opt = request.getParameter("opt");
         switch(opt){
             case "create" :
+                if(settingService.createOrganization(new Organization(getAsString("organizationName"), getAsString("organizationDescription"))).isSuccess()){
+                    request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", false);
+                }
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "update" :
                 break;
@@ -41,12 +56,35 @@ public class OrganizationServlet extends HttpServlet {
             case "delete_byid" :
                 break;    
             case "get_all" :
+                System.out.println("get_all");
+                request.setAttribute("result", new Gson().toJson(settingService.getOrganizations()));
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");    
                 break;
             case "get_byid" :
                 break;
         }
     }
 
+    private void goTo(String destination) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher(destination).forward(request, response);
+    }
+
+    private String getAsString(String param) {
+        return request.getParameter(param);
+    }
+    
+    private char getAsChar(String param) {
+        return request.getParameter(param).charAt(0);
+    }
+
+    private long getAsLong(String param) {
+        return Long.valueOf(request.getParameter(param));
+    }
+
+    private float getAsFloat(String param) {
+        return Float.valueOf(request.getParameter(param));
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

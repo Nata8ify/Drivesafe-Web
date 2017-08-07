@@ -57,6 +57,8 @@ public class Result {
         this.excp = excp;
     }
 
+    
+    
     public Result(boolean isSuccess, String message) {
         this.success = isSuccess;
         this.message = message;

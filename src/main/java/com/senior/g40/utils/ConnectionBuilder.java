@@ -25,10 +25,10 @@ public class ConnectionBuilder {
 //            String user = "drvsafeany";
 //            String pw = "@Qwerty69";
             String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
-            String user = "drvsafe";
-            String pw = "@Qwerty69";
-//            String user = "root";
-//            String pw = "";
+//            String user = "drvsafe";
+//            String pw = "@Qwerty69";
+            String user = "root";
+            String pw = "";
             try {
                 Class.forName(dbDriver);
             } catch (ClassNotFoundException ex) {
