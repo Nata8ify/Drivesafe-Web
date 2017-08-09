@@ -16,9 +16,9 @@ $('document').ready(function () {
             "dataSrc": ""
         },
         "columns": [
-            {"data": "time", "width": "10%"},
-            {"data": "latitude", "width": "25%"},
-            {"data": "longitude", "width": "25%"},
+            {"data": "time", "width": "5%"},
+            {"width": "5%"},
+            {"width": "50%"},
             {"data": "accCode", "width": "10%"},
             {"data": "goToAcc", "width": "10%"},
             {"data": "hospital", "width": "10%"}
@@ -51,6 +51,19 @@ $('document').ready(function () {
             } else if (accCodeText === "C") {
                 $nRow.css({"background-color": "#8cff8c"});
             }
+            $("td", nRow).eq(1).prepend("<img src='image/acctype/"+aData.accType+".png' width='50px' class='img img-thumbnail'/>");
+            $.ajax({
+                "url": "http://maps.googleapis.com/maps/api/geocode/json",
+                "data": {"sensor": true, "latlng": (aData.latitude) + "," + (aData.longitude)},
+                "success": function (result) {
+                    if (result.status == "OK") {
+                        $("td", nRow).eq(2).html(result.results[0].formatted_address);
+                    } else {
+                        $("td", nRow).eq(2).html("Missing Place, ("+(aData.latitude) + "," + (aData.longitude)+")");
+                    }
+                }
+            });
+            console.log(aData);
             return nRow
         },
         "order": [[0, "desc"]]

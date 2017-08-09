@@ -42,7 +42,7 @@ public class OrganizationServlet extends HttpServlet {
         String opt = request.getParameter("opt");
         switch(opt){
             case "create" :
-                if(settingService.createOrganization(new Organization(getAsString("organizationName"), getAsString("organizationDescription"))).isSuccess()){
+                if(settingService.createOrganization(getParameterOrganization()).isSuccess()){
                     request.setAttribute("result", true);
                 } else {
                     request.setAttribute("result", false);
@@ -50,17 +50,23 @@ public class OrganizationServlet extends HttpServlet {
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "update" :
+                if(settingService.updateOrganization(getParameterOrganization()).isSuccess()){
+                    request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", false);
+                }
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");    
                 break;
             case "delete_all" :
                 break;
             case "delete_byid" :
                 break;    
             case "get_all" :
-                System.out.println("get_all");
                 request.setAttribute("result", new Gson().toJson(settingService.getOrganizations()));
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");    
                 break;
             case "get_byid" :
+                request.setAttribute("result", new Gson().toJson(settingService.getOrganizationById(getAsInteger("organizationId"))));
                 break;
         }
     }
@@ -69,12 +75,21 @@ public class OrganizationServlet extends HttpServlet {
         getServletContext().getRequestDispatcher(destination).forward(request, response);
     }
 
+    /* Bind Request Parameter into Organization Object */
+    private Organization getParameterOrganization(){
+        return new Organization(getAsInteger("organizationId") , getAsString("organizationName"), getAsString("organizationDescription"));
+    }
+    
     private String getAsString(String param) {
         return request.getParameter(param);
     }
     
     private char getAsChar(String param) {
         return request.getParameter(param).charAt(0);
+    }
+    
+     private int getAsInteger(String param) {
+        return request.getParameter(param)==null?0:Integer.valueOf(request.getParameter(param));
     }
 
     private long getAsLong(String param) {

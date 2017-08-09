@@ -16,6 +16,11 @@ public class Organization {
     private String organizationName;
     private String organizationDescription;
 
+    public Organization() {
+    }
+
+    
+    
     public Organization(int organizationId, String organizationName, String organizationDescription) {
         this.organizationId = organizationId;
         this.organizationName = organizationName;

@@ -24,24 +24,24 @@ public class ConnectionBuilder {
 //            String dbUrl = "jdbc:mysql://nata8ify.me/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
 //            String user = "drvsafeany";
 //            String pw = "@Qwerty69";
-            String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
-//            String user = "drvsafe";
-//            String pw = "@Qwerty69";
-            String user = "root";
-            String pw = "";
+            String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8"; //t
+            String user = "drvsafe";
+            String pw = "@Qwerty69";
+//            String user = "root";
+//            String pw = "";
             try {
                 Class.forName(dbDriver);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, ex);
             }
             con = DriverManager.getConnection(dbUrl, user, pw);
-        } catch (SQLException ex1) {
+        } catch (Exception ex1) {
             System.out.println("Try... Connected with Host.");
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://54.169.83.168:3360/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
-            String user = "drvsafeany";
-            String pw = "@Qwerty69";
+            String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
+            String user = "root";
+            String pw = "";
             try {
                 Class.forName(dbDriver);
                 con = DriverManager.getConnection(dbUrl, user, pw);

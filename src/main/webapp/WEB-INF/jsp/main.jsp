@@ -80,14 +80,14 @@
                                 <thead> 
                                     <tr>
                                         <th>Time</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
+                                        <th>Type</th>
+                                        <th>Location</th>
                                         <th>Status</th>
                                         <th>Direction</th>
                                         <th>Nearest Hospital</th> 
                                     </tr>
                                 </thead>
-                                <tbody style="text-align: center">
+                                <tbody style="text-align: left">
                                 </tbody>
                             </table>
                         </div>                 

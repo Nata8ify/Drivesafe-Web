@@ -586,6 +586,7 @@ public class AccidentService {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("date", accident.getDate());
                 jsonObj.put("time", accident.getTime());
+                jsonObj.put("accType", accident.getAccType());
                 jsonObj.put("latitude", accident.getLatitude());
                 jsonObj.put("longitude", accident.getLongitude());
                 jsonObj.put("accCode", Character.valueOf(accident.getAccCode()));
@@ -652,7 +653,7 @@ public class AccidentService {
     //Boardcast Rescue Request to Rescuer-Mobile Application [WheeWhor-Rescuer]
     private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
     private final String TOPIC_INCIDENT = "/topics/incident";
-    private final String TOPIC_UPDATE_CODE = "/topics/updatecode";
+    private final String TOPIC_UPDATE_CODE = "/topics/update";
     
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;

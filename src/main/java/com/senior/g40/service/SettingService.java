@@ -108,7 +108,6 @@ public class SettingService {
         return result;
     }
 
-
     public Result getOpertingLocation(long userId) {
         Result result = null;
         Connection conn = null;
@@ -133,9 +132,8 @@ public class SettingService {
         }
         return result;
     }
-    
+
     /* Organiaztion Module */
-    
     public Result createOrganization(Organization organization) {
         Result result = null;
         Connection conn = null;
@@ -146,7 +144,7 @@ public class SettingService {
             pstm = conn.prepareStatement(sql);
             pstm.setString(1, organization.getOrganizationName());
             pstm.setString(2, organization.getOrganizationDescription());
-            if(pstm.executeUpdate() == 1){
+            if (pstm.executeUpdate() == 1) {
                 result = new Result(true, "Organization is Created");
             }
         } catch (SQLException ex) {
@@ -155,8 +153,29 @@ public class SettingService {
         }
         return result;
     }
-    
-    public List<Organization> getOrganizations(){
+
+    public Result updateOrganization(Organization organization) {
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "UPDATE `organization` SET ,`organizationName`= ? ,`organizationDesc`= ? WHERE `organizationId`= ?;";
+            pstm = conn.prepareStatement(sql);
+            pstm.setString(1, organization.getOrganizationName());
+            pstm.setString(2, organization.getOrganizationDescription());
+            pstm.setInt(3, organization.getOrganizationId());
+            if (pstm.executeUpdate() == 1) {
+                result = new Result(true, "Organization is Created");
+            }
+        } catch (SQLException ex) {
+            result = new Result(false, ex);
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public List<Organization> getOrganizations() {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -167,10 +186,10 @@ public class SettingService {
             pstm = conn.prepareStatement(sqlCmd);
             rs = pstm.executeQuery();
             while (rs.next()) {
-               if(organizations == null){
-                   organizations = new ArrayList<>();
-               }
-               organizations.add(new Organization(rs.getInt("organizationId"), rs.getString("organizationName"), rs.getString("organizationDesc")));
+                if (organizations == null) {
+                    organizations = new ArrayList<>();
+                }
+                organizations.add(new Organization(rs.getInt("organizationId"), rs.getString("organizationName"), rs.getString("organizationDesc")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,4 +200,33 @@ public class SettingService {
         return organizations;
     }
 
+    public Organization getOrganizationById(int organizationId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Organization organization = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `organization` WHERE `organizationId` = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setInt(1, organizationId);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                getOrganizationresult(rs, organization);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        System.out.println(organization);
+        return organization;
+    }
+
+    /* Object-relation Mapping */
+    private void getOrganizationresult(ResultSet rs, Organization organization) throws SQLException {
+        organization.setOrganizationId(rs.getInt("organizationId"));
+        organization.setOrganizationName(rs.getString("organizationName"));
+        organization.setOrganizationDescription(rs.getString("organizationDesc"));
+    }
 }
