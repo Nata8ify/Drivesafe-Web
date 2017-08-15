@@ -41,17 +41,23 @@ $('document').ready(function () {
         "fnRowCallback": function (nRow, aData) {
             var accCodeText = aData.accCode; // ID is returned by the server as part of the data
             var $nRow = $(nRow); // cache the row wrapped up in jQuery
+            var accCodeDesc;
             // alert(accCodeText);
             if (accCodeText === "A") {
                 $nRow.css({"background-color": "#ff7575"});
+                accCodeDesc = "Waiting for Rescue";
             } else if (accCodeText === "G") {
                 $nRow.css({"background-color": "#ffb912"});
+                accCodeDesc = "Going";
             } else if (accCodeText === "R") {
                 $nRow.css({"background-color": "#ffed80"});
+                accCodeDesc = "Rescuing";
             } else if (accCodeText === "C") {
                 $nRow.css({"background-color": "#8cff8c"});
+                accCodeDesc = "Closed";
             }
             $("td", nRow).eq(1).prepend("<img src='image/acctype/"+aData.accType+".png' width='50px' class='img img-thumbnail'/>");
+            $("td", nRow).eq(3).html(accCodeDesc);
             $.ajax({
                 "url": "http://maps.googleapis.com/maps/api/geocode/json",
                 "data": {"sensor": true, "latlng": (aData.latitude) + "," + (aData.longitude)},
@@ -63,7 +69,6 @@ $('document').ready(function () {
                     }
                 }
             });
-            console.log(aData);
             return nRow
         },
         "order": [[0, "desc"]]
