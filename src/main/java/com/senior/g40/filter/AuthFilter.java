@@ -33,6 +33,12 @@ public class AuthFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpReq = ((HttpServletRequest) request);
+        if (request.getParameter("opt") != null) {
+            if (request.getParameter("opt").equals("rregis")) {
+                chain.doFilter(request, response);
+                return;
+            }
+        }
         if (debug) {
             if (httpReq.getSession(false) != null) {
                 if (httpReq.getSession(false).getAttribute("pf") != null) {

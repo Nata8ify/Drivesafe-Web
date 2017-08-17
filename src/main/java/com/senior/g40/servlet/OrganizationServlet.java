@@ -60,6 +60,12 @@ public class OrganizationServlet extends HttpServlet {
             case "delete_all" :
                 break;
             case "delete_byid" :
+                if(settingService.deleteOrganization(getParameterOrganization().getOrganizationId()).isSuccess()){
+                    request.setAttribute("result", true);
+                } else {
+                    request.setAttribute("result", false);
+                }
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");  
                 break;    
             case "get_all" :
                 request.setAttribute("result", new Gson().toJson(settingService.getOrganizations()));

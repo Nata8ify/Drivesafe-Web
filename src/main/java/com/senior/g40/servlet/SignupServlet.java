@@ -5,6 +5,9 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.model.extras.LatLng;
+import com.senior.g40.model.extras.Organization;
+import com.senior.g40.service.SettingService;
 import com.senior.g40.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,10 +22,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SignupServlet extends HttpServlet {
 
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        this.request = request;
+        this.response = response;
+        SettingService ss = SettingService.getInstance();
+        UserService us = UserService.getInstance();
         String firstName = request.getParameter("fname");
         String lastName = request.getParameter("lname");
         long personalId = Long.valueOf(request.getParameter("pid"));
@@ -42,6 +52,15 @@ public class SignupServlet extends HttpServlet {
             request.setAttribute("msg", "Account for " + username + " was created!.");
         } else {
             request.setAttribute("msg", "Account for " + username + " wasn't created!. Maybe username is duplicated.");
+        }
+
+        if (userType == 'T') {
+            int organizationId = request.getParameter("organizationId") != null ? Integer.valueOf(request.getParameter("organizationId")) : 0;
+            if (organizationId == 0) {
+                ss.createOrganization(getParameterOrganization());
+                organizationId = ss.getLatestOrganizationId();
+            }
+            ss.storeOpertingLocationandOrganization(new LatLng(13.645819999104077, 100.48640727996826), 10, us.getLatestUserId(), organizationId);
         }
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
@@ -63,4 +82,28 @@ public class SignupServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /* Bind Request Parameter into Organization Object */
+    private Organization getParameterOrganization() {
+        return new Organization(getAsInteger("organizationId"), getAsString("organizationName"), getAsString("organizationDescription"));
+    }
+
+    private String getAsString(String param) {
+        return request.getParameter(param);
+    }
+
+    private char getAsChar(String param) {
+        return request.getParameter(param).charAt(0);
+    }
+
+    private int getAsInteger(String param) {
+        return request.getParameter(param) == null ? 0 : Integer.valueOf(request.getParameter(param));
+    }
+
+    private long getAsLong(String param) {
+        return Long.valueOf(request.getParameter(param));
+    }
+
+    private float getAsFloat(String param) {
+        return Float.valueOf(request.getParameter(param));
+    }
 }

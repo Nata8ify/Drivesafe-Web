@@ -108,14 +108,21 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Organization</td>
-                                                    <td><select name = "organizationId" id="organizationId">
-                                                            <option value = "new"> New </option>
+                                                    <td><select name = "organizationId" id="select-organization">
+                                                            <option value = "0"> New </option>
                                                             <!-- append organizations -->
                                                         </select>
-                                                    <!-- Or display new organization form if option "New" is selected -->
+                                                        <!-- Or display new organization form if option "New" is selected -->
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="tr-orgnization">
+                                                    <td></td>
+                                                    <td><input name="organizationName" type="text" id="organization" placeholder="Organizaztion Name" />
+                                                        <br/><br/>
+                                                        <textarea id="organization-desc" name="organizationDescription" cols="21" rows="5" placeholder="Description"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr >
                                                     <td colspan="2">
                                                         <button type="submit" class="btn btn-success">Submit</button>&nbsp;&nbsp;<button type="reset" class="btn btn-warning">Reset</button>
                                                     </td>
@@ -142,6 +149,27 @@
                 </div>
             </div>
         </footer>
-
+        <script>
+            $("document").ready(function () {
+                $.ajax({
+                    "url": "Organization?opt=get_all",
+                    "success": function (results) {
+                        var organizations = $.parseJSON(results);
+                        console.log(organizations);
+                        $.each(organizations, function (index, organization) {
+                            var organizationOption = $("<option value = '" + organization.organizationId + "'>" + organization.organizationName + "</option>");
+                            $("#select-organization").append(organizationOption);
+                        });
+                    }
+                });
+            });
+            $("#select-organization").change(function () {
+                if ($(this).val() === "0") {
+                    $("#tr-orgnization").prop("hidden", false);
+                } else {
+                    $("#tr-orgnization").prop("hidden", true);
+                }
+            });
+        </script>
     </body>
 </html>

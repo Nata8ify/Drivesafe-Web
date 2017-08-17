@@ -59,6 +59,31 @@ public class SettingService {
         return result;
     }
 
+    public Result storeOpertingLocationandOrganization(LatLng latLng, float boundRadius, long userId, int organizationId) {
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "INSERT INTO `properties`(`opLat`, `opLng`, `opNeutralBound`, `userId`, `opOrganization`) VALUES (?, ?, ?, ?, ?)";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDouble(1, latLng.getLatitude());
+            pstm.setDouble(2, latLng.getLongitude());
+            pstm.setDouble(3, boundRadius);
+            pstm.setLong(4, userId);
+            pstm.setInt(5, organizationId);
+            if (pstm.executeUpdate() == 1) {
+                result = new Result(true, "Storing Operating Location accomplished.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+            result = new Result(false, "Storing Operating Location failed.", ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
+        }
+        return result;
+    }
+    
     public Result updateOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result result = null;
         Connection conn = null;
@@ -175,6 +200,25 @@ public class SettingService {
         return result;
     }
 
+    public Result deleteOrganization(int organizationId) {
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "DELETE FROM `organization` WHERE `organizationId`= ?;";
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, organizationId);
+            if (pstm.executeUpdate() == 1) {
+                result = new Result(true, "Organization is Deleted");
+            }
+        } catch (SQLException ex) {
+            result = new Result(false, ex);
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
     public List<Organization> getOrganizations() {
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -221,6 +265,27 @@ public class SettingService {
         }
         System.out.println(organization);
         return organization;
+    }
+
+    public int getLatestOrganizationId() {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        int organizationId = 0;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT LAST_INSERT_ID() FROM `organization`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                organizationId = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return organizationId;
     }
 
     /* Object-relation Mapping */
