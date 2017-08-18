@@ -40,7 +40,7 @@ public class ToServlet extends HttpServlet {
                 to("/Statistic");
                 break;
             case "sett":
-                to(App.Path.JSP_DIR + "/setting.jsp");
+                to(App.Path.JSP_DIR + "setting.jsp");
                 break;
             case "rregis":
                 to(App.Path.JSP_OTHER_DIR + "rregis.jsp");

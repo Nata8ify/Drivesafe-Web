@@ -57,8 +57,8 @@ public class SignupServlet extends HttpServlet {
         if (userType == 'T') {
             int organizationId = request.getParameter("organizationId") != null ? Integer.valueOf(request.getParameter("organizationId")) : 0;
             if (organizationId == 0) {
-                ss.createOrganization(getParameterOrganization());
-                organizationId = ss.getLatestOrganizationId();
+                organizationId = (int)ss.createOrganization(getParameterOrganization()).getObj();
+                System.out.println(organizationId);
             }
             ss.storeOpertingLocationandOrganization(new LatLng(13.645819999104077, 100.48640727996826), 10, us.getLatestUserId(), organizationId);
         }

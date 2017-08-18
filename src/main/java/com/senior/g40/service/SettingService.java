@@ -170,7 +170,7 @@ public class SettingService {
             pstm.setString(1, organization.getOrganizationName());
             pstm.setString(2, organization.getOrganizationDescription());
             if (pstm.executeUpdate() == 1) {
-                result = new Result(true, "Organization is Created");
+                result = new Result(true, "Organization is Created", getLatestOrganizationId(conn));
             }
         } catch (SQLException ex) {
             result = new Result(false, ex);
@@ -267,25 +267,22 @@ public class SettingService {
         return organization;
     }
 
-    public int getLatestOrganizationId() {
-        Connection conn = null;
+    public int getLatestOrganizationId(Connection conn) {
         PreparedStatement pstm = null;
         ResultSet rs = null;
-        int organizationId = 0;
         try {
-            conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT LAST_INSERT_ID() FROM `organization`;";
             pstm = conn.prepareStatement(sqlCmd);
             rs = pstm.executeQuery();
             if (rs.next()) {
-                organizationId = rs.getInt(1);
+                return rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
-        return organizationId;
+        return 0;
     }
 
     /* Object-relation Mapping */
