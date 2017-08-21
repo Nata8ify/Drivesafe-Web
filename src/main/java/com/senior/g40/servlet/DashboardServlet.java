@@ -41,7 +41,7 @@ public class DashboardServlet extends HttpServlet {
         StatisticService ss = StatisticService.getInstance();
         AccidentService as = AccidentService.getInstance();
         Gson gson = new Gson();
-        opt = "getDayOfWeekAccsFreq";
+        //opt = "getDayOfWeekAccsFreq";
         switch(opt){
             case "getTodayAccsInBound" :
                 request.setAttribute(App.Attr.RESULT, gson.toJson(as.getCurrentDateInBoundAccidents(getAsLong("userId"))));
