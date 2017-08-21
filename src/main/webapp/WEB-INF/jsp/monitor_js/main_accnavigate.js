@@ -115,7 +115,7 @@ $('#acctable tbody').on('<disabled>', 'tr .btnNearHospital', function () {
     var req = {
         location: new google.maps.LatLng(lat, lng),
         radius: '5000',
-        types: ['hospital']
+        types: ['hospital']  
     };
 //    var domOpMap = $('#map')[0];
     opMapTemp = opMap;
@@ -131,7 +131,6 @@ $('#acctable tbody').on('<disabled>', 'tr .btnNearHospital', function () {
             }
         } else {
             console.log("not ok" + status);
-
         }
     });
 });

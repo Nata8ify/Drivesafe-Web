@@ -102,6 +102,43 @@ $('#acctable tbody ').on('click', 'tr .accident', function () {
     navigate(crashLatLng);
 });
 
+$('#acctable tbody ').on('click', 'tr .btnNearHospital', function () {
+    var accRow = dataTable.row($(this).parents('tr')).data();
+    var lat = accRow.latitude;
+    var lng = accRow.longitude;
+    crashLatLng = {lat: lat,lng: lng};
+    
+    map = new google.maps.Map(document.getElementById('map'),{
+        center: crashLatLng,
+        zoom: 15,
+    });
+    
+    infowindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+        location: crashLatLng,
+        types: ['hospital'],
+        radius: 5000,
+        rankBy: google.maps.places.RankBy.PROMINENCE
+    }, callback);
+});
 
+function callback(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+        }
+    }
+}
 
+function createMarker(place) {
+    var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+    });
 
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+    });
+}
