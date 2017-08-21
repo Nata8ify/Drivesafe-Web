@@ -5,6 +5,7 @@
  */
 package com.senior.g40.servlet;
 
+import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.StatisticService;
 import com.senior.g40.utils.App;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class StatisticServlet extends HttpServlet {
             this.response = response;
             response.setContentType("text/html;charset=UTF-8");
             StatisticService statService = StatisticService.getInstance();
+            AccidentService accService = AccidentService.getInstance();
             String opt = request.getParameter("opt");
 
             switch (opt) {
@@ -72,6 +74,9 @@ public class StatisticServlet extends HttpServlet {
                     request.setAttribute("result", statService
                             .parseDateAccidentStatisticToJSON(statService.getNumberAnotherTypeAccident(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
                     goTo(App.Path.JSP_RESULT_DIR + "/statrs_ch5.jsp");
+                    break;
+                case "statRealtimeTodayInBoundAccsFreq" : 
+                    request.setAttribute("result", accService.getCurrentDateInBoundAccidents(Long.valueOf(request.getParameter("userId"))));
                     break;
                 /* ----Number of Accident which Distinguish by Type END --- */
                 case "statFalseAcc":

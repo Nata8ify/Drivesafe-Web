@@ -96,7 +96,7 @@ public class StatisticService {
                     pstm = conn.prepareStatement(sqlCmd);
                 }
                 pstm.setDate(1, iterDate);
-                if(type != 0){
+                if (type != 0) {
                     pstm.setByte(2, type);
                 }
 
@@ -214,6 +214,137 @@ public class StatisticService {
         return accStatHashMap;
     }
 
+    public List<Accident> getMonthlyYearAccident(int month, int year) {
+        List<Accident> accidents = null;
+        Accident accident = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sql = "SELECT * FROM `accident` WHERE MONTH(`date`) = ? AND YEAR(`date`) = ?;";
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, month);
+            pstm.setInt(2, year);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accidents == null) {
+                    accidents = new ArrayList<>();
+                }
+                accident = new Accident();
+                setAccident(rs, accident);
+                accidents.add(accident);
+            }
+             conn.close();
+            return accidents;
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    // 1 < dayOfWeek <= 7 && 1 < month <= 12
+    public List<Accident> getDayOfWeekMonthlyAccident(int dayOfWeek, int month) {
+        List<Accident> accidents = null;
+        Accident accident = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sql = "SELECT * FROM `accident` WHERE DAYOFWEEK(`date`) = ? AND MONTH(`date`) = ?;";
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, dayOfWeek);
+            pstm.setInt(2, month);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accidents == null) {
+                    accidents = new ArrayList<>();
+                }
+                accident = new Accident();
+                setAccident(rs, accident);
+                accidents.add(accident);
+            }
+             conn.close();
+            return accidents;
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public List<Accident> getDayOfWeekAccident(int dayOfWeek) {
+        List<Accident> accidents = null;
+        Accident accident = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sql = "SELECT * FROM `accident` WHERE DAYOFWEEK(`date`) = ?;";
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, dayOfWeek);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accidents == null) {
+                    accidents = new ArrayList<>();
+                }
+                accident = new Accident();
+                setAccident(rs, accident);
+                accidents.add(accident);
+            }
+             conn.close();
+            return accidents;
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public HashMap<String, Integer> getDayOFWeekAccidentFreq(Integer month,  Integer year) {
+        HashMap<String, Integer> accidentsFreq = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sql = "SELECT DATE_FORMAT(`date`, '%D'), COUNT(*) FROM `accident`"
+                    +(month!=null||year!=null?" WHERE ":"")
+                    +(month==null?"":" MONTH(`date`) = ?")
+                    +(month!=null&&year!=null?" AND ":"")
+                    +(year==null?"":" YEAR(`date`) = ?")
+                    +" GROUP BY  DATE_FORMAT(`date`, '%D');";
+            System.out.println(sql);
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            if(month != null){pstm.setInt(1, month);}
+            if(year != null){pstm.setInt(1, year);}
+            if(month != null && year != null){pstm.setInt(1, month);pstm.setInt(2, year);}
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accidentsFreq == null) {
+                    accidentsFreq = new HashMap<>();
+                }
+                accidentsFreq.put(rs.getString(1), rs.getInt(2));
+            }
+            conn.close();
+            return accidentsFreq;
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    /** @param year Filter a result By Specifically year. (Default is included result for every year) */
+    public HashMap<String, Integer> getDayMonthlyAccidentFreq(Integer year) {
+        HashMap<String, Integer> accidentsFreq = null;
+        try {
+            Connection conn = ConnectionBuilder.getConnection();
+            String sql = "SELECT DATE_FORMAT(`date`, '%D %M'), COUNT(*) FROM `accident`"+(year==null?"":" WHERE YEAR(`date`) = ?")+" GROUP BY  DATE_FORMAT(`date`, '%D %M');";
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            if(year != null){pstm.setInt(1, year);}
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (accidentsFreq == null) {
+                    accidentsFreq = new HashMap<>();
+                }
+                accidentsFreq.put(rs.getString(1), rs.getInt(2));
+            }
+            conn.close();
+            return accidentsFreq;
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     //Get Total Accident Location via GeoCoordinate.
     public List<GeoCoordinate> getWeekAccidentGeoStatistic() {
         return getByDatePeriodAccidentGeoStatistic(new Date(System.currentTimeMillis() - App.Const.DATE_WEEK_FOR_SQLCMD),
@@ -323,6 +454,20 @@ public class StatisticService {
     //Parse Number of Accident Statistic on Specific Period Date into JSON Format.
     public String parseCrashSpeedStatisticToJSON(Map<Float, Integer> crashSpeedMap) {
         return new Gson().toJson(crashSpeedMap);
+    }
+
+    private void setAccident(ResultSet rs, Accident ac) throws SQLException {
+        ac.setAccidentId(rs.getLong("accidentId"));
+        ac.setUserId(rs.getInt("userId"));
+        ac.setDate(rs.getDate("date"));
+        ac.setTime(rs.getString("time"));
+        ac.setLatitude(rs.getFloat("latitude"));
+        ac.setLongtitude(rs.getFloat("longitude"));
+//        ac.setForceDetect(rs.getFloat("forceDetect"));
+//        ac.setSpeedDetect(rs.getFloat("speedDetect"));
+        ac.setAccCode(rs.getString("accCode").charAt(0));
+        ac.setAccType(rs.getByte("accType"));
+        ac.setResponsibleRescr(rs.getLong("responsibleRescr"));
     }
 
     /**

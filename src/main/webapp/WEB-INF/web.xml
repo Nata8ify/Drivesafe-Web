@@ -72,6 +72,10 @@
         <servlet-name>OrganizationServlet</servlet-name>
         <servlet-class>com.senior.g40.servlet.OrganizationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.DashboardServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ToServlet</servlet-name>
         <url-pattern>/To</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>OrganizationServlet</servlet-name>
         <url-pattern>/Organization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/Dashboard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
