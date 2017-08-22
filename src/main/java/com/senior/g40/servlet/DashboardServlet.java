@@ -11,6 +11,7 @@ import com.senior.g40.service.StatisticService;
 import com.senior.g40.utils.App;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +60,14 @@ public class DashboardServlet extends HttpServlet {
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getOnDutyRescuerProfiles(null)));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
+            case "getTotalAccidentLatLng" : //Get Total Accident Latitude & Longitude (For Google Marker or another purpose) (Inbound Filter is Optional by userId)
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getTotalAccidentLatLng(getAsLong("userId"))));
+                goTo(App.Path.JSP_RESULT_PAGE);
+                break;
+            case "getByDateAccidentLatLng" : //Get Total Accident Latitude & Longitude By Date (For Google Marker or another purpose) (Date Filter is Optional by date) (Inbound Filter is Optional by userId)
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getByDateAccidentLatLng(Date.valueOf(getAsString("date")), getAsLong("userId"))));
+                goTo(App.Path.JSP_RESULT_PAGE);
+                break;      
             default : throw new IllegalStateException("No Such Option Available.");
         }
         return;

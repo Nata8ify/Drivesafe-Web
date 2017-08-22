@@ -8,6 +8,8 @@ package com.senior.g40.service;
 import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
+import com.senior.g40.model.extras.LatLng;
+import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.App;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.ConnectionHandler;
@@ -233,7 +235,7 @@ public class StatisticService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-             conn.close();
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
@@ -260,7 +262,7 @@ public class StatisticService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-             conn.close();
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
@@ -285,7 +287,7 @@ public class StatisticService {
                 setAccident(rs, accident);
                 accidents.add(accident);
             }
-             conn.close();
+            conn.close();
             return accidents;
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,21 +295,28 @@ public class StatisticService {
         return null;
     }
 
-    public HashMap<String, Integer> getDayOFWeekAccidentFreq(Integer month,  Integer year) {
+    public HashMap<String, Integer> getDayOFWeekAccidentFreq(Integer month, Integer year) {
         HashMap<String, Integer> accidentsFreq = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
             String sql = "SELECT DATE_FORMAT(`date`, '%D'), COUNT(*) FROM `accident`"
-                    +(month!=null||year!=null?" WHERE ":"")
-                    +(month==null?"":" MONTH(`date`) = ?")
-                    +(month!=null&&year!=null?" AND ":"")
-                    +(year==null?"":" YEAR(`date`) = ?")
-                    +" GROUP BY  DATE_FORMAT(`date`, '%D');";
+                    + (month != null || year != null ? " WHERE " : "")
+                    + (month == null ? "" : " MONTH(`date`) = ?")
+                    + (month != null && year != null ? " AND " : "")
+                    + (year == null ? "" : " YEAR(`date`) = ?")
+                    + " GROUP BY  DATE_FORMAT(`date`, '%D');";
             System.out.println(sql);
             PreparedStatement pstm = conn.prepareStatement(sql);
-            if(month != null){pstm.setInt(1, month);}
-            if(year != null){pstm.setInt(1, year);}
-            if(month != null && year != null){pstm.setInt(1, month);pstm.setInt(2, year);}
+            if (month != null) {
+                pstm.setInt(1, month);
+            }
+            if (year != null) {
+                pstm.setInt(1, year);
+            }
+            if (month != null && year != null) {
+                pstm.setInt(1, month);
+                pstm.setInt(2, year);
+            }
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 if (accidentsFreq == null) {
@@ -322,15 +331,20 @@ public class StatisticService {
         }
         return null;
     }
-    
-    /** @param year Filter a result By Specifically year. (Default is included result for every year) */
+
+    /**
+     * @param year Filter a result By Specifically year. (Default is included
+     * result for every year)
+     */
     public HashMap<String, Integer> getDayMonthlyAccidentFreq(Integer year) {
         HashMap<String, Integer> accidentsFreq = null;
         try {
             Connection conn = ConnectionBuilder.getConnection();
-            String sql = "SELECT DATE_FORMAT(`date`, '%D %M'), COUNT(*) FROM `accident`"+(year==null?"":" WHERE YEAR(`date`) = ?")+" GROUP BY  DATE_FORMAT(`date`, '%D %M');";
+            String sql = "SELECT DATE_FORMAT(`date`, '%D %M'), COUNT(*) FROM `accident`" + (year == null ? "" : " WHERE YEAR(`date`) = ?") + " GROUP BY  DATE_FORMAT(`date`, '%D %M');";
             PreparedStatement pstm = conn.prepareStatement(sql);
-            if(year != null){pstm.setInt(1, year);}
+            if (year != null) {
+                pstm.setInt(1, year);
+            }
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 if (accidentsFreq == null) {
@@ -409,8 +423,11 @@ public class StatisticService {
         return byDateAccStatHassMap;
     }
 
-    /** date is optional 
-     * @param date specifically date (current date as default value) */ 
+    /**
+     * date is optional
+     *
+     * @param date specifically date (current date as default value)
+     */
     public List<Profile> getOnDutyRescuerProfiles(Date date) {
         List<Profile> onDutyRescuers = null;
         Profile profile = null;
@@ -419,10 +436,12 @@ public class StatisticService {
         ResultSet rs = null;
         try {
             String sqlCmd = "SELECT p.* FROM `profile` p JOIN `accident` a ON a.responsibleRescr = p.userId WHERE a.date = "
-                    +date==null?"CURDATE()":"?"
-                    +" AND a.accCode != 'A';";
+                    + date == null ? "CURDATE()" : "?"
+                            + " AND a.accCode != 'A';";
             pstm = conn.prepareStatement(sqlCmd);
-            if(date != null){pstm.setDate(1, date);}
+            if (date != null) {
+                pstm.setDate(1, date);
+            }
             rs = pstm.executeQuery();
             while (rs.next()) {
                 if (onDutyRescuers == null) {
@@ -439,7 +458,7 @@ public class StatisticService {
         }
         return onDutyRescuers;
     }
-    
+
     //Getting Statistic of Crash Speed detected by the app since the Drivesafe system was actived.
     public Map<Float, Integer> getTotalCrashSpeedStatistic() {
         Map<Float, Integer> crashSpeedMap = null;
@@ -462,6 +481,86 @@ public class StatisticService {
             ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return crashSpeedMap;
+    }
+
+    public ArrayList<Double[]> getTotalAccidentLatLng(Long userId) {
+        ArrayList<Double[]> latLngList = null;
+        Double[] latLng = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            String sqlCmd = "SELECT `latitude`, `longitude` FROM `accident`;";
+            System.out.println(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            if (userId != null) {
+                while (rs.next()) {
+                    if (latLngList == null) {
+                        latLngList = new ArrayList<>();
+                    }
+                    latLng = new Double[]{rs.getDouble(1), rs.getDouble(2)};
+                    if (isBoundWithin(userId, latLng[0], latLng[1])) {
+                        latLngList.add(latLng);
+                    }
+                }
+            } else {
+                while (rs.next()) {
+                    if (latLngList == null) {
+                        latLngList = new ArrayList<>();
+                    }
+                    latLng = new Double[]{rs.getDouble(1), rs.getDouble(2)};
+                    latLngList.add(latLng);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return latLngList;
+    }
+
+    public ArrayList<Double[]> getByDateAccidentLatLng(Date date, Long userId) {
+        ArrayList<Double[]> latLngList = null;
+        Double[] latLng = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            String sqlCmd = "SELECT `latitude`, `longitude` FROM `accident` WHERE date = "
+                    + (date == null ? "CURDATE();" : "?;");
+            System.out.println(sqlCmd);
+            pstm = conn.prepareStatement(sqlCmd);
+            if (date != null) {
+                pstm.setDate(1, date);
+            }
+            rs = pstm.executeQuery();
+           if (userId != null) {
+                while (rs.next()) {
+                    if (latLngList == null) {
+                        latLngList = new ArrayList<>();
+                    }
+                    latLng = new Double[]{rs.getDouble(1), rs.getDouble(2)};
+                    if (isBoundWithin(userId, latLng[0], latLng[1])) {
+                        latLngList.add(latLng);
+                    }
+                }
+            } else {
+                while (rs.next()) {
+                    if (latLngList == null) {
+                        latLngList = new ArrayList<>();
+                    }
+                    latLng = new Double[]{rs.getDouble(1), rs.getDouble(2)};
+                    latLngList.add(latLng);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return latLngList;
     }
 
     /**
@@ -502,7 +601,7 @@ public class StatisticService {
         ac.setResponsibleRescr(rs.getLong("responsibleRescr"));
     }
 
-        private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
+    private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
         pf.setUserId(rs.getLong("userId"));
         pf.setFirstName(rs.getString("firstName"));
         pf.setLastName(rs.getString("lastName"));
@@ -513,7 +612,58 @@ public class StatisticService {
         pf.setAge(rs.getInt("age"));
         pf.setGender(rs.getString("gender").charAt(0));
     }
-    
+
+    //    --------------------------------- Other
+    private OperatingLocation ol;
+    private final double DR = Math.PI / 180; //DEG_TO_RAD
+    private final int RADIAN_OF_EARTH_IN_KM = 6371;
+
+    //Minify Version
+    private boolean isBoundWithin(long userId, double latitude, double longitude) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        boolean isBoundWithin = false;
+        if (ol == null) {
+            try {
+                conn = ConnectionBuilder.getConnection();
+                String sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
+                pstm = conn.prepareStatement(sqlCmd);
+                pstm.setLong(1, userId);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    ol = new OperatingLocation(new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                            rs.getInt("opNeutralBound"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+            }
+        }
+        {
+            // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
+            if (ol != null) {
+                int opBound = ol.getNeutralBound();
+                double dLat = DR * (ol.getLatLng().getLatitude() - latitude);
+                double dLng = DR * (ol.getLatLng().getLongitude() - longitude);
+                double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                        + (Math.cos(latitude * DR) * Math.cos(ol.getLatLng().getLatitude() * DR))
+                        * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
+                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                double distance = c * RADIAN_OF_EARTH_IN_KM;
+                if (distance < opBound) {
+                    isBoundWithin = true;
+                }
+            }
+        }
+        return isBoundWithin;
+    }
+
+    private void resetOP() {
+        this.ol = null;
+    }
+
     /**
      * ***Debug Out*****
      */
@@ -524,6 +674,14 @@ public class StatisticService {
 
         private double latitude;
         private double longitude;
+
+        public GeoCoordinate(double latitude, double longitude) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+
+        public GeoCoordinate() {
+        }
 
         public double getLatitude() {
             return latitude;
