@@ -43,16 +43,20 @@ public class DashboardServlet extends HttpServlet {
         Gson gson = new Gson();
         //opt = "getDayOfWeekAccsFreq";
         switch(opt){
-            case "getTodayAccsInBound" :
+            case "getTodayAccsInBound" : //Today Inbounded Accident find by userId
                 request.setAttribute(App.Attr.RESULT, gson.toJson(as.getCurrentDateInBoundAccidents(getAsLong("userId"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getDayOfWeekAccsFreq" :
+            case "getDayOfWeekAccsFreq" : //Frequency of Accidents in a day of week that was occured can filter a result by month or year.
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayOFWeekAccidentFreq(getAsInteger("month"), getAsInteger("year"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getDayMonthlyAccsFreq" :
+            case "getDayMonthlyAccsFreq" : //Frequency of Accidents in a day of month that was occured can filter a result by year
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayMonthlyAccidentFreq(getAsInteger("year"))));
+                goTo(App.Path.JSP_RESULT_PAGE);
+                break;
+            case "getTodayOnDutyRscrPf" : //Get the total on duty rescuer by current date (on duty is not 'A')
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getOnDutyRescuerProfiles(null)));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
             default : throw new IllegalStateException("No Such Option Available.");

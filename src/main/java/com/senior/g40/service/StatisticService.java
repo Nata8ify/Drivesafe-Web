@@ -7,6 +7,7 @@ package com.senior.g40.service;
 
 import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
+import com.senior.g40.model.Profile;
 import com.senior.g40.utils.App;
 import com.senior.g40.utils.ConnectionBuilder;
 import com.senior.g40.utils.ConnectionHandler;
@@ -408,6 +409,37 @@ public class StatisticService {
         return byDateAccStatHassMap;
     }
 
+    /** date is optional 
+     * @param date specifically date (current date as default value) */ 
+    public List<Profile> getOnDutyRescuerProfiles(Date date) {
+        List<Profile> onDutyRescuers = null;
+        Profile profile = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            String sqlCmd = "SELECT p.* FROM `profile` p JOIN `accident` a ON a.responsibleRescr = p.userId WHERE a.date = "
+                    +date==null?"CURDATE()":"?"
+                    +" AND a.accCode != 'A';";
+            pstm = conn.prepareStatement(sqlCmd);
+            if(date != null){pstm.setDate(1, date);}
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (onDutyRescuers == null) {
+                    onDutyRescuers = new ArrayList<>();
+                }
+                profile = new Profile();
+                setProfile(rs, profile);
+                onDutyRescuers.add(profile);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return onDutyRescuers;
+    }
+    
     //Getting Statistic of Crash Speed detected by the app since the Drivesafe system was actived.
     public Map<Float, Integer> getTotalCrashSpeedStatistic() {
         Map<Float, Integer> crashSpeedMap = null;
@@ -470,6 +502,18 @@ public class StatisticService {
         ac.setResponsibleRescr(rs.getLong("responsibleRescr"));
     }
 
+        private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
+        pf.setUserId(rs.getLong("userId"));
+        pf.setFirstName(rs.getString("firstName"));
+        pf.setLastName(rs.getString("lastName"));
+        pf.setPersonalId(rs.getLong("personalId"));
+        pf.setPhoneNumber(rs.getString("phone"));
+        pf.setAddress1(rs.getString("address1"));
+        pf.setAddress2(rs.getString("address2"));
+        pf.setAge(rs.getInt("age"));
+        pf.setGender(rs.getString("gender").charAt(0));
+    }
+    
     /**
      * ***Debug Out*****
      */
