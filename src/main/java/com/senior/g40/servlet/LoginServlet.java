@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
         if (pf != null) {
             request.setAttribute("msg", username);
             request.getSession(true).setAttribute("pf", pf);          
-            getServletContext().getRequestDispatcher(App.Path.JSP_DIR + "main.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
            
             
         } else {

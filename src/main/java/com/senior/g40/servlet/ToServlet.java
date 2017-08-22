@@ -31,8 +31,11 @@ public class ToServlet extends HttpServlet {
 
         switch (option) {
             case "main":
-                to(App.Path.JSP_DIR + "main.jsp");
+                to("/main.jsp");
                 break;
+             case "dayReport":
+                to(App.Path.JSP_DIR + "/main_old.jsp");
+                break;    
             case "index":
                 to("/index.jsp");
                 break;

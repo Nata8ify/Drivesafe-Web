@@ -19,6 +19,6 @@ public class Area51 {
 //        System.out.println(StatisticService.getInstance().getNumberOfPatientTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
 //        System.out.println(StatisticService.getInstance().getNumberAnotherTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
 //        System.out.println(new Accident().toJson());
-        System.out.println(new Gson().toJson(StatisticService.getInstance().getTotalAccidentLatLng(1L)));
+     //   System.out.println(new Gson().toJson(StatisticService.getInstance().getTotalAccidentLatLng(1L)));
     }
 }
