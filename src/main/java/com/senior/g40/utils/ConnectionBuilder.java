@@ -39,7 +39,7 @@ public class ConnectionBuilder {
             System.out.println("Try... Connected with Host.");
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://54.169.83.168/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
+            String dbUrl = "jdbc:mysql://54.254.187.201/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
             String user = "drvsafeany";
             String pw = "@Qwerty69";
             try {
