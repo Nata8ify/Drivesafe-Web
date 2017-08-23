@@ -67,7 +67,10 @@ public class DashboardServlet extends HttpServlet {
             case "getByDateAccidentLatLng" : //Get Total Accident Latitude & Longitude By Date (For Google Marker or another purpose) (Date Filter is Optional by date) (Inbound Filter is Optional by userId)
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getByDateAccidentLatLng(Date.valueOf(getAsString("date")), getAsLong("userId"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
-                break;      
+                break;
+            case "getTodayStatusPercentage" : // Get Percentage of Accident Status / Code order by "A G R C", Can be filtered by Specifically Date 
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getStatusPercentage(Date.valueOf(getAsString("date")))));
+                goTo(App.Path.JSP_RESULT_PAGE);
             default : throw new IllegalStateException("No Such Option Available.");
         }
         return;

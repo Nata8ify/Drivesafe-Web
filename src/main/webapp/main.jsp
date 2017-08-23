@@ -183,14 +183,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
+                                            <td colspan="3">Loading...</td>
                                         </tr>
                                     </tbody>
                                 </table>

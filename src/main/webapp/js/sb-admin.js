@@ -4,7 +4,7 @@
     // Configure tooltips for collapsed side navigation
     $('.navbar-sidenav [data-toggle="tooltip"]').tooltip({
         template: '<div class="tooltip navbar-sidenav-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
-    })
+    });
 
     // Toggle the side navigation
     $("#sidenavToggler").click(function (e) {
@@ -67,7 +67,8 @@
                 "loadingRecords": "No Incident In Record... "
             },
             "searching": false,
-            "bLengthChange": false});
+            "bLengthChange": false,
+            "pageLength": 5 });
     });
 
 })(jQuery); // End of use strict
@@ -133,10 +134,10 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ["Blue", "Red", "Yellow", "Green"],
+        labels: ["Awaiting", "Going", "Rescuing", "Closed"],
         datasets: [{
                 data: [12.21, 15.58, 11.25, 8.32],
-                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-            }],
-    },
+                backgroundColor: [ '#dc3545', '#ffc107', '#007bff', '#28a745']
+            }]
+    }
 });
