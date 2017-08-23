@@ -60,15 +60,44 @@
             },
             "columns": [
                 {"data": "time", "width": "5%"},
-                {"width": "5%"},
-                {"width": "50%"}
+                {"width": "90%"},
+                {"width": "5%"}
             ],
+            "fnRowCallback": function (nRow, aData) {
+                var accCodeText = aData.accCode; // ID is returned by the server as part of the data
+                var $nRow = $(nRow); // cache the row wrapped up in jQuery
+                // alert(accCodeText);
+                if (accCodeText === "A") {
+                    $nRow.css({"background-color": "#dc3545"});
+                } else if (accCodeText === "G") {
+                    $nRow.css({"background-color": "#ffc107"});
+                } else if (accCodeText === "R") {
+                    $nRow.css({"background-color": "#007bff"});
+                } else if (accCodeText === "C") {
+                    $nRow.css({"background-color": "#28a745"});
+                }
+                $("td", nRow).eq(1).empty();
+                $("td", nRow).eq(1).prepend("<img src='image/acctype/" + aData.accType + ".png' width='50px' class='img img-thumbnail'/>");
+                $.ajax({
+                    "url": "http://maps.googleapis.com/maps/api/geocode/json",
+                    "data": {"sensor": true, "latlng": (aData.latitude) + "," + (aData.longitude)},
+                    "success": function (result) {
+                        if (result.status == "OK") {
+                            $("td", nRow).eq(2).html(result.results[0].formatted_address);
+                        } else {
+                            $("td", nRow).eq(2).html("Missing Place, (" + (aData.latitude) + "," + (aData.longitude) + ")");
+                        }
+                        $("td", nRow).eq(2).css("font-size", "12px");
+                    }
+                });
+                return nRow;
+            },
             "language": {
                 "loadingRecords": "No Incident In Record... "
             },
             "searching": false,
             "bLengthChange": false,
-            "pageLength": 5 });
+            "pageLength": 5});
     });
 
 })(jQuery); // End of use strict
@@ -80,10 +109,12 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // -- Area Chart Example
 var ctx = document.getElementById("myAreaChart");
+var reportFreqSeries = [];
+var isGetReportFreqFirst = true;
 var myLineChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+        labels: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
         datasets: [{
                 label: "Sessions",
                 lineTension: 0.3,
@@ -95,15 +126,14 @@ var myLineChart = new Chart(ctx, {
                 pointHoverRadius: 5,
                 pointHoverBackgroundColor: "rgba(2,117,216,1)",
                 pointHitRadius: 20,
-                pointBorderWidth: 2,
-                data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
-            }],
+                pointBorderWidth: 2
+            }]
     },
     options: {
         scales: {
             xAxes: [{
                     time: {
-                        unit: 'date'
+                        unit: 'hour'
                     },
                     gridLines: {
                         display: false
@@ -115,13 +145,13 @@ var myLineChart = new Chart(ctx, {
             yAxes: [{
                     ticks: {
                         min: 0,
-                        max: 40000,
+                        max: 100,
                         maxTicksLimit: 5
                     },
                     gridLines: {
-                        color: "rgba(0, 0, 0, .125)",
+                        color: "rgba(0, 0, 0, .125)"
                     }
-                }],
+                }]
         },
         legend: {
             display: false
@@ -129,15 +159,57 @@ var myLineChart = new Chart(ctx, {
     }
 });
 
+setInterval(buildReportFreqChart, 2500);
+function buildReportFreqChart() {
+    console.log("result");
+    $.ajax({
+        url: "Dashboard?opt=getReportFreqTimeSeries",
+        data: {date: moment().format("YYYY-MM-DD")},
+        success: function (result) {
+            reportFreqSeries = JSON.parse(result);
+//            if (isGetReportFreqFirst) {
+//                isGetReportFreqFirst = false;
+//            } else {
+//
+//            }
+            myLineChart.data.datasets[0].data = [reportFreqSeries];
+            myLineChart.update();
+            console.log(reportFreqSeries);
+        }
+    });
+}
+
+
 // -- Pie Chart Example
 var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: ["Awaiting", "Going", "Rescuing", "Closed"],
-        datasets: [{
-                data: [12.21, 15.58, 11.25, 8.32],
-                backgroundColor: [ '#dc3545', '#ffc107', '#007bff', '#28a745']
-            }]
-    }
-});
+var myPieChart;
+var codeSeries = [];
+var isGetStatusFirst = true;
+setInterval(buildAccCodeChart, 3000);
+function buildAccCodeChart() {
+    $.ajax({
+        url: "Dashboard?opt=getStatusPercentage",
+        data: {date: moment().format("YYYY-MM-DD")},
+        success: function (result) {
+            codeSeries = JSON.parse(result);
+            if (isGetStatusFirst) {
+
+                myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    animation: false,
+                    data: {
+                        labels: ["Awaiting", "Going", "Rescuing", "Closed"],
+                        datasets: [{
+                                data: codeSeries,
+                                backgroundColor: ['#dc3545', '#ffc107', '#007bff', '#28a745']
+                            }]
+                    }
+                });
+                isGetStatusFirst = false;
+            } else {
+                myPieChart.data.datasets[0].data = codeSeries;
+                myPieChart.update();
+            }
+        }
+    });
+}

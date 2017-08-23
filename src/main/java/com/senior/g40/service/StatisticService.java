@@ -570,7 +570,7 @@ public class StatisticService {
         ResultSet rs = null;
         try {
             String sqlCmd = "SELECT `accCode`, COUNT(`accCode`) FROM `accident` WHERE `date` = "
-                    + (date == null ? "CURDATE();" : "?;") + "  GROUP BY `accCode`;";
+                    + (date == null ? "CURDATE()" : "?") + "  GROUP BY `accCode`;";
             System.out.println(sqlCmd);
             pstm = conn.prepareStatement(sqlCmd);
             if (date != null) {
@@ -604,6 +604,36 @@ public class StatisticService {
         return statusCount;
     }
 
+    public ArrayList<String> getReportFreqSeries(Date date) {
+        ArrayList<String> reportSeries = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
+                    + (date == null ? "CURDATE()" : "?");
+//             String sqlCmd = "SELECT `time`, COUNT(`time`) FROM `accident` WHERE `date` = "
+//                    + (date == null ? "CURDATE()" : "?")
+//                    + "GROUP BY `time` ORDER BY `time` ASC";
+            pstm = conn.prepareStatement(sqlCmd);
+            if (date != null) {
+                pstm.setDate(1, date);
+            }
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (reportSeries == null) {
+                    reportSeries = new ArrayList<>();
+                }
+                reportSeries.add(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return reportSeries;
+    }
+    
     /**
      * ***Dealing with JSON***** Return as String is easier and saving more
      * memory resource. Gson is no need Exception handler for dealing with JSON.

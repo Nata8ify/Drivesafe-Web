@@ -132,18 +132,6 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0 mr-lg-2">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" data-toggle="modal" href="Logout">
                             <i class="fa fa-fw fa-sign-out"></i>
                             Logout</a>
@@ -174,7 +162,7 @@
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
-                                    <thead>
+                                    <thead style="display: none;">
                                         <tr>
                                             <th>Time</th>
                                             <th>Category</th>
@@ -341,6 +329,7 @@
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
     <!-- Custom scripts for this template -->
+    <script src="js/moment.js"></script>
     <script src="js/sb-admin.js"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">

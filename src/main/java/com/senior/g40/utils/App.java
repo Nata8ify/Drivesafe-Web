@@ -7,6 +7,8 @@ public class App {
         public static final String JSP_DIR = "/WEB-INF/jsp/";
         public static final String JSP_RESULT_DIR = "/WEB-INF/jsp/result/";
         public static final String JSP_RESULT_PAGE = "/WEB-INF/jsp/result/result.jsp";
+        public static final String JSP_RESULT_PAGE_2 = "/WEB-INF/jsp/result/result2.jsp";
+        public static final String JSP_RESULT_PAGE_3 = "/WEB-INF/jsp/result/result3.jsp";
         public static final String JSP_OTHER_DIR = "/WEB-INF/jsp/others/";
         public static final String IMGS_DIR = "/WEB-INF/repo/imgs/";
     }

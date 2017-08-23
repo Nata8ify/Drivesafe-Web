@@ -34,6 +34,7 @@ public class DashboardServlet extends HttpServlet {
      */
     private HttpServletRequest request;
     private HttpServletResponse response;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.request = request;
@@ -43,40 +44,45 @@ public class DashboardServlet extends HttpServlet {
         AccidentService as = AccidentService.getInstance();
         Gson gson = new Gson();
         //opt = "getDayOfWeekAccsFreq";
-        switch(opt){
-            case "getTodayAccsInBound" : //Today Inbounded Accident find by userId
+        switch (opt) {
+            case "getTodayAccsInBound": //Today Inbounded Accident find by userId
                 request.setAttribute(App.Attr.RESULT, gson.toJson(as.getCurrentDateInBoundAccidents(getAsLong("userId"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getDayOfWeekAccsFreq" : //Frequency of Accidents in a day of week that was occured can filter a result by month or year.
+            case "getDayOfWeekAccsFreq": //Frequency of Accidents in a day of week that was occured can filter a result by month or year.
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayOFWeekAccidentFreq(getAsInteger("month"), getAsInteger("year"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getDayMonthlyAccsFreq" : //Frequency of Accidents in a day of month that was occured can filter a result by year
+            case "getDayMonthlyAccsFreq": //Frequency of Accidents in a day of month that was occured can filter a result by year
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayMonthlyAccidentFreq(getAsInteger("year"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getTodayOnDutyRscrPf" : //Get the total on duty rescuer by current date (on duty is not 'A')
+            case "getTodayOnDutyRscrPf": //Get the total on duty rescuer by current date (on duty is not 'A')
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getOnDutyRescuerProfiles(null)));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getTotalAccidentLatLng" : //Get Total Accident Latitude & Longitude (For Google Marker or another purpose) (Inbound Filter is Optional by userId)
+            case "getTotalAccidentLatLng": //Get Total Accident Latitude & Longitude (For Google Marker or another purpose) (Inbound Filter is Optional by userId)
                 request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getTotalAccidentLatLng(getAsLong("userId"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getByDateAccidentLatLng" : //Get Total Accident Latitude & Longitude By Date (For Google Marker or another purpose) (Date Filter is Optional by date) (Inbound Filter is Optional by userId)
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getByDateAccidentLatLng(Date.valueOf(getAsString("date")), getAsLong("userId"))));
+            case "getByDateAccidentLatLng": //Get Total Accident Latitude & Longitude By Date (For Google Marker or another purpose) (Date Filter is Optional by date) (Inbound Filter is Optional by userId)
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getByDateAccidentLatLng(getAsDate("date"), getAsLong("userId"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
                 break;
-            case "getTodayStatusPercentage" : // Get Percentage of Accident Status / Code order by "A G R C", Can be filtered by Specifically Date 
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getStatusPercentage(Date.valueOf(getAsString("date")))));
+            case "getReportFreqTimeSeries": //Get Report Time Series.
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getReportFreqSeries(getAsDate("date"))));
                 goTo(App.Path.JSP_RESULT_PAGE);
-            default : throw new IllegalStateException("No Such Option Available.");
+                break;
+            case "getStatusPercentage": // Get Percentage of Accident Status / Code order by "A G R C", Can be filtered by Specifically Date 
+                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getStatusPercentage(getAsDate("date"))));
+                goTo(App.Path.JSP_RESULT_PAGE_2);
+                break;
+            default:
+                throw new IllegalStateException("No Such Option Available.");
         }
         return;
     }
 
-    
     private void goTo(String destination) throws ServletException, IOException {
         getServletContext().getRequestDispatcher(destination).forward(request, response);
     }
@@ -84,28 +90,39 @@ public class DashboardServlet extends HttpServlet {
     private String getAsString(String param) {
         return request.getParameter(param);
     }
-    
+
     private char getAsChar(String param) {
         return request.getParameter(param).charAt(0);
     }
 
     private Integer getAsInteger(String param) {
-        if(request.getParameter(param)==null){return null;}
+        if (request.getParameter(param) == null) {
+            return null;
+        }
         return Integer.valueOf(request.getParameter(param));
     }
-    
+
     private Long getAsLong(String param) {
-        if(request.getParameter(param)==null){return null;}
+        if (request.getParameter(param) == null) {
+            return null;
+        }
         return Long.valueOf(request.getParameter(param));
     }
 
     private Float getAsFloat(String param) {
-        if(request.getParameter(param)==null){return null;}
+        if (request.getParameter(param) == null) {
+            return null;
+        }
         return Float.valueOf(request.getParameter(param));
     }
+    
+    private Date getAsDate(String param) {
+        if (request.getParameter(param) == null) {
+            return null;
+        }
+        return Date.valueOf(request.getParameter(param));
+    }
 
-    
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
