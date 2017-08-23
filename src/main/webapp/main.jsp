@@ -56,7 +56,7 @@
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">
-                                Day Report/span>
+                                Day Report</span>
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
@@ -82,33 +82,6 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <div class="dropdown-menu" aria-labelledby="messagesDropdown">
-                            <h6 class="dropdown-header">New Messages:</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
-                                <strong>David Miller</strong>
-                                <span class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
-                                <strong>Jane Smith</strong>
-                                <span class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
-                                <strong>John Doe</strong>
-                                <span class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.</div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item small" href="#">
-                                View all messages
-                            </a>
-                        </div>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle mr-lg-2" href="#" id="alertsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-bell"></i>
@@ -171,7 +144,7 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#exampleModal" href="Logout">>
+                        <a class="nav-link" data-toggle="modal" href="Logout">
                             <i class="fa fa-fw fa-sign-out"></i>
                             Logout</a>
                     </li>
@@ -184,158 +157,142 @@
             <div class="container-fluid">
                 <!-- Icon Cards -->
                 <div class="row">
-                    <div class="col-xl-8 col-sm-6 mb-8" >
+                    <div class="col-xl-7 col-sm-6 mb-7" >
                         <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div>
                     </div>
-                    <div class="col-xl-4 col-sm-6 mb-4">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                            </ol>
-                            <div class="carousel-inner" role="listbox">
-                                <div class="carousel-item active">
-                                    <canvas id="myPieChart" width="100%" height="100"></canvas>
-                                </div>
-                                <div class="carousel-item">
-                                    <!--                                    TODO-->
-                                </div>
-                                <div class="carousel-item">
-                                    <!--                                    TODO-->
-                                </div>
+                    <div class="col-xl-5 col-sm-6 mb-5">
+                        <div class="row">
+                            <div class="col-sm-12" style="align-content: center; padding: 10px">
+                                <iframe src="http://free.timeanddate.com/clock/i5v17a87/n28/tlec/fs30/tt0/tw0/tb2" frameborder="0" width="100%" height="38"></iframe>
                             </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
+                        </div>
+                        <!-- Example Tables Card -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fa fa-table"></i>
+                                Incident Overview
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Category</th>
+                                            <th>Location</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tiger Nixon</td>
+                                            <td>System Architect</td>
+                                            <td>Edinburgh</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Garrett Winters</td>
+                                            <td>Accountant</td>
+                                            <td>Tokyo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer small text-muted">
+                                Updated yesterday at 11:59 PM
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-
-                <div class="col-lg-8">
-
-                    <!-- Example Bar Chart Card -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fa fa-bar-chart"></i>
-                            Bar Chart Example
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-8 my-auto">
-                                    <canvas id="myBarChart" width="100" height="50"></canvas>
-                                </div>
-                                <div class="col-sm-4 text-center my-auto">
-                                    <div class="h4 mb-0 text-primary">$34,693</div>
-                                    <div class="small text-muted">YTD Revenue</div>
-                                    <hr>
-                                    <div class="h4 mb-0 text-warning">$18,474</div>
-                                    <div class="small text-muted">YTD Expenses</div>
-                                    <hr>
-                                    <div class="h4 mb-0 text-success">$16,219</div>
-                                    <div class="small text-muted">YTD Margin</div>
-                                </div>
+            <br/>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Example Notifications Card -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fa fa-bell-o"></i>
+                                Monitoring Feed
+                            </div>
+                            <div class="list-group list-group-flush small">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="media">
+                                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                                        <div class="media-body">
+                                            <strong>David Miller</strong>
+                                            posted a new article to
+                                            <strong>David Miller Website</strong>.
+                                            <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="media">
+                                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                                        <div class="media-body">
+                                            <strong>Samantha King</strong>
+                                            sent you a new message!
+                                            <div class="text-muted smaller">Today at 4:37 PM - 1hr ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="media">
+                                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                                        <div class="media-body">
+                                            <strong>Jeffery Wellings</strong>
+                                            added a new photo to the album
+                                            <strong>Beach</strong>.
+                                            <div class="text-muted smaller">Today at 4:31 PM - 1hr ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="media">
+                                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                                        <div class="media-body">
+                                            <i class="fa fa-code-fork"></i>
+                                            <strong>Monica Dennis</strong>
+                                            forked the
+                                            <strong>startbootstrap-sb-admin</strong>
+                                            repository on
+                                            <strong>GitHub</strong>.
+                                            <div class="text-muted smaller">Today at 3:54 PM - 2hrs ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    View all activity...
+                                </a>
+                            </div>
+                            <div class="card-footer small text-muted">
+                                Updated yesterday at 11:59 PM
                             </div>
                         </div>
-                        <div class="card-footer small text-muted">
-                            Updated yesterday at 11:59 PM
-                        </div>
                     </div>
 
-                </div>
+                    <div class="col-lg-4">
+                        <!-- Example Pie Chart Card -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fa fa-pie-chart"></i>
+                                Incident Status Chart
+                            </div>
+                            <div class="card-body">
+                                <canvas id="myPieChart" width="100%" height="100"></canvas>
+                            </div>
+                            <div class="card-footer small text-muted">
+                                Updated yesterday at 11:59 PM
+                            </div>
+                        </div>
 
-                <div class="col-lg-4">
-                    <!-- Example Pie Chart Card -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fa fa-pie-chart"></i>
-                            Pie Chart Example
-                        </div>
-                        <div class="card-body">
-<!--                            <canvas id="myPieChart" width="100%" height="100"></canvas>-->
-                        </div>
-                        <div class="card-footer small text-muted">
-                            Updated yesterday at 11:59 PM
-                        </div>
-                    </div>
-                    <!-- Example Notifications Card -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fa fa-bell-o"></i>
-                            Feed Example
-                        </div>
-                        <div class="list-group list-group-flush small">
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="media">
-                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                                    <div class="media-body">
-                                        <strong>David Miller</strong>
-                                        posted a new article to
-                                        <strong>David Miller Website</strong>.
-                                        <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="media">
-                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                                    <div class="media-body">
-                                        <strong>Samantha King</strong>
-                                        sent you a new message!
-                                        <div class="text-muted smaller">Today at 4:37 PM - 1hr ago</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="media">
-                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                                    <div class="media-body">
-                                        <strong>Jeffery Wellings</strong>
-                                        added a new photo to the album
-                                        <strong>Beach</strong>.
-                                        <div class="text-muted smaller">Today at 4:31 PM - 1hr ago</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="media">
-                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                                    <div class="media-body">
-                                        <i class="fa fa-code-fork"></i>
-                                        <strong>Monica Dennis</strong>
-                                        forked the
-                                        <strong>startbootstrap-sb-admin</strong>
-                                        repository on
-                                        <strong>GitHub</strong>.
-                                        <div class="text-muted smaller">Today at 3:54 PM - 2hrs ago</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                View all activity...
-                            </a>
-                        </div>
-                        <div class="card-footer small text-muted">
-                            Updated yesterday at 11:59 PM
-                        </div>
                     </div>
                 </div>
             </div>
-
 
             <!-- Area Chart Example -->
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fa fa-area-chart"></i>
-                    Area Chart Example
+                    Day Report Historical Chart
                 </div>
                 <div class="card-body">
                     <canvas id="myAreaChart" width="100%" height="15"></canvas>
@@ -346,60 +303,6 @@
             </div>
 
 
-            <!-- Example Tables Card -->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-table"></i>
-                    Data Table Example
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
-                                </tr>
-                                <tr>
-                                    <td>Garrett Winters</td>
-                                    <td>Accountant</td>
-                                    <td>Tokyo</td>
-                                    <td>63</td>
-                                    <td>2011/07/25</td>
-                                    <td>$170,750</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card-footer small text-muted">
-                    Updated yesterday at 11:59 PM
-                </div>
-            </div>
 
         </div>
         <!-- /.container-fluid -->
@@ -445,7 +348,7 @@
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="js/sb-admin.min.js"></script>
+    <script src="js/sb-admin.js"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
     </script>
