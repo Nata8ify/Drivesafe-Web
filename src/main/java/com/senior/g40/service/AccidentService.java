@@ -346,7 +346,7 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date = ? AND  accCode IN (?, ?, ?) ORDER BY accCode;";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = ? AND  accCode IN (?, ?, ?) ORDER BY FIELD(`accCode`, 'A', 'G', 'R'), `time`";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, today);
             pstm.setString(2, String.valueOf(Accident.ACC_CODE_A));

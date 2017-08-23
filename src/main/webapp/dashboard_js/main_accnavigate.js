@@ -67,6 +67,10 @@ function settingMap(opMap, opLatLng, bound, mainBound) {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     directionsDisplay.setMap(opMap);
+    updateIncidentMarkers(opMap);
+    setInterval(function () {
+        updateIncidentMarkers(opMap);
+    }, 6000);
     new google.maps.Marker({
         position: opLatLng,
         map: opMap,
@@ -91,7 +95,7 @@ function settingMap(opMap, opLatLng, bound, mainBound) {
 
 
 function setSettingRefProperties(opLatLng, bound, mainBound) {
-    $('a[href*=sett]').attr('href', 'To?opt=sett&lat=' + opLatLng['lat'] + "&lng=" + opLatLng['lng'] + "&bound=" + bound+"&mainBound=" + mainBound);
+    $('a[href*=sett]').attr('href', 'To?opt=sett&lat=' + opLatLng['lat'] + "&lng=" + opLatLng['lng'] + "&bound=" + bound + "&mainBound=" + mainBound);
 }
 
 function setDefaultOpProperties(lat, lng, boundRadius) {
@@ -115,7 +119,7 @@ $('#acctable tbody').on('<disabled>', 'tr .btnNearHospital', function () {
     var req = {
         location: new google.maps.LatLng(lat, lng),
         radius: '5000',
-        types: ['hospital']  
+        types: ['hospital']
     };
 //    var domOpMap = $('#map')[0];
     opMapTemp = opMap;

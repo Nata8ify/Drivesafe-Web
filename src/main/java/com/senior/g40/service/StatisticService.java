@@ -604,17 +604,19 @@ public class StatisticService {
         return statusCount;
     }
 
-    public ArrayList<String> getReportFreqSeries(Date date) {
-        ArrayList<String> reportSeries = null;
+    public ArrayList<ArrayList<Object>> getReportFreqSeries(Date date) {
+        ArrayList<ArrayList<Object>> reportSeries = null;
+        ArrayList<Object> timeEntry = null;
+        ArrayList<Object> fequencyValue = null;
         Connection conn = ConnectionBuilder.getConnection();
         PreparedStatement pstm = null;
         ResultSet rs = null;
         try {
-            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
-                    + (date == null ? "CURDATE()" : "?");
-//             String sqlCmd = "SELECT `time`, COUNT(`time`) FROM `accident` WHERE `date` = "
-//                    + (date == null ? "CURDATE()" : "?")
-//                    + "GROUP BY `time` ORDER BY `time` ASC";
+//            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
+//                    + (date == null ? "CURDATE()" : "?");
+             String sqlCmd = "SELECT `time`, COUNT(`time`) FROM `accident` WHERE `date` = "
+                    + (date == null ? "CURDATE()" : "?")
+                    + "GROUP BY `time` ORDER BY `time` ASC";
             pstm = conn.prepareStatement(sqlCmd);
             if (date != null) {
                 pstm.setDate(1, date);
@@ -623,8 +625,15 @@ public class StatisticService {
             while (rs.next()) {
                 if (reportSeries == null) {
                     reportSeries = new ArrayList<>();
+                    timeEntry = new ArrayList<>();
+                    fequencyValue = new ArrayList<>();
                 }
-                reportSeries.add(rs.getString(1));
+                timeEntry.add(rs.getString(1));
+                fequencyValue.add(rs.getInt(2));
+            }
+            if (reportSeries != null) {
+                reportSeries.add(timeEntry);
+                reportSeries.add(fequencyValue);
             }
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
@@ -633,7 +642,7 @@ public class StatisticService {
         }
         return reportSeries;
     }
-    
+
     /**
      * ***Dealing with JSON***** Return as String is easier and saving more
      * memory resource. Gson is no need Exception handler for dealing with JSON.

@@ -51,8 +51,9 @@
     });
 
     // Call the dataTables jQuery plugin
+    var incidentTable;
     $(document).ready(function () {
-        $('#dataTable').DataTable({
+        incidentTable =$('#dataTable').DataTable({
             "ajax": {
                 "url": "Monitor?opt=currentDateInBoundReq",
                 "type": "GET",
@@ -63,7 +64,9 @@
                 {"width": "90%"},
                 {"width": "5%"}
             ],
+            "order": [[1, "asc"]],
             "fnRowCallback": function (nRow, aData) {
+                console.log(aData);
                 var accCodeText = aData.accCode; // ID is returned by the server as part of the data
                 var $nRow = $(nRow); // cache the row wrapped up in jQuery
                 // alert(accCodeText);
@@ -77,13 +80,15 @@
                     $nRow.css({"background-color": "#28a745"});
                 }
                 $("td", nRow).eq(1).empty();
-                $("td", nRow).eq(1).prepend("<img src='image/acctype/" + aData.accType + ".png' width='50px' class='img img-thumbnail'/>");
+                $("td", nRow).eq(1).prepend("<img class='img-acc-ico' src='image/acctype/" + aData.accType + ".png' width='40px' />");
+                $(".img-acc-ico").css("text-align", "center");
                 $.ajax({
                     "url": "http://maps.googleapis.com/maps/api/geocode/json",
                     "data": {"sensor": true, "latlng": (aData.latitude) + "," + (aData.longitude)},
                     "success": function (result) {
                         if (result.status == "OK") {
-                            $("td", nRow).eq(2).html(result.results[0].formatted_address);
+                            var addrComponent = result.results[0].address_components;
+                            $("td", nRow).eq(2).html(addrComponent[0].long_name.concat(", ".concat(addrComponent[1].long_name)).concat(", ".concat(addrComponent[2].long_name)).concat(", ".concat(addrComponent[3].long_name)).concat(", ".concat(addrComponent[5].long_name)));
                         } else {
                             $("td", nRow).eq(2).html("Missing Place, (" + (aData.latitude) + "," + (aData.longitude) + ")");
                         }
@@ -99,6 +104,9 @@
             "bLengthChange": false,
             "pageLength": 5});
     });
+    setInterval(function(){
+        incidentTable.ajax.reload(null, false);
+    }, 6000);
 
 })(jQuery); // End of use strict
 
@@ -172,8 +180,9 @@ function buildReportFreqChart() {
 //            } else {
 //
 //            }
-            myLineChart.data.datasets[0].data = [reportFreqSeries];
-            myLineChart.update();
+//            myLineChart.data.labels = [reportFreqSeries[0]];
+//            myLineChart.data.datasets[0].data = [reportFreqSeries[1]];
+//            myLineChart.update();
             console.log(reportFreqSeries);
         }
     });

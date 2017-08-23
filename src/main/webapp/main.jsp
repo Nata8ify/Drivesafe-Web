@@ -335,8 +335,8 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
     </script>
     <script>
-        <%@include file="monitor_js/main_accnavigate.js"  %>
-        <%@include file="monitor_js/main_accupdater.js"  %>
+        <%@include file="dashboard_js/main_accnavigate.js"  %>
+        <%@include file="dashboard_js/main_accupdater.js"  %>
     </script>
 
     <script>
