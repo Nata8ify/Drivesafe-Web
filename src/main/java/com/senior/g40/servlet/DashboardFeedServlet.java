@@ -5,6 +5,7 @@
  */
 package com.senior.g40.servlet;
 
+import com.google.gson.Gson;
 import com.senior.g40.service.FeedService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,12 +37,13 @@ public class DashboardFeedServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         this.request = request;
         this.response = response;
+        Gson gson = new Gson();
         FeedService fs = FeedService.getInstance();
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String opt = getAsString("opt");
             switch(opt){
-                case "get" : out.print(fs.getFeeds(null)); break;
+                case "get" : out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis())))); break;
             }
         }
     }

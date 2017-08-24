@@ -36,7 +36,6 @@ import org.json.JSONObject;
 public class AccidentService {
 
     private static AccidentService accService;
-
     public static AccidentService getInstance() {
         if (accService == null) {
             accService = new AccidentService();
@@ -65,6 +64,7 @@ public class AccidentService {
                 System.out.println(acc);
                 if (acc != null) {
                     result = new Result(true, "Crash Information Saved", acc);
+                    saveFeed(acc.getUserId(), acc.getAccidentId(), Accident.ACC_CODE_A);
                     saveCrashDetail(acc.getAccidentId(), acc.getForceDetect(), acc.getSpeedDetect());
                 }
             }
@@ -118,6 +118,7 @@ public class AccidentService {
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     setAccident(rs, acc);
+                    saveFeed(acc.getUserId(), acc.getAccidentId(), Accident.ACC_CODE_A);
                     result = new Result(true, "Saved", acc);
                 }
             }
@@ -158,6 +159,7 @@ public class AccidentService {
     }
 
     public Result updateAccCodeStatus(long rescuerId, long accId, char accCode) {
+        
         Connection conn = null;
         PreparedStatement pstm = null;
         Result result = null;
@@ -171,6 +173,7 @@ public class AccidentService {
             pstm.setLong(3, accId);
             if(pstm.executeUpdate() != 0){
                 result = new Result(true, "Update Success!");
+                saveFeed(rescuerId, accId, accCode);
                 boardcastUpdateRescueRequest(onUpdateCodeAccident);
             }
         } catch (SQLException ex) {
@@ -742,5 +745,8 @@ public class AccidentService {
         return result;
     }
 
+    private void saveFeed(long userId, long accidentId, char updatedAccCode){
+        FeedService.getInstance().save(userId, accidentId, updatedAccCode);
+    }
 //    --------------------------------- Other
 }

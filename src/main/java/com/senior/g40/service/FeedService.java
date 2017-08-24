@@ -28,8 +28,6 @@ import java.util.logging.Logger;
 public class FeedService {
 
     private static FeedService feedService;
-    private AccidentService accidentService;
-    private UserService userService;
 
     public static FeedService getInstance() {
         if (feedService == null) {
@@ -46,7 +44,7 @@ public class FeedService {
             String sqlCmd = "INSERT INTO `feed`(`updatedAccCode`, `accidentId`, `userId`) VALUES (?, ?, ?);";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setString(1, String.valueOf(updatedAccCode));
-            pstm.setLong(2, updatedAccCode);
+            pstm.setLong(2, accidentId);
             pstm.setLong(3, userId);
             pstm.executeUpdate();
         } catch (SQLException ex) {
@@ -84,11 +82,18 @@ public class FeedService {
                 long accidentId = rs.getLong("accidentId");
                 long userId = rs.getLong("userId");
                 Timestamp timestamp =  rs.getTimestamp("timestamp");
+                System.out.println(feedId+" : "+updatedAccCode+" : "+accidentId+" : "+userId+" : "+timestamp);
                 feed.setFeedId(feedId);
-                feed.setAccident(accidentService.getAccidentById(accidentId));
+                feed.setAccident(AccidentService.getInstance().getAccidentById(accidentId));
                 feed.setTimestamp(timestamp);
                 feed.setUpdatedAccCode(updatedAccCode);
-                feed.setRscrName(userService.getProfileByUserId(userId).getName());
+                String userName = UserService.getInstance().getProfileByUserId(userId).getName();
+                if(updatedAccCode!=Accident.ACC_CODE_A){
+                    feed.setRscrName(userName);
+                } else {
+                    feed.setReporterName(userName);
+                }
+                feeds.add(feed);
             }
         } catch (SQLException ex) {
             Logger.getLogger(FeedService.class.getName()).log(Level.SEVERE, null, ex);
