@@ -5,6 +5,9 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.service.StatisticService;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONException;
 import org.junit.Test;
 
@@ -19,7 +22,8 @@ public class Area51 {
 //        System.out.println(StatisticService.getInstance().getNumberOfPatientTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
 //        System.out.println(StatisticService.getInstance().getNumberAnotherTypeAccident(Date.valueOf("2017-05-01"), Date.valueOf("2017-05-16")));
 //        System.out.println(new Accident().toJson());
-     //   System.out.println(new Gson().toJson(StatisticService.getInstance().getTotalAccidentLatLng(1L)));
-        System.out.println(gson.toJson(StatisticService.getInstance().getReportFreqSeries(Date.valueOf("2017-08-23"))));
+        //   System.out.println(new Gson().toJson(StatisticService.getInstance().getTotalAccidentLatLng(1L)));
+        int[] times = StatisticService.getInstance().getReportFreqSeries(null);
+        System.out.println(gson.toJson(times));
     }
 }

@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -604,43 +605,90 @@ public class StatisticService {
         return statusCount;
     }
 
-    public ArrayList<ArrayList<Object>> getReportFreqSeries(Date date) {
-        ArrayList<ArrayList<Object>> reportSeries = null;
-        ArrayList<Object> timeEntry = null;
-        ArrayList<Object> fequencyValue = null;
+    public int[] getReportFreqSeries(Date date) {
+        int[] freqSeries = null;
+        ArrayList<String> freqSeriesStrs = null;
         Connection conn = ConnectionBuilder.getConnection();
         PreparedStatement pstm = null;
         ResultSet rs = null;
         try {
-//            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
-//                    + (date == null ? "CURDATE()" : "?");
-             String sqlCmd = "SELECT `time`, COUNT(`time`) FROM `accident` WHERE `date` = "
-                    + (date == null ? "CURDATE()" : "?")
-                    + "GROUP BY `time` ORDER BY `time` ASC";
+            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
+                    + (date == null ? "CURDATE()" : "?");
             pstm = conn.prepareStatement(sqlCmd);
             if (date != null) {
                 pstm.setDate(1, date);
             }
             rs = pstm.executeQuery();
             while (rs.next()) {
-                if (reportSeries == null) {
-                    reportSeries = new ArrayList<>();
-                    timeEntry = new ArrayList<>();
-                    fequencyValue = new ArrayList<>();
+                if (freqSeriesStrs == null) {
+                    freqSeriesStrs = new ArrayList<>();
                 }
-                timeEntry.add(rs.getString(1));
-                fequencyValue.add(rs.getInt(2));
-            }
-            if (reportSeries != null) {
-                reportSeries.add(timeEntry);
-                reportSeries.add(fequencyValue);
+                freqSeriesStrs.add(rs.getString(1));
             }
         } catch (SQLException ex) {
             Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
-        return reportSeries;
+        freqSeries = getPeriodReportRequently(freqSeriesStrs);
+        return freqSeries;
+    }
+
+    private int[] getPeriodReportRequently(ArrayList<String> times) {
+        int[] series = new int[23];
+        Time javaTime;
+        for (String time : times) {
+            javaTime = Time.valueOf(time.concat(":00"));
+            System.out.println(javaTime);
+            if (javaTime.after(Time.valueOf("00:00:00")) && javaTime.before(Time.valueOf("01:00:00"))) {
+                series[0] += 1;
+            } else if (javaTime.after(Time.valueOf("01:00:00")) && javaTime.before(Time.valueOf("02:00:00"))) {
+                series[1] += 1;
+            } else if (javaTime.after(Time.valueOf("02:00:00")) && javaTime.before(Time.valueOf("03:00:00"))) {
+                series[2] += 1;
+            } else if (javaTime.after(Time.valueOf("03:00:00")) && javaTime.before(Time.valueOf("04:00:00"))) {
+                series[3] += 1;
+            } else if (javaTime.after(Time.valueOf("04:00:00")) && javaTime.before(Time.valueOf("05:00:00"))) {
+                series[4] += 1;
+            } else if (javaTime.after(Time.valueOf("05:00:00")) && javaTime.before(Time.valueOf("06:00:00"))) {
+                series[5] += 1;
+            } else if (javaTime.after(Time.valueOf("07:00:00")) && javaTime.before(Time.valueOf("08:00:00"))) {
+                series[6] += 1;
+            } else if (javaTime.after(Time.valueOf("08:00:00")) && javaTime.before(Time.valueOf("09:00:00"))) {
+                series[7] += 1;
+            } else if (javaTime.after(Time.valueOf("09:00:00")) && javaTime.before(Time.valueOf("10:00:00"))) {
+                series[8] += 1;
+            } else if (javaTime.after(Time.valueOf("10:00:00")) && javaTime.before(Time.valueOf("11:00:00"))) {
+                series[9] += 1;
+            } else if (javaTime.after(Time.valueOf("11:00:00")) && javaTime.before(Time.valueOf("12:00:00"))) {
+                series[10] += 1;
+            } else if (javaTime.after(Time.valueOf("12:00:00")) && javaTime.before(Time.valueOf("13:00:00"))) {
+                series[11] += 1;
+            } else if (javaTime.after(Time.valueOf("13:00:00")) && javaTime.before(Time.valueOf("14:00:00"))) {
+                series[12] += 1;
+            } else if (javaTime.after(Time.valueOf("14:00:00")) && javaTime.before(Time.valueOf("15:00:00"))) {
+                series[13] += 1;
+            } else if (javaTime.after(Time.valueOf("15:00:00")) && javaTime.before(Time.valueOf("16:00:00"))) {
+                series[14] += 1;
+            } else if (javaTime.after(Time.valueOf("16:00:00")) && javaTime.before(Time.valueOf("17:00:00"))) {
+                series[15] += 1;
+            } else if (javaTime.after(Time.valueOf("17:00:00")) && javaTime.before(Time.valueOf("18:00:00"))) {
+                series[16] += 1;
+            } else if (javaTime.after(Time.valueOf("18:00:00")) && javaTime.before(Time.valueOf("19:00:00"))) {
+                series[17] += 1;
+            } else if (javaTime.after(Time.valueOf("19:00:00")) && javaTime.before(Time.valueOf("20:00:00"))) {
+                series[18] += 1;
+            } else if (javaTime.after(Time.valueOf("20:00:00")) && javaTime.before(Time.valueOf("21:00:00"))) {
+                series[19] += 1;
+            } else if (javaTime.after(Time.valueOf("21:00:00")) && javaTime.before(Time.valueOf("22:00:00"))) {
+                series[20] += 1;
+            } else if (javaTime.after(Time.valueOf("22:00:00")) && javaTime.before(Time.valueOf("23:00:00"))) {
+                series[21] += 1;
+            } else {
+                series[22] += 1;
+            }
+        }
+        return series;
     }
 
     /**

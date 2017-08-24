@@ -53,7 +53,7 @@
     // Call the dataTables jQuery plugin
     var incidentTable;
     $(document).ready(function () {
-        incidentTable =$('#dataTable').DataTable({
+        incidentTable = $('#dataTable').DataTable({
             "ajax": {
                 "url": "Monitor?opt=currentDateInBoundReq",
                 "type": "GET",
@@ -104,7 +104,7 @@
             "bLengthChange": false,
             "pageLength": 5});
     });
-    setInterval(function(){
+    setInterval(function () {
         incidentTable.ajax.reload(null, false);
     }, 6000);
 
@@ -115,75 +115,64 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// -- Area Chart Example
-var ctx = document.getElementById("myAreaChart");
+// -- Bar Chart Example
+var barCtx = document.getElementById("myBarChart");
+var myLineChart;
 var reportFreqSeries = [];
-var isGetReportFreqFirst = true;
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
-        datasets: [{
-                label: "Sessions",
-                lineTension: 0.3,
-                backgroundColor: "rgba(2,117,216,0.2)",
-                borderColor: "rgba(2,117,216,1)",
-                pointRadius: 5,
-                pointBackgroundColor: "rgba(2,117,216,1)",
-                pointBorderColor: "rgba(255,255,255,0.8)",
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                pointHitRadius: 20,
-                pointBorderWidth: 2
-            }]
-    },
-    options: {
-        scales: {
-            xAxes: [{
-                    time: {
-                        unit: 'hour'
-                    },
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: {
-                        maxTicksLimit: 7
-                    }
-                }],
-            yAxes: [{
-                    ticks: {
-                        min: 0,
-                        max: 100,
-                        maxTicksLimit: 5
-                    },
-                    gridLines: {
-                        color: "rgba(0, 0, 0, .125)"
-                    }
-                }]
-        },
-        legend: {
-            display: false
-        }
-    }
-});
-
-setInterval(buildReportFreqChart, 2500);
+var isGetFreqreportFirst = true;
+setTimeout(function(){buildReportFreqChart(); setInterval(buildReportFreqChart, 10000);}, 3500);
 function buildReportFreqChart() {
-    console.log("result");
     $.ajax({
         url: "Dashboard?opt=getReportFreqTimeSeries",
-        data: {date: moment().format("YYYY-MM-DD")},
         success: function (result) {
             reportFreqSeries = JSON.parse(result);
-//            if (isGetReportFreqFirst) {
-//                isGetReportFreqFirst = false;
-//            } else {
-//
-//            }
-//            myLineChart.data.labels = [reportFreqSeries[0]];
-//            myLineChart.data.datasets[0].data = [reportFreqSeries[1]];
-//            myLineChart.update();
             console.log(reportFreqSeries);
+            if (isGetFreqreportFirst) {
+                myLineChart = new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00", "04:00-05:00", "05:00-06:00", "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00"],
+                        datasets: [{
+                                label: "Frequency (Time)",
+                                backgroundColor: "rgba(2,117,216,1)",
+                                borderColor: "rgba(2,117,216,1)",
+                                data: reportFreqSeries
+                            }]
+                    },
+                    options: {
+                        animation: false,
+                        scales: {
+                            xAxes: [{
+                                    time: {
+                                        unit: 'hour'
+                                    },
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        maxTicksLimit: 6
+                                    }
+                                }],
+                            yAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: 20,
+                                        maxTicksLimit: 5
+                                    },
+                                    gridLines: {
+                                        display: true
+                                    }
+                                }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            } else {
+                myLineChart.data.datasets[0].data = reportFreqSeries;
+                myLineChart.update();
+            }
         }
     });
 }

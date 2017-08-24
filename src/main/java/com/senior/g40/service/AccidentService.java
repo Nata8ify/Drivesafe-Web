@@ -346,12 +346,12 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date = ? AND  accCode IN (?, ?, ?) ORDER BY FIELD(`accCode`, 'A', 'G', 'R'), `time`";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = CURDATE() AND  accCode IN (?, ?, ?) ORDER BY FIELD(`accCode`, 'A', 'G', 'R'), `time`";
             pstm = conn.prepareStatement(sqlCmd);
-            pstm.setDate(1, today);
-            pstm.setString(2, String.valueOf(Accident.ACC_CODE_A));
-            pstm.setString(3, String.valueOf(Accident.ACC_CODE_G));
-            pstm.setString(4, String.valueOf(Accident.ACC_CODE_R));
+//            pstm.setDate(1, today);
+            pstm.setString(1, String.valueOf(Accident.ACC_CODE_A));
+            pstm.setString(2, String.valueOf(Accident.ACC_CODE_G));
+            pstm.setString(3, String.valueOf(Accident.ACC_CODE_R));
             rs = pstm.executeQuery();
             while (rs.next()) {
                 accident = new Accident();

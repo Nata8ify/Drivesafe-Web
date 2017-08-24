@@ -61,9 +61,14 @@ function getOpLatLng(opMap) {
 
 function settingMap(opMap, opLatLng, bound, mainBound) {
     opMap = new google.maps.Map(document.getElementById('map'), {
-        zoom: 9,
+        zoom: 12,
         center: opLatLng
     });
+//    var bound = new google.maps.LatLngBounds();
+//    bound.extend(opLatLng);
+//    var extendBoundLatLng = opLatLng.lat +bound/111;
+//    bound.extend(extendBoundLatLng);
+//    opMap.fitBounds(bound);
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     directionsDisplay.setMap(opMap);
