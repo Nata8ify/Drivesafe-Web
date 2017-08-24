@@ -76,6 +76,10 @@
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>com.senior.g40.servlet.DashboardServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DashboardFeedServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.DashboardFeedServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ToServlet</servlet-name>
         <url-pattern>/To</url-pattern>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardFeedServlet</servlet-name>
+        <url-pattern>/DashboardFeed</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

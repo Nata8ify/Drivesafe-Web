@@ -40,6 +40,10 @@ public class Profile {
         this.userId = userId;
     }
 
+    public String getName(){
+        return getFirstName().concat(" ").concat(getLastName());
+    }
+    
     public String getFirstName() {
         return firstName;
     }

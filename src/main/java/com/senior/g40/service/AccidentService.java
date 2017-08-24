@@ -249,7 +249,7 @@ public class AccidentService {
     }
 
     //Its name says anythings.
-    private Accident getAccidentById(long accidentId) {
+    public Accident getAccidentById(long accidentId) {
         Connection conn = null;
         Accident accident = null;
         PreparedStatement pstm = null;
