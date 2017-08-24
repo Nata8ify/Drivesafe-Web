@@ -131,7 +131,6 @@ function updateIncidentMarkers(opMap) {
         url: "Monitor?opt=currentDateInBoundReq",
         data: {userId: "${pf.userId}"},
         success: function (result) {
-            console.log(result);
             var marker;
             console.log("++++++++++++++++++++");
                 removeMarkers(incidentMarkers);

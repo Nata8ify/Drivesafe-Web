@@ -28,9 +28,9 @@ public class Area51 {
 //        int[] times = StatisticService.getInstance().getReportFreqSeries(null);
 //        System.out.println(gson.toJson(times));
         FeedService fs = FeedService.getInstance();
-//        fs.save(14, 567, Accident.ACC_CODE_A);
-//        fs.save(1, 567, Accident.ACC_CODE_G);
-//        fs.save(14, 566, Accident.ACC_CODE_A);
+        fs.save(14, 563, Accident.ACC_CODE_A);
+        fs.save(1, 563, Accident.ACC_CODE_G);
+        fs.save(14, 562, Accident.ACC_CODE_R);
         for(Feed feed : fs.getFeeds(new Date(System.currentTimeMillis()))){
             System.out.println(feed.toString());
         }
