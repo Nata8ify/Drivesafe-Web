@@ -235,17 +235,14 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-    <script>
-        <%@include file="dashboard_js/main_accnavigate.js"  %>
-        <%@include file="dashboard_js/main_accupdater.js"  %>
-    </script>
     <!-- Custom scripts for this template -->
     <script src="js/moment.js"></script>
+    <script src="dashboard_js/main_accnavigate.js"></script>
+    <script src="dashboard_js/main_accupdater.js"></script>
     <script src="js/sb-admin.js"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
     </script>
-
 
     <script>
         $("#i-collapse-menu").click();

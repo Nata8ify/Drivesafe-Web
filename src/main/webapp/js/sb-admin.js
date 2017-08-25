@@ -1,3 +1,134 @@
+
+var OPT_STORE_OL = "storeOpLocation";
+
+var opMap;
+var opMapTemp;
+var KMUTT_LATLNG = {lat: 13.651553, lng: 100.495030};
+var directionsDisplay;
+var directionsService;
+function initMap() {
+    getOpLatLng(opMap);
+}
+
+var accidents = [];
+var crashLatLng; // Crash LatLng
+var opLatLng; // Operating Center LatLng
+
+function navigate(crashLatLng) {
+    $.getJSON("RescuerIn?opt=getaccs").done(function () {
+        if (opMapTemp !== undefined) {
+            opMap = opMapTemp;
+        }
+        directionsService.route({
+            origin: opLatLng,
+            destination: crashLatLng,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status == 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    });
+}
+
+function setMapCenter(latLng) {
+    window.opMap.setCenter(latLng);
+    window.opMap.setZoom(20);
+    window.opMap.createMarker(latLng);
+}
+
+/* Event Listener */
+
+/* Function */
+var OPT_GET_OL = "getOpLocation";
+var opBound;
+function getOpLatLng(opMap) {
+    $.when($.ajax({
+        url: "Setting?mode=n&opt=" + OPT_GET_OL}))
+            .done(function (json) {
+                var opLocationJSON = $.parseJSON(json);
+                opLatLng = {lat: opLocationJSON['latLng']['latitude'], lng: opLocationJSON['latLng']['longitude']};
+                opBound = opLocationJSON['neutralBound'];
+                mainOpBound = opLocationJSON['mainBound'];
+                settingMap(opMap, opLatLng, opBound, mainOpBound);
+            })
+            .fail(function () {
+                setDefaultOpProperties(KMUTT_LATLNG.lat, KMUTT_LATLNG.lng, 10);
+                return;
+            });
+}
+
+function settingMap(opMap, opLatLng, bound, mainBound) {
+    opMap = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: opLatLng
+    });
+    window.opMap = opMap;
+//    var bound = new google.maps.LatLngBounds();
+//    bound.extend(opLatLng);
+//    var extendBoundLatLng = opLatLng.lat +bound/111;
+//    bound.extend(extendBoundLatLng);
+//    opMap.fitBounds(bound);
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay.setMap(opMap);
+    updateIncidentMarkers(opMap);
+    setInterval(function () {
+        updateIncidentMarkers(opMap);
+    }, 6000);
+    new google.maps.Marker({
+        position: opLatLng,
+        map: opMap,
+        title: "Operting Place"
+    });
+    new google.maps.Circle({
+        fillColor: '#AAA',
+        map: opMap,
+        center: opLatLng,
+        radius: bound * 1000
+    });
+    if (mainBound !== 0) {
+        new google.maps.Circle({
+            fillColor: '#FAA',
+            map: opMap,
+            center: opLatLng,
+            radius: mainBound * 1000
+        });
+    }
+    setSettingRefProperties(opLatLng, bound, mainBound);
+}
+
+
+function setSettingRefProperties(opLatLng, bound, mainBound) {
+    $('a[href*=sett]').attr('href', 'To?opt=sett&lat=' + opLatLng['lat'] + "&lng=" + opLatLng['lng'] + "&bound=" + bound + "&mainBound=" + mainBound);
+}
+
+function setDefaultOpProperties(lat, lng, boundRadius) {
+    $.ajax({
+        url: "Setting?opt=" + OPT_STORE_OL,
+        data: {
+            lat: lat,
+            lng: lng,
+            boundRds: boundRadius
+        }}).done(function () {
+        initMap();
+    });
+}
+
+/* Event Listener */
+$('#btn-go-top').click(function () {
+    document.location = '#demo-navbar';
+});
+
+/* Other */
+function callbackMessage(str) {
+    $('#callback-msg').html(str);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
 (function ($) {
     "use strict"; // Start of use strict
 
@@ -68,7 +199,6 @@
             "order": [[1, "asc"]],
             "bInfo": false,
             "fnRowCallback": function (nRow, aData) {
-                console.log(aData);
                 var accCodeText = aData.accCode; // ID is returned by the server as part of the data
                 var $nRow = $(nRow); // cache the row wrapped up in jQuery
                 // alert(accCodeText);
@@ -111,15 +241,13 @@
         incidentTable.ajax.reload(null, false);
     }, 6000);
 
-var opMap = $("#map");
-$('#dataTable tbody ').on('click', 'tr', function () {
-    var accRow = incidentTable.row($(this)).data();
-    var lat = accRow.latitude;
-    var lng = accRow.longitude;
-    var latLng = {lat: lat, lng: lng};
-//    opMap.setCenter(latLng);
-    navigate(latLng);
-});
+    $('#dataTable tbody').on('click', 'tr', function () {
+        var accRow = incidentTable.row($(this)).data();
+        var lat = accRow.latitude;
+        var lng = accRow.longitude;
+        var latLng = {lat: lat, lng: lng};
+        setMapCenter(latLng);
+    });
 
 })(jQuery); // End of use strict
 
@@ -143,7 +271,6 @@ function buildReportFreqChart() {
         url: "Dashboard?opt=getReportFreqTimeSeries",
         success: function (result) {
             reportFreqSeries = JSON.parse(result);
-            console.log(reportFreqSeries);
             if (isGetFreqreportFirst) {
                 myLineChart = new Chart(barCtx, {
                     type: 'bar',
@@ -237,14 +364,13 @@ function getFeeds() {
     feeds = [];
     $.ajax({
         url: "DashboardFeed?opt=get",
-        data : {limit : 5},
+        data: {limit: 5},
         success: function (resultFeeds) {
             feeds = JSON.parse(resultFeeds);
             var feedBodyMessage;
             var feedContent;
             $.each(feeds, function (index, feed) {
                 $("#append-feed").empty();
-                console.log(feed);
                 $.ajax({
                     "url": "http://maps.googleapis.com/maps/api/geocode/json",
                     "data": {"sensor": true, "latlng": (feed.accident.latitude) + "," + (feed.accident.longitude)},
@@ -282,5 +408,172 @@ function getFeeds() {
                 });
             });
         }
+    });
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$.fn.dataTable.ext.errMode = 'none';
+
+var dataTable;
+$('document').ready(function () {
+
+    var quickAccURL = "Monitor?opt=currentDateInBoundReq";
+    dataTable = $('#acctable').DataTable({
+        stateSave: true,
+        "ajax": {
+            "url": quickAccURL,
+            "type": "GET",
+            "dataSrc": ""
+        },
+        "columns": [
+            {"data": "time", "width": "5%"},
+            {"width": "5%"},
+            {"width": "50%"},
+            {"data": "accCode", "width": "10%"},
+            {"data": "goToAcc", "width": "10%"},
+            {"data": "hospital", "width": "10%"}
+        ],
+        "order": [[1, "asc"]],
+        "columnDefs": [{
+                "targets": -1,
+                "data": null,
+                "defaultContent": "<button class='btnNearHospital btn btn-default'> &nbsp;<i class='glyphicon glyphicon-search'></i></button>"//< ปุ่มกดไปโรงบาล โค้ดอันล่างสุด 
+            }, {
+                "targets": -2,
+                "data": null,
+                "defaultContent": "<button class='accident btn btn-default'> &nbsp;<i class='glyphicon glyphicon-map-marker'></i></button>"
+            }
+
+        ],
+        "language": {
+            "loadingRecords": "Pending ... ",
+            "zeroRecords": "No Accident Rescue Request (For Now)" //<- Not Work?
+        },
+        "fnRowCallback": function (nRow, aData) {
+            var accCodeText = aData.accCode; // ID is returned by the server as part of the data
+            var $nRow = $(nRow); // cache the row wrapped up in jQuery
+            var accCodeDesc;
+            // alert(accCodeText);
+            if (accCodeText === "A") {
+                $nRow.css({"background-color": "#ff7575"});
+                accCodeDesc = "Waiting for Rescue";
+            } else if (accCodeText === "G") {
+                $nRow.css({"background-color": "#ffb912"});
+                accCodeDesc = "Going";
+            } else if (accCodeText === "R") {
+                $nRow.css({"background-color": "#ffed80"});
+                accCodeDesc = "Rescuing";
+            } else if (accCodeText === "C") {
+                $nRow.css({"background-color": "#8cff8c"});
+                accCodeDesc = "Closed";
+            }
+            $("td", nRow).eq(1).prepend("<img src='image/acctype/" + aData.accType + ".png' width='50px' class='img img-thumbnail'/>");
+            $("td", nRow).eq(3).html(accCodeDesc);
+            $.ajax({
+                "url": "http://maps.googleapis.com/maps/api/geocode/json",
+                "data": {"sensor": true, "latlng": (aData.latitude) + "," + (aData.longitude)},
+                "success": function (result) {
+                    if (result.status == "OK") {
+                        $("td", nRow).eq(2).html(result.results[0].formatted_address);
+                    } else {
+                        $("td", nRow).eq(2).html("Missing Place, (" + (aData.latitude) + "," + (aData.longitude) + ")");
+                    }
+                }
+            });
+            return nRow
+        },
+        "order": [[0, "desc"]]
+
+
+    });
+});
+
+var recCount;
+var NEWCOMING_ALARM_URL = "http://abaaabcd.dl-one2up.com/onetwo/content/2017/5/7/d1218b20726722127d5bdf79a14706bb.mp3";
+setInterval(function () {
+    recCount = dataTable.data().count();
+    dataTable.ajax.reload(function () {
+        if (recCount < dataTable.data().count()) {
+            new Audio(NEWCOMING_ALARM_URL).play();
+        }
+    }, false);
+
+    $.fn.dataTable.ext.errMode = 'none'; //Disable the Error Dialog Only.
+}, 3000);
+
+
+$('#acctable tbody ').on('click', 'tr .btnNearHospital', function () {
+    var accRow = dataTable.row($(this).parents('tr')).data();
+    var lat = accRow.latitude;
+    var lng = accRow.longitude;
+    crashLatLng = {lat: lat, lng: lng};
+
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: crashLatLng,
+        zoom: 15,
+    });
+
+    infowindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+        location: crashLatLng,
+        types: ['hospital'],
+        radius: 5000,
+        rankBy: google.maps.places.RankBy.PROMINENCE
+    }, callback);
+});
+
+var incidentMarkers = [];
+function updateIncidentMarkers(opMap) {
+    $.ajax({
+        url: "Monitor?opt=currentDateInBoundReq",
+        data: {userId: "${pf.userId}"},
+        success: function (result) {
+            var marker;
+            removeMarkers(incidentMarkers);
+            incidentMarkers = [];
+            $.each(JSON.parse(result), function (index, acc) {
+                marker = new google.maps.Marker({
+                    position: {lat: acc.latitude, lng: acc.longitude},
+                    map: opMap,
+                    title: "ID " + acc.accidentId + " : " + acc.accCode,
+                    icon: "image/markers/".concat(acc.accCode.toLowerCase().concat(".png"))
+                });
+                incidentMarkers.push(marker);
+            });
+        }
+    });
+}
+
+function callback(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+        }
+    }
+}
+
+function removeMarkers(incidentMarkers) {
+    $.each(incidentMarkers, function (index, marker) {
+        marker.setMap(null);
+    });
+}
+
+function createMarker(place) {
+    var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
     });
 }
