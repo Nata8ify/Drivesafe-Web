@@ -52,6 +52,7 @@
 
     // Call the dataTables jQuery plugin
     var incidentTable;
+    var accTableUpdateMsg = $("#acctable-lastest-update");
     $(document).ready(function () {
         incidentTable = $('#dataTable').DataTable({
             "ajax": {
@@ -105,6 +106,7 @@
             "pageLength": 5});
     });
     setInterval(function () {
+        accTableUpdateMsg.html("Updated "+moment().format("LL HH:mm:ss"));
         incidentTable.ajax.reload(null, false);
     }, 6000);
 
@@ -120,6 +122,7 @@ var barCtx = document.getElementById("myBarChart");
 var myLineChart;
 var reportFreqSeries = [];
 var isGetFreqreportFirst = true;
+var historyReportUpdateMsg = $("#history-report-lastest-update");
 setTimeout(function () {
     buildReportFreqChart();
     setInterval(buildReportFreqChart, 10000);
@@ -157,11 +160,6 @@ function buildReportFreqChart() {
                                     }
                                 }],
                             yAxes: [{
-                                    ticks: {
-                                        min: 0,
-                                        max: 20,
-                                        maxTicksLimit: 5
-                                    },
                                     gridLines: {
                                         display: true
                                     }
@@ -175,6 +173,7 @@ function buildReportFreqChart() {
             } else {
                 myLineChart.data.datasets[0].data = reportFreqSeries;
                 myLineChart.update();
+                historyReportUpdateMsg.html("Updated "+moment().format("LL HH:mm:ss"));
             }
         }
     });
@@ -186,6 +185,7 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart;
 var codeSeries = [];
 var isGetStatusFirst = true;
+var accCodeUpdateMsg = $("#acccode-lastest-update");
 setInterval(buildAccCodeChart, 3000);
 function buildAccCodeChart() {
     $.ajax({
@@ -208,6 +208,7 @@ function buildAccCodeChart() {
                 });
                 isGetStatusFirst = false;
             } else {
+                accCodeUpdateMsg.html("Updated "+moment().format("LL HH:mm:ss"));
                 myPieChart.data.datasets[0].data = codeSeries;
                 myPieChart.update();
             }
@@ -217,7 +218,10 @@ function buildAccCodeChart() {
 
 /* Feed Here (Below)  */
 var feeds;
-setInterval(getFeeds, 3000);
+setTimeout(function () {
+    getFeeds();
+    setInterval(getFeeds, 10000);
+}, 10);
 function getFeeds() {
     feeds = [];
     $.ajax({
@@ -259,8 +263,8 @@ function getFeeds() {
                         } else {
                             place = "[Connection Error]";
                         }
-                        feedContent = $("<a href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='http://placehold.it/45x45' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode==='A'||feed.updatedAccCode==='U')?feed.reporterName:feed.rscrName) + "</strong>"+feedBodyMessage+"<div class='text-muted smaller'>Today at 5:43 PM - 5m ago</div></div></div> </a>");
-                        
+                        feedContent = $("<a href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='http://placehold.it/45x45' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>"+feed.timestamp+"</div></div></div> </a>");
+
                         $("#append-feed").append(feedContent);
                     }
                 });

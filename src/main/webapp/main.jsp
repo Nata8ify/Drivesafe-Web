@@ -128,8 +128,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer small text-muted">
-                                Updated yesterday at 11:59 PM
+                            <div class="card-footer small text-muted" id="acctable-lastest-update">
+                                
                             </div>
                         </div>
                     </div>
@@ -162,9 +162,6 @@
                                     View all activity...
                                 </a>
                             </div>
-                            <div class="card-footer small text-muted">
-                                Updated yesterday at 11:59 PM
-                            </div>
                         </div>
                     </div>
 
@@ -178,8 +175,8 @@
                             <div class="card-body">
                                 <canvas id="myPieChart" width="100%" height="100"></canvas>
                             </div>
-                            <div class="card-footer small text-muted">
-                                Updated yesterday at 11:59 PM
+                            <div class="card-footer small text-muted" id="acccode-lastest-update">
+                                
                             </div>
                         </div>
 
@@ -196,8 +193,8 @@
                 <div class="card-body">
                     <canvas id="myBarChart" width="100%" height="15"></canvas>
                 </div>
-                <div class="card-footer small text-muted">
-                    Updated yesterday at 11:59 PM
+                <div class="card-footer small text-muted" id="history-report-lastest-update">
+                    
                 </div>
             </div>
 

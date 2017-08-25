@@ -66,7 +66,7 @@ public class FeedService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `feed` WHERE DATE(`timestamp`) = " + (date == null ? "CURDATE()" : "?") + " ORDER BY feedId DESC LIMIT 4;";
+            String sqlCmd = "SELECT * FROM `feed` WHERE DATE(`timestamp`) = " + (date == null ? "CURDATE()" : "?") + " ORDER BY feedId DESC LIMIT 5;";
             pstm = conn.prepareStatement(sqlCmd);
             if (date != null) {
                 pstm.setDate(1, date);
