@@ -93,16 +93,7 @@ setInterval(function () {
 }, 3000);
 
 
-$('#acctable tbody ').on('click', 'tr .accident', function () {
 
-    var accRow = dataTable.row($(this).parents('tr')).data();
-    var lat = accRow.latitude;
-    var lng = accRow.longitude;
-    $("#callback-msg").html("Selected Accident Location is on " + lat + " : " + lng);
-    document.location = "#map";
-    crashLatLng = {lat: lat, lng: lng};
-    navigate(crashLatLng);
-});
 
 $('#acctable tbody ').on('click', 'tr .btnNearHospital', function () {
     var accRow = dataTable.row($(this).parents('tr')).data();

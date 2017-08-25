@@ -66,6 +66,7 @@
                 {"width": "5%"}
             ],
             "order": [[1, "asc"]],
+            "bInfo": false,
             "fnRowCallback": function (nRow, aData) {
                 console.log(aData);
                 var accCodeText = aData.accCode; // ID is returned by the server as part of the data
@@ -106,9 +107,19 @@
             "pageLength": 5});
     });
     setInterval(function () {
-        accTableUpdateMsg.html("Updated "+moment().format("LL HH:mm:ss"));
+        accTableUpdateMsg.html("Updated " + moment().format("LL HH:mm:ss"));
         incidentTable.ajax.reload(null, false);
     }, 6000);
+
+var opMap = $("#map");
+$('#dataTable tbody ').on('click', 'tr', function () {
+    var accRow = incidentTable.row($(this)).data();
+    var lat = accRow.latitude;
+    var lng = accRow.longitude;
+    var latLng = {lat: lat, lng: lng};
+//    opMap.setCenter(latLng);
+    navigate(latLng);
+});
 
 })(jQuery); // End of use strict
 
@@ -173,7 +184,7 @@ function buildReportFreqChart() {
             } else {
                 myLineChart.data.datasets[0].data = reportFreqSeries;
                 myLineChart.update();
-                historyReportUpdateMsg.html("Updated "+moment().format("LL HH:mm:ss"));
+                historyReportUpdateMsg.html("Updated " + moment().format("LL HH:mm:ss"));
             }
         }
     });
@@ -208,7 +219,7 @@ function buildAccCodeChart() {
                 });
                 isGetStatusFirst = false;
             } else {
-                accCodeUpdateMsg.html("Updated "+moment().format("LL HH:mm:ss"));
+                accCodeUpdateMsg.html("Updated " + moment().format("LL HH:mm:ss"));
                 myPieChart.data.datasets[0].data = codeSeries;
                 myPieChart.update();
             }
@@ -226,6 +237,7 @@ function getFeeds() {
     feeds = [];
     $.ajax({
         url: "DashboardFeed?opt=get",
+        data : {limit : 5},
         success: function (resultFeeds) {
             feeds = JSON.parse(resultFeeds);
             var feedBodyMessage;
@@ -263,7 +275,7 @@ function getFeeds() {
                         } else {
                             place = "[Connection Error]";
                         }
-                        feedContent = $("<a href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='http://placehold.it/45x45' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>"+feed.timestamp+"</div></div></div> </a>");
+                        feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='http://placehold.it/45x45' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>" + feed.timestamp + "</div></div></div> </span>");
 
                         $("#append-feed").append(feedContent);
                     }

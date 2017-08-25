@@ -32,7 +32,11 @@
 
         <!-- Custom styles for this template -->
         <link href="css/sb-admin.css" rel="stylesheet">
-
+        <style>
+            #dataTable tr:hover{
+                cursor: pointer;
+            }
+        </style>
     </head>
 
     <body class="fixed-nav" id="page-top">
@@ -84,7 +88,7 @@
                 <ul class="navbar-nav ml-auto">
                    
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" href="Logout">
+                        <a class="nav-link" href="Logout">
                             <i class="fa fa-fw fa-sign-out"></i>
                             Logout</a>
                     </li>
@@ -98,7 +102,7 @@
                 <!-- Icon Cards -->
                 <div class="row">
                     <div class="col-xl-7 col-sm-6 mb-7" >
-                        <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div>
+                        <div id="map" style="background-color: #ddd;width: 100%;height: 500px;" class="img img-thumbnail"></div>
                     </div>
                     <div class="col-xl-5 col-sm-6 mb-5">
                         <div class="row">
@@ -146,21 +150,10 @@
                                 Monitoring Feed
                             </div>
                             <div class="list-group list-group-flush small">
-<!--                                <a href='#' class='list-group-item list-group-item-action'>
-                                    <div class='media'>
-                                        <img class='d-flex mr-3 rounded-circle' src='http://placehold.it/45x45' alt=''>
-                                        <div class='media-body'>
-                                            <strong>David Miller</strong>
-                                            posted a new article to
-                                            <strong>David Miller Website</strong>.
-                                            <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
-                                        </div>
-                                    </div>
-                                </a>-->
                             <div id='append-feed'></div>
-                                <a href="#" class="list-group-item list-group-item-action">
+<!--                                <a href="To?opt=feed" class="list-group-item list-group-item-action">
                                     View all activity...
-                                </a>
+                                </a>-->
                             </div>
                         </div>
                     </div>
@@ -242,17 +235,17 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-
+    <script>
+        <%@include file="dashboard_js/main_accnavigate.js"  %>
+        <%@include file="dashboard_js/main_accupdater.js"  %>
+    </script>
     <!-- Custom scripts for this template -->
     <script src="js/moment.js"></script>
     <script src="js/sb-admin.js"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
     </script>
-    <script>
-        <%@include file="dashboard_js/main_accnavigate.js"  %>
-        <%@include file="dashboard_js/main_accupdater.js"  %>
-    </script>
+
 
     <script>
         $("#i-collapse-menu").click();

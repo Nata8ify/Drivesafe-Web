@@ -58,7 +58,7 @@ public class FeedService {
      * @param date Specify Date of Feeds (Total Feeds by Default if 'date' is
      * null).
      */
-    public List<Feed> getFeeds(Date date) {
+    public List<Feed> getFeeds(Date date, Integer limit) {
         List<Feed> feeds = null;
         Feed feed = null;
         Connection conn = null;
@@ -66,10 +66,17 @@ public class FeedService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `feed` WHERE DATE(`timestamp`) = " + (date == null ? "CURDATE()" : "?") + " ORDER BY feedId DESC LIMIT 5;";
+            String sqlCmd = "SELECT * FROM `feed`"
+                    + (date == null ? "" : "WHERE DATE(`timestamp`) = ?")
+                    + " ORDER BY feedId DESC"
+                    + (limit==null?";":" LIMIT ?;");
             pstm = conn.prepareStatement(sqlCmd);
+            System.out.println(sqlCmd);
             if (date != null) {
                 pstm.setDate(1, date);
+            }
+            if (limit != null) {
+                pstm.setInt(2, limit);
             }
             rs = pstm.executeQuery();
             while (rs.next()) {

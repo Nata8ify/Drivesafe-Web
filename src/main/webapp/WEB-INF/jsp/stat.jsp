@@ -19,22 +19,6 @@
         <title>Statistic Page</title>
     </head>
     <body>
-
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation-demo" id="demo-navbar">
-            <div class="container">
-                <a class="navbar-brand">WeeWorh System</a>
-                <div class="collapse navbar-collapse" id="navigation-example-2">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="To?opt=main">Main</a>
-                        </li>
-                        <li>
-                            <a href="Logout">Logout / Invalidate</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
         <div class="container">
             <!--<h3><a href="#acc-stat-chart">Number of Accident Statistic</a> <a href="#acc-stat-map">Visualizing Accident Location</a></h3><br/>-->
             <br/><br/><br/><br/>

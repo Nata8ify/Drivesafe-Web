@@ -48,6 +48,9 @@ public class ToServlet extends HttpServlet {
             case "rregis":
                 to(App.Path.JSP_OTHER_DIR + "rregis.jsp");
                 break;
+             case "feed":
+                to(App.Path.JSP_DIR + "feed.jsp");
+                break;    
             default:
                 return;
         }

@@ -32,6 +32,7 @@ public class DashboardFeedServlet extends HttpServlet {
      */
     private HttpServletRequest request;
     private HttpServletResponse response;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,12 +43,17 @@ public class DashboardFeedServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String opt = getAsString("opt");
-            switch(opt){
-                case "get" : out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis())))); break;
+            switch (opt) {
+                case "get":
+                    out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis()), getAsInteger("limit"))));
+                    break;
+                case "getall":
+                    out.print(gson.toJson(fs.getFeeds(null, null)));
+                    break;
             }
         }
     }
-    
+
     private void goTo(String destination) throws ServletException, IOException {
         getServletContext().getRequestDispatcher(destination).forward(request, response);
     }
@@ -80,14 +86,14 @@ public class DashboardFeedServlet extends HttpServlet {
         }
         return Float.valueOf(request.getParameter(param));
     }
-    
+
     private Date getAsDate(String param) {
         if (request.getParameter(param) == null) {
             return null;
         }
         return Date.valueOf(request.getParameter(param));
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
