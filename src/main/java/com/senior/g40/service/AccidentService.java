@@ -35,12 +35,18 @@ import org.json.JSONObject;
  */
 public class AccidentService {
 
+    private List<Accident> boundedAccidents;
     private static AccidentService accService;
+
     public static AccidentService getInstance() {
         if (accService == null) {
             accService = new AccidentService();
         }
         return accService;
+    }
+
+    public AccidentService() {
+        boundedAccidents = new ArrayList<>();
     }
 
     //------------------------------------About INSERT/ADD. - START
@@ -61,7 +67,6 @@ public class AccidentService {
             prepareIncidentStatement(pstm, acc);
             if (pstm.executeUpdate() != 0) {
                 acc = getLatestAccident(conn);
-                System.out.println(acc);
                 if (acc != null) {
                     result = new Result(true, "Crash Information Saved", acc);
                     saveFeed(acc.getUserId(), acc.getAccidentId(), Accident.ACC_CODE_A);
@@ -159,7 +164,7 @@ public class AccidentService {
     }
 
     public Result updateAccCodeStatus(long rescuerId, long accId, char accCode) {
-        
+
         Connection conn = null;
         PreparedStatement pstm = null;
         Result result = null;
@@ -171,7 +176,7 @@ public class AccidentService {
             pstm.setString(1, String.valueOf(accCode));
             pstm.setLong(2, rescuerId);
             pstm.setLong(3, accId);
-            if(pstm.executeUpdate() != 0){
+            if (pstm.executeUpdate() != 0) {
                 result = new Result(true, "Update Success!");
                 saveFeed(rescuerId, accId, accCode);
                 boardcastUpdateRescueRequest(onUpdateCodeAccident);
@@ -276,7 +281,7 @@ public class AccidentService {
         }
         return accident;
     }
-    
+
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = null;
@@ -366,12 +371,16 @@ public class AccidentService {
                     accidents.add(accident);
                 }
             }
+            boundedAccidents.clear();
+            boundedAccidents.addAll(accidents);
+            System.out.println(boundedAccidents);
             resetOP();
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
+
         return accidents;
     }
 
@@ -557,7 +566,6 @@ public class AccidentService {
         pstm.setDouble(5, acc.getLongitude());
         pstm.setString(6, String.valueOf(Accident.ACC_CODE_A));
         pstm.setByte(7, acc.getAccType());
-        System.out.println(acc.toString());
     }
 //    --------------------------------- Dealing with JSON
 
@@ -657,7 +665,7 @@ public class AccidentService {
     private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
     private final String TOPIC_INCIDENT = "/topics/incident";
     private final String TOPIC_UPDATE_CODE = "/topics/update";
-    
+
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -700,7 +708,7 @@ public class AccidentService {
         }
         return result;
     }
-    
+
     public Result boardcastUpdateRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -715,7 +723,7 @@ public class AccidentService {
 
             JSONObject notification = new JSONObject();
             notification.put("title", acc.getTime());
-            notification.put("body", acc.getResponsibleRescr()+" now "+acc.getAccCode()+" on "+acc.getAccType());
+            notification.put("body", acc.getResponsibleRescr() + " now " + acc.getAccCode() + " on " + acc.getAccType());
             message.put("notification", notification);
 
             JSONObject data = new JSONObject();
@@ -745,8 +753,17 @@ public class AccidentService {
         return result;
     }
 
-    private void saveFeed(long userId, long accidentId, char updatedAccCode){
+    private void saveFeed(long userId, long accidentId, char updatedAccCode) {
         FeedService.getInstance().save(userId, accidentId, updatedAccCode);
     }
 //    --------------------------------- Other
+
+    public List<Accident> getBoundedAccidents() {
+        return boundedAccidents;
+    }
+
+    public void setBoundedAccidents(List<Accident> boundedAccidents) {
+        this.boundedAccidents = boundedAccidents;
+    }
+
 }
