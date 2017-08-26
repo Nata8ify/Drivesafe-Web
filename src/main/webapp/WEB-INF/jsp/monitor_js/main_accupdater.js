@@ -34,7 +34,7 @@ $('document').ready(function () {
             }
 
         ],
-        "order": [[0, "asc"]],
+        "order": [[4, "asc"]],
         "language": {
             "loadingRecords": "Pending ... ",
             "zeroRecords": "No Accident Rescue Request (For Now)" //<- Not Work?
