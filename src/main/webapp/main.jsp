@@ -86,7 +86,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                   
+
                     <li class="nav-item">
                         <a class="nav-link" href="Logout">
                             <i class="fa fa-fw fa-sign-out"></i>
@@ -133,7 +133,7 @@
                                 </table>
                             </div>
                             <div class="card-footer small text-muted" id="acctable-lastest-update">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -150,10 +150,10 @@
                                 Monitoring Feed
                             </div>
                             <div class="list-group list-group-flush small">
-                            <div id='append-feed'></div>
-<!--                                <a href="To?opt=feed" class="list-group-item list-group-item-action">
+                                <div id='append-feed'></div>
+                                <a href="To?opt=feed" class="list-group-item list-group-item-action">
                                     View all activity...
-                                </a>-->
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                                 <canvas id="myPieChart" width="100%" height="100"></canvas>
                             </div>
                             <div class="card-footer small text-muted" id="acccode-lastest-update">
-                                
+
                             </div>
                         </div>
 
@@ -187,7 +187,7 @@
                     <canvas id="myBarChart" width="100%" height="15"></canvas>
                 </div>
                 <div class="card-footer small text-muted" id="history-report-lastest-update">
-                    
+
                 </div>
             </div>
 
