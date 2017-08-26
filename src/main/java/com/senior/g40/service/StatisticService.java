@@ -306,7 +306,6 @@ public class StatisticService {
                     + (month != null && year != null ? " AND " : "")
                     + (year == null ? "" : " YEAR(`date`) = ?")
                     + " GROUP BY  DATE_FORMAT(`date`, '%D');";
-            System.out.println(sql);
             PreparedStatement pstm = conn.prepareStatement(sql);
             if (month != null) {
                 pstm.setInt(1, month);
@@ -492,7 +491,6 @@ public class StatisticService {
         ResultSet rs = null;
         try {
             String sqlCmd = "SELECT `latitude`, `longitude` FROM `accident`;";
-            System.out.println(sqlCmd);
             pstm = conn.prepareStatement(sqlCmd);
             rs = pstm.executeQuery();
             if (userId != null) {
@@ -531,7 +529,6 @@ public class StatisticService {
         try {
             String sqlCmd = "SELECT `latitude`, `longitude` FROM `accident` WHERE date = "
                     + (date == null ? "CURDATE();" : "?;");
-            System.out.println(sqlCmd);
             pstm = conn.prepareStatement(sqlCmd);
             if (date != null) {
                 pstm.setDate(1, date);
@@ -572,7 +569,6 @@ public class StatisticService {
         try {
             String sqlCmd = "SELECT `accCode`, COUNT(`accCode`) FROM `accident` WHERE `date` = "
                     + (date == null ? "CURDATE()" : "?") + "  GROUP BY `accCode`;";
-            System.out.println(sqlCmd);
             pstm = conn.prepareStatement(sqlCmd);
             if (date != null) {
                 pstm.setDate(1, date);
@@ -639,7 +635,6 @@ public class StatisticService {
         Time javaTime;
         for (String time : times) {
             javaTime = Time.valueOf(time.concat(":00"));
-            System.out.println(javaTime);
             if (javaTime.after(Time.valueOf("00:00:00")) && javaTime.before(Time.valueOf("01:00:00"))) {
                 series[0] += 1;
             } else if (javaTime.after(Time.valueOf("01:00:00")) && javaTime.before(Time.valueOf("02:00:00"))) {

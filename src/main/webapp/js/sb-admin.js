@@ -36,7 +36,6 @@ function navigate(crashLatLng) {
 function setMapCenter(latLng) {
     window.opMap.setCenter(latLng);
     window.opMap.setZoom(20);
-    window.opMap.createMarker(latLng);
 }
 
 /* Event Listener */
@@ -362,53 +361,60 @@ setTimeout(function () {
 }, 10);
 function getFeeds() {
     feeds = [];
-    $.ajax({
-        url: "DashboardFeed?opt=get",
-        data: {limit: 5},
-        success: function (resultFeeds) {
-            feeds = JSON.parse(resultFeeds);
-            var feedBodyMessage;
-            var feedContent;
-            $.each(feeds, function (index, feed) {
+        $.ajax({
+            url: "DashboardFeed?opt=get",
+            data: {limit: 5},
+            success: function (resultFeeds) {
+                feeds = JSON.parse(resultFeeds);
+                console.log(resultFeeds);
                 $("#append-feed").empty();
-                $.ajax({
-                    "url": "http://maps.googleapis.com/maps/api/geocode/json",
-                    "data": {"sensor": true, "latlng": (feed.accident.latitude) + "," + (feed.accident.longitude)},
-                    "success": function (result) {
-                        if (result.status == "OK") {
-                            var addrComponent = result.results[0].address_components;
-                            place = (addrComponent[0].long_name.concat(", ".concat(addrComponent[1].long_name)).concat(", ".concat(addrComponent[2].long_name)).concat(", ".concat(addrComponent[3].long_name)).concat(", ".concat(addrComponent[5].long_name)));
-                            switch (feed.updatedAccCode) {
-                                case "A" :
-                                    feedBodyMessage = " is requesting for rescuing at ".concat(place);
-                                    break;
-                                case "G" :
-                                    feedBodyMessage = " is going for rescuing at ".concat(place);
-                                    break;
-                                case "R" :
-                                    feedBodyMessage = " is already in place ".concat(place);
-                                    break;
-                                case "C" :
-                                    feedBodyMessage = " close this operation.";
-                                    break;
-                                case "U" :
-                                    feedBodyMessage = " set his/her incident to false negative.";
-                                    break;
-                                case "S" :
-                                    feedBodyMessage = " report for false incident/accident.";
-                                    break;
-                            }
-                        } else {
-                            place = "[Connection Error]";
-                        }
-                        feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='http://placehold.it/45x45' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>" + feed.timestamp + "</div></div></div> </span>");
+                if(feeds == null){
+                    $("#append-feed").prepend("<div style='text-align:center'><i  style='padding: 35px; font-size:16px;' >No Feed Available</i></div>");
+                    return;
+                }
+                var feedBodyMessage;
+                var feedContent;
+                $.each(feeds, function (index, feed) {
 
-                        $("#append-feed").append(feedContent);
-                    }
+                    $.ajax({
+                        "url": "http://maps.googleapis.com/maps/api/geocode/json",
+                        "data": {"sensor": true, "latlng": (feed.accident.latitude) + "," + (feed.accident.longitude)},
+                        "success": function (result) {
+                            if (result.status == "OK") {
+                                var addrComponent = result.results[0].address_components;
+                                place = (addrComponent[0].long_name.concat(", ".concat(addrComponent[1].long_name)).concat(", ".concat(addrComponent[2].long_name)).concat(", ".concat(addrComponent[3].long_name)).concat(", ".concat(addrComponent[5].long_name)));
+                                switch (feed.updatedAccCode) {
+                                    case "A" :
+                                        feedBodyMessage = " is requesting for rescuing at ".concat(place);
+                                        break;
+                                    case "G" :
+                                        feedBodyMessage = " is going for rescuing at ".concat(place);
+                                        break;
+                                    case "R" :
+                                        feedBodyMessage = " is already in place ".concat(place);
+                                        break;
+                                    case "C" :
+                                        feedBodyMessage = " close this operation.";
+                                        break;
+                                    case "U" :
+                                        feedBodyMessage = " set his/her incident to false negative.";
+                                        break;
+                                    case "S" :
+                                        feedBodyMessage = " report for false incident/accident.";
+                                        break;
+                                }
+                            } else {
+                                place = "[Connection Error]";
+                            }
+                            feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='image/color/"+feed.updatedAccCode.toLowerCase()+".PNG' width='50px' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>" + feed.timestamp + "</div></div></div> </span>")
+                                    .click(function(){window.location = "#map"; setMapCenter({lat: feed.accident.latitude, lng: feed.accident.longitude});});
+                            $("#append-feed").append(feedContent);
+                        }
+                    });
+
                 });
-            });
-        }
-    });
+            }
+        });
 }
 
 

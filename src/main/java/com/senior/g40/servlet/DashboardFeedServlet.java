@@ -48,9 +48,15 @@ public class DashboardFeedServlet extends HttpServlet {
                     out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis()), getAsInteger("limit"))));
                     break;
                 case "getall":
+                    System.out.println("getall");
                     out.print(gson.toJson(fs.getFeeds(null, null)));
                     break;
+                default:
+                    out.print("err");
             }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+
         }
     }
 
