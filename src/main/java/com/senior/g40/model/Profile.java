@@ -31,6 +31,10 @@ public class Profile {
         }
         return profile;
     }
+    
+    public static void setInstance( Profile profile){
+        Profile.profile = profile;
+    }
 
     public long getUserId() {
         return userId;

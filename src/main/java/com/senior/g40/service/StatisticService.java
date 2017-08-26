@@ -563,40 +563,59 @@ public class StatisticService {
 
     public Integer[] getStatusPercentage(Date date) {
         Integer[] statusCount = null;
-        Connection conn = ConnectionBuilder.getConnection();
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-            String sqlCmd = "SELECT `accCode`, COUNT(`accCode`) FROM `accident` WHERE `date` = "
-                    + (date == null ? "CURDATE()" : "?") + "  GROUP BY `accCode`;";
-            pstm = conn.prepareStatement(sqlCmd);
-            if (date != null) {
-                pstm.setDate(1, date);
-            }
-            rs = pstm.executeQuery();
-            while (rs.next()) {
-                if (statusCount == null) {
+//        Connection conn = ConnectionBuilder.getConnection();
+//        PreparedStatement pstm = null;
+//        ResultSet rs = null;
+//        try {
+//            String sqlCmd = "SELECT `accCode`, COUNT(`accCode`) FROM `accident` WHERE `date` = "
+//                    + (date == null ? "CURDATE()" : "?") + "  GROUP BY `accCode`;";
+//            pstm = conn.prepareStatement(sqlCmd);
+//            if (date != null) {
+//                pstm.setDate(1, date);
+//            }
+//            rs = pstm.executeQuery();
+//            while (rs.next()) {
+//                if (statusCount == null) {
+//                    statusCount = new Integer[]{0, 0, 0, 0}; //A G R C
+//                }
+//                switch (rs.getString(1).charAt(0)) {
+//                    case Accident.ACC_CODE_A:
+//                        statusCount[0] = rs.getInt(2);
+//                        break;
+//                    case Accident.ACC_CODE_G:
+//                        statusCount[1] = rs.getInt(2);
+//                        break;
+//                    case Accident.ACC_CODE_R:
+//                        statusCount[2] = rs.getInt(2);
+//                        break;
+//                    case Accident.ACC_CODE_C:
+//                        statusCount[3] = rs.getInt(2);
+//                        break;
+//                }
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+//        }
+        for(Accident acc : AccidentService.getInstance().getBoundedAccidents()){
+            if (statusCount == null) {
                     statusCount = new Integer[]{0, 0, 0, 0}; //A G R C
                 }
-                switch (rs.getString(1).charAt(0)) {
+                switch (acc.getAccCode()) {
                     case Accident.ACC_CODE_A:
-                        statusCount[0] = rs.getInt(2);
+                        statusCount[0] += 1;
                         break;
                     case Accident.ACC_CODE_G:
-                        statusCount[1] = rs.getInt(2);
+                        statusCount[1] += 1;
                         break;
                     case Accident.ACC_CODE_R:
-                        statusCount[2] = rs.getInt(2);
+                        statusCount[2] += 1;
                         break;
                     case Accident.ACC_CODE_C:
-                        statusCount[3] = rs.getInt(2);
+                        statusCount[3] += 1;
                         break;
                 }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return statusCount;
     }
@@ -604,29 +623,36 @@ public class StatisticService {
     public int[] getReportFreqSeries(Date date) {
         int[] freqSeries = null;
         ArrayList<String> freqSeriesStrs = null;
-        Connection conn = ConnectionBuilder.getConnection();
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
-                    + (date == null ? "CURDATE()" : "?");
-            pstm = conn.prepareStatement(sqlCmd);
-            if (date != null) {
-                pstm.setDate(1, date);
+//        Connection conn = ConnectionBuilder.getConnection();
+//        PreparedStatement pstm = null;
+//        ResultSet rs = null;
+//        try {
+//            String sqlCmd = "SELECT `time` FROM `accident` WHERE `date` = "
+//                    + (date == null ? "CURDATE()" : "?");
+//            pstm = conn.prepareStatement(sqlCmd);
+//            if (date != null) {
+//                pstm.setDate(1, date);
+//            }
+//            rs = pstm.executeQuery();
+//            while (rs.next()) {
+//                if (freqSeriesStrs == null) {
+//                    freqSeriesStrs = new ArrayList<>();
+//                }
+//                freqSeriesStrs.add(rs.getString(1));
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+//        }
+        for(Accident acc : AccidentService.getInstance().getBoundedAccidents()){
+            if(freqSeriesStrs == null){
+                freqSeriesStrs = new ArrayList<>();
             }
-            rs = pstm.executeQuery();
-            while (rs.next()) {
-                if (freqSeriesStrs == null) {
-                    freqSeriesStrs = new ArrayList<>();
-                }
-                freqSeriesStrs.add(rs.getString(1));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+            freqSeriesStrs.add(acc.getTime());
         }
-        freqSeries = getPeriodReportRequently(freqSeriesStrs);
+        if(freqSeriesStrs != null){
+        freqSeries = getPeriodReportRequently(freqSeriesStrs);}
         return freqSeries;
     }
 

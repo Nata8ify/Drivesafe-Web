@@ -34,6 +34,7 @@ $('document').ready(function () {
             }
 
         ],
+        "order": [[0, "asc"]],
         "language": {
             "loadingRecords": "Pending ... ",
             "zeroRecords": "No Accident Rescue Request (For Now)" //<- Not Work?
@@ -44,16 +45,16 @@ $('document').ready(function () {
             var accCodeDesc;
             // alert(accCodeText);
             if (accCodeText === "A") {
-                $nRow.css({"background-color": "#ff7575"});
+                $nRow.css({"background-color": "#dc3545"});
                 accCodeDesc = "Waiting for Rescue";
             } else if (accCodeText === "G") {
-                $nRow.css({"background-color": "#ffb912"});
+                $nRow.css({"background-color": "#ffc107"});
                 accCodeDesc = "Going";
             } else if (accCodeText === "R") {
-                $nRow.css({"background-color": "#ffed80"});
+                $nRow.css({"background-color": "#007bff"});
                 accCodeDesc = "Rescuing";
             } else if (accCodeText === "C") {
-                $nRow.css({"background-color": "#8cff8c"});
+                $nRow.css({"background-color": "#28a745"});
                 accCodeDesc = "Closed";
             }
             $("td", nRow).eq(1).prepend("<img src='image/acctype/"+aData.accType+".png' width='50px' class='img img-thumbnail'/>");

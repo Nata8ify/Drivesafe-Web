@@ -91,7 +91,8 @@ public class FeedService {
                 long userId = rs.getLong("userId");
                 Timestamp timestamp = rs.getTimestamp("timestamp");
                 feed.setAccident(AccidentService.getInstance().getAccidentById(accidentId));
-                if (isBoundWithin(userId, feed.getAccident().getLatitude(), feed.getAccident().getLongitude())) {
+                System.out.println(Profile.getInsatance());
+                if (isBoundWithin(Profile.getInsatance().getUserId(), feed.getAccident())) {
                     feed.setFeedId(feedId);
                     feed.setTimestamp(timestamp);
                     feed.setUpdatedAccCode(updatedAccCode);
@@ -112,9 +113,6 @@ public class FeedService {
         return feeds;
     }
 
-    private void setFeed(ResultSet rs, Feed fd) throws SQLException {
-
-    }
 
     private void setAccident(ResultSet rs, Accident ac) throws SQLException {
         ac.setAccidentId(rs.getLong("accidentId"));
@@ -140,12 +138,12 @@ public class FeedService {
         pf.setGender(rs.getString("gender").charAt(0));
     }
 
+    //    --------------------------------- Other
     private OperatingLocation ol;
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
 
-    //Minify Version
-    private boolean isBoundWithin(long userId, double latitude, double longitude) {
+    private boolean isBoundWithin(long userId, Accident acc) {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -171,10 +169,10 @@ public class FeedService {
             // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
             if (ol != null) {
                 int opBound = ol.getNeutralBound();
-                double dLat = DR * (ol.getLatLng().getLatitude() - latitude);
-                double dLng = DR * (ol.getLatLng().getLongitude() - longitude);
+                double dLat = DR * (ol.getLatLng().getLatitude() - acc.getLatitude());
+                double dLng = DR * (ol.getLatLng().getLongitude() - acc.getLongitude());
                 double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
-                        + (Math.cos(latitude * DR) * Math.cos(ol.getLatLng().getLatitude() * DR))
+                        + (Math.cos(acc.getLatitude() * DR) * Math.cos(ol.getLatLng().getLatitude() * DR))
                         * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
                 double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                 double distance = c * RADIAN_OF_EARTH_IN_KM;
