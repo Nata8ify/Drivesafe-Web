@@ -277,7 +277,7 @@ public class AccidentService {
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            ConnectionHandler.closeSQLProperties(null, pstm, rs);
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return accident;
     }
@@ -354,7 +354,7 @@ public class AccidentService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `accident` WHERE date = CURDATE() AND  accCode IN (?, ?, ?, ?) ORDER BY FIELD(`accCode`, 'A', 'G', 'R'), `time`";
+            String sqlCmd = "SELECT * FROM `accident` WHERE date = CURDATE() AND  accCode IN (?, ?, ?, ?) ORDER BY FIELD(`accCode`, 'A', 'G', 'R', 'C'), `time`";
             pstm = conn.prepareStatement(sqlCmd);
 //            pstm.setDate(1, today);
             pstm.setString(1, String.valueOf(Accident.ACC_CODE_A));
