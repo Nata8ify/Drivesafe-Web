@@ -97,7 +97,7 @@ public class FeedService {
                     feed.setTimestamp(timestamp);
                     feed.setUpdatedAccCode(updatedAccCode);
                     String userName = UserService.getInstance().getProfileByUserId(userId).getName();
-                    if (updatedAccCode != Accident.ACC_CODE_A) {
+                    if (updatedAccCode != Accident.ACC_CODE_A && updatedAccCode != Accident.ACC_CODE_ERRU) {
                         feed.setRscrName(userName);
                     } else {
                         feed.setReporterName(userName);

@@ -5,6 +5,7 @@
  */
 package com.senior.g40.servlet;
 
+import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
@@ -79,13 +80,16 @@ public class ReporterAppInServlet extends HttpServlet {
                 break;
             case "usr_accfalse":
                 /*3. for receive/acknowledge user false positive data.*/
-                Result rs = accService.updateOnUserFalseAccc(0, Long.valueOf(request.getParameter("accid")));
+                Result rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("userId")), Long.valueOf(request.getParameter("accid")));
                 if (rs.isSuccess()) {
                     request.setAttribute("result", true);
                 } else {
                     request.setAttribute("result", rs.getExcp());
                 }
                 break;// 3. END ------
+            case "update_accident_info":
+                request.setAttribute("result", new Gson().toJson(accService.getAccidentById(getAsLong("accid"))));
+                break;
             default: //TODO
         }
         getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_PAGE).forward(request, response);

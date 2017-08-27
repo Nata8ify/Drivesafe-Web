@@ -397,10 +397,10 @@ function getFeeds() {
                                         feedBodyMessage = " close this operation.";
                                         break;
                                     case "U" :
-                                        feedBodyMessage = " set his/her incident to false negative.";
+                                        feedBodyMessage = " cancel the rescue request.";
                                         break;
                                     case "S" :
-                                        feedBodyMessage = " report for false incident/accident.";
+                                        feedBodyMessage = " report for system false incident/accident.";
                                         break;
                                 }
                             } else {
