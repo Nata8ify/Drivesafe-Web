@@ -1,9 +1,9 @@
-
 package com.senior.g40.utils;
-public class App { 
+
+public class App {
 
     public class Path {
-        
+
         public static final String JSP_DIR = "/WEB-INF/jsp/";
         public static final String JSP_RESULT_DIR = "/WEB-INF/jsp/result/";
         public static final String JSP_RESULT_PAGE = "/WEB-INF/jsp/result/result.jsp";
@@ -32,10 +32,15 @@ public class App {
         public static final char DEBUG = 'd';
         public static final char NORMAL = 'n';
     }
-    
-    public class Param{
+
+    public class Param {
+
         public static final String accidentId = "accidentId";
         public static final String responsibleRescr = "responsibleRescr";
         public static final String accCode = "accCode";
+    }
+
+    public class ErCode {
+        public static final String ER01_ALREADY_REPORTED = "E01";
     }
 }

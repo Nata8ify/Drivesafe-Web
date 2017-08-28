@@ -6,6 +6,7 @@
 package com.senior.g40.service;
 
 import com.senior.g40.model.Accident;
+import com.senior.g40.model.Profile;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.utils.ConnectionBuilder;
@@ -35,7 +36,8 @@ import org.json.JSONObject;
  */
 public class AccidentService {
 
-    private List<Accident> boundedAccidents;
+    private List<Accident> currentDateBoundedAccidents;
+    private List<Accident> currentDateAccidents;
     private static AccidentService accService;
 
     public static AccidentService getInstance() {
@@ -46,12 +48,13 @@ public class AccidentService {
     }
 
     public AccidentService() {
-        boundedAccidents = new ArrayList<>();
+        currentDateBoundedAccidents = new ArrayList<>();
     }
 
     //------------------------------------About INSERT/ADD. - START
 //Stage
     public Result saveCrashedAccident(Accident acc) {
+//        if(isNotNearByDuplicate(new LatLng(acc.getLatitude(), acc.getLongitude()))){return new Result(false, "Incident is Already Reported", acc);}
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -104,6 +107,8 @@ public class AccidentService {
     }
 
     public Result saveNonCrashAccident(Accident acc) {
+//        if(isNotNearByDuplicate(new LatLng(acc.getLatitude(), acc.getLongitude()))){return new Result(false, "E01 Incident is Already Reported", acc);}
+        
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -340,6 +345,10 @@ public class AccidentService {
         } finally {
             ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
+        if(accidents == null){return null;}
+//        if(currentDateAccidents == null ){currentDateAccidents = new ArrayList<>();}
+//        currentDateAccidents.clear();
+//        currentDateAccidents.addAll(accidents);
         return accidents;
     }
 
@@ -372,9 +381,9 @@ public class AccidentService {
                     accidents.add(accident);
                 }
             }
-            boundedAccidents.clear();
-            boundedAccidents.addAll(accidents);
-            System.out.println(boundedAccidents);
+            currentDateBoundedAccidents.clear();
+            currentDateBoundedAccidents.addAll(accidents);
+            System.out.println(currentDateBoundedAccidents);
             resetOP();
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -613,10 +622,33 @@ public class AccidentService {
 
 //    --------------------------------- Dealing with JSON
 //    --------------------------------- Other
-    private OperatingLocation ol;
+    
+
+    
+    
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
-
+    private final double RADIAN_OF_EARTH_IN_M = 6.371;
+    private final int NEAR_RANGE = 30; //Meters
+    private boolean isNotNearByDuplicate(LatLng latest){ //<-- Untest
+        currentDateBoundedAccidents = getCurrentDateAccidents();
+        if(currentDateBoundedAccidents == null){return true;}
+        for(Accident accident : currentDateBoundedAccidents){
+            double dLat = DR * (accident.getLatitude() - latest.getLatitude());
+                double dLng = DR * (accident.getLongitude() - latest.getLongitude());
+                double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                        + (Math.cos(latest.getLatitude() * DR) * Math.cos(accident.getLatitude() * DR))
+                        * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
+                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                double distance = (c * RADIAN_OF_EARTH_IN_M);
+                if (distance < NEAR_RANGE) {
+                    return false;
+                }
+        }
+        return true;
+    }
+    
+    private OperatingLocation ol;
     private boolean isBoundWithin(long userId, Accident acc) {
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -657,7 +689,7 @@ public class AccidentService {
         }
         return isBoundWithin;
     }
-
+    
     private void resetOP() {
         this.ol = null;
     }
@@ -760,11 +792,11 @@ public class AccidentService {
 //    --------------------------------- Other
 
     public List<Accident> getBoundedAccidents() {
-        return boundedAccidents;
+        return currentDateBoundedAccidents;
     }
 
-    public void setBoundedAccidents(List<Accident> boundedAccidents) {
-        this.boundedAccidents = boundedAccidents;
+    public void setBoundedAccidents(List<Accident> currentDateBoundedAccidents) {
+        this.currentDateBoundedAccidents = currentDateBoundedAccidents;
     }
 
 }
