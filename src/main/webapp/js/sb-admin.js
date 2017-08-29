@@ -202,13 +202,13 @@ function callbackMessage(str) {
                 var $nRow = $(nRow); // cache the row wrapped up in jQuery
                 // alert(accCodeText);
                 if (accCodeText === "A") {
-                    $nRow.css({"background-color": "#dc3545"});
+                    $nRow.css({"background-color": "#ff8080"});
                 } else if (accCodeText === "G") {
                     $nRow.css({"background-color": "#ffc107"});
                 } else if (accCodeText === "R") {
-                    $nRow.css({"background-color": "#007bff"});
+                    $nRow.css({"background-color": "#80e5ff"});
                 } else if (accCodeText === "C") {
-                    $nRow.css({"background-color": "#28a745"});
+                    $nRow.css({"background-color": "#80ff80"});
                 }
                 $("td", nRow).eq(1).empty();
                 $("td", nRow).eq(1).prepend("<img class='img-acc-ico' src='image/acctype/" + aData.accType + ".png' width='40px' />");
@@ -343,7 +343,7 @@ function buildAccCodeChart() {
                         labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "ช่วยเหลือสำเร็จ"],
                         datasets: [{
                                 data: codeSeries,
-                                backgroundColor: ['#dc3545', '#ffc107', '#007bff', '#28a745']
+                                backgroundColor: ['#ff8080', '#ffc107', '#80e5ff', '#80ff80']
                             }] 
                     }
                 });
@@ -474,16 +474,16 @@ $('document').ready(function () {
             var accCodeDesc;
             // alert(accCodeText);
             if (accCodeText === "A") {
-                $nRow.css({"background-color": "#dc3545"});
+                $nRow.css({"background-color": "#ff8080"});
                 accCodeDesc = "Waiting for Rescue";
             } else if (accCodeText === "G") {
                 $nRow.css({"background-color": "#ffc107"});
                 accCodeDesc = "Going";
             } else if (accCodeText === "R") {
-                $nRow.css({"background-color": "#007bff"});
+                $nRow.css({"background-color": "#80e5ff"});
                 accCodeDesc = "Rescuing";
             } else if (accCodeText === "C") {
-                $nRow.css({"background-color": "#28a745"});
+                $nRow.css({"background-color": "#80ff80"});
                 accCodeDesc = "Closed";
             }
             $("td", nRow).eq(1).prepend("<img src='image/acctype/" + aData.accType + ".png' width='50px' class='img img-thumbnail'/>");
