@@ -223,13 +223,14 @@ function callbackMessage(str) {
                         } else {
                             $("td", nRow).eq(2).html("Missing Place, (" + (aData.latitude) + "," + (aData.longitude) + ")");
                         }
-                        $("td", nRow).eq(2).css("font-size", "12px");
+                        $("td", nRow).eq(2).css("font-size", "14px");
+                        $("td", nRow).eq(2).css("font-weight", "bolder");
                     }
                 });
                 return nRow;
             },
             "language": {
-                "loadingRecords": "No Incident In Record... "
+                "loadingRecords": "ไม่มีอุบัติเหตเกิดขึ้น"
             },
             "searching": false,
             "bLengthChange": false,
@@ -276,7 +277,7 @@ function buildReportFreqChart() {
                     data: {
                         labels: ["00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00", "04:00-05:00", "05:00-06:00", "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00"],
                         datasets: [{
-                                label: "Frequency (Time)",
+                                label: "ความถี่ (ครั้ง)",
                                 backgroundColor: "rgba(2,117,216,1)",
                                 borderColor: "rgba(2,117,216,1)",
                                 data: reportFreqSeries
@@ -287,7 +288,7 @@ function buildReportFreqChart() {
                         scales: {
                             xAxes: [{
                                     time: {
-                                        unit: 'hour'
+                                        unit: 'ชั่วโมง'
                                     },
                                     gridLines: {
                                         display: false
@@ -335,16 +336,15 @@ function buildAccCodeChart() {
         success: function (result) {
             codeSeries = JSON.parse(result);
             if (isGetStatusFirst) {
-
                 myPieChart = new Chart(ctx, {
                     type: 'pie',
                     animation: false,
                     data: {
-                        labels: ["Awaiting", "Going", "Rescuing", "Closed"],
+                        labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "ช่วยเหลือสำเร็จ"],
                         datasets: [{
                                 data: codeSeries,
                                 backgroundColor: ['#dc3545', '#ffc107', '#007bff', '#28a745']
-                            }]
+                            }] 
                     }
                 });
                 isGetStatusFirst = false;
@@ -389,33 +389,33 @@ function getFeeds() {
                             place = (addrComponent[0].long_name.concat(", ".concat(addrComponent[1].long_name)).concat(", ".concat(addrComponent[2].long_name)).concat(", ".concat(addrComponent[3].long_name)).concat(", ".concat(addrComponent[5].long_name)));
                             switch (feed.updatedAccCode) {
                                 case "A" :
-                                    feedBodyMessage = " is requesting for rescuing at ".concat(place);
+                                    feedBodyMessage = " ขอความช่วยเหลือที่ ".concat(place);
                                     break;
                                 case "G" :
-                                    feedBodyMessage = " is going for rescuing at ".concat(place);
+                                    feedBodyMessage = " เจ้าหน้าที่กำลังเดินทางไปช่วยที่ ".concat(place);
                                     break;
                                 case "R" :
-                                    feedBodyMessage = " is already in place ".concat(place);
+                                    feedBodyMessage = " เจ้าที่หน้าที่กำลังช่วยเหลือผู้ประสบภัยที่ ".concat(place);
                                     break;
                                 case "C" :
-                                    feedBodyMessage = " close this operation.";
+                                    feedBodyMessage = " การช่วยเหลือเสร็จสิ้น สถานการณ์ปลอดภัย ";
                                     break;
                                 case "U" :
-                                    feedBodyMessage = " cancel the rescue request.";
+                                    feedBodyMessage = " ยกเลิกการขอความช่วยเหลือ ";
                                     break;
                                 case "S" :
-                                    feedBodyMessage = " report for system false incident/accident.";
+                                    feedBodyMessage = " รายงานว่าเป็นอุบัติเหตุ/เหตุร้าย ที่ไม่ได้เกิดขึ้นจริง ";
                                     break;
                             }
                         } else {
-                            place = "[Connection Error]";
+                            place = "การเชื่อมต่อผิดพลาด";
                         }
-                        feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='image/color/" + feed.updatedAccCode.toLowerCase() + ".PNG' width='50px' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>" + feed.timestamp + "</div></div></div> </span>")
+                        feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='image/color/" + feed.updatedAccCode.toLowerCase() + ".PNG' width='50px' alt=''><div class='media-body' style='font-size: 125%' ><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>" + feed.timestamp + "</div></div></div> </span>")
                                 .click(function () {
                                     window.location = "#map";
                                     setMapCenter({lat: feed.accident.latitude, lng: feed.accident.longitude});
                                 });
-                        $("#append-feed").append(feedContent);
+                        $("#append-feed").append(feedContent);                       
                     }
                 });
 

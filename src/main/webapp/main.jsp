@@ -114,20 +114,20 @@
                         <div class="card mb-3">
                             <div class="card-header">
                                 <i class="fa fa-table"></i>
-                                Incident Overview
+                                ภาพรวมของการเกิดอุบัติเหต
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
                                     <thead style="display: none;">
                                         <tr>
-                                            <th>Time</th>
-                                            <th>Category</th>
-                                            <th>Location</th>
+                                            <th>เวลา</th>
+                                            <th>ประเภทของอุบัติเหต</th>
+                                            <th>สถานที่เกิด</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td colspan="3">Loading...</td>
+                                            <td colspan="3">กำลังโหลดข้อมูล กรุณารอสักครู่</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -147,12 +147,12 @@
                         <div class="card mb-3">
                             <div class="card-header">
                                 <i class="fa fa-bell-o"></i>
-                                Monitoring Feed
+                                เหตุการณ์ต่างๆที่เกิดขึ้น
                             </div>
                             <div class="list-group list-group-flush small">
                                 <div id='append-feed'></div>
                                 <a href="To?opt=feed" class="list-group-item list-group-item-action">
-                                    View all activity...
+                                    ดูเหตุการณ์ที่เกิดขึ้นทั้งหมด
                                 </a>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                         <div class="card mb-3">
                             <div class="card-header">
                                 <i class="fa fa-pie-chart"></i>
-                                Incident Status Chart
+                                แผนภูมิวงกลมแสดงสถานะของอุบัติเหตภายในวันนี้
                             </div>
                             <div class="card-body">
                                 <canvas id="myPieChart" width="100%" height="100"></canvas>
@@ -181,7 +181,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fa fa-area-chart"></i>
-                    Day Report Historical Chart
+                    แผนภูมิสถิติแสดงจำนวนของอุบัติเหตภายในวันนี้
                 </div>
                 <div class="card-body">
                     <canvas id="myBarChart" width="100%" height="15"></canvas>
