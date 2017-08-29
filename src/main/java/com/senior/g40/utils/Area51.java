@@ -40,6 +40,5 @@ public class Area51 {
 //            System.out.println(feed.toString());
 //        }
 //        System.out.println(FeedService.getInstance().getFeeds(new Date(System.currentTimeMillis()), 5));
-        System.out.println(AccidentService.getInstance().isNotNearByDuplicate(new LatLng(14.072801, 99.925347)));
     }
 }
