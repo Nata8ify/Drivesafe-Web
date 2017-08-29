@@ -646,6 +646,7 @@ public class AccidentService {
             System.out.println("is NEAR_RANGE " + (distance < NEAR_RANGE));
             if (distance < NEAR_RANGE) {
                 if (accType == accident.getAccType()) {
+                    //if accCode Check?
                     return false;
                 }
             }

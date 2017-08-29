@@ -124,7 +124,7 @@ public class ReporterAppInServlet extends HttpServlet {
             Accident savedAcc = (Accident) rs.getObj();
             request.setAttribute("result", savedAcc.toJson());
         } else {
-            request.setAttribute("result", "Err");
+            request.setAttribute("result", null);
         }
     }
 
