@@ -27,7 +27,7 @@ function navigate(crashLatLng) {
             if (status == 'OK') {
                 directionsDisplay.setDirections(response);
             } else {
-                window.alert('Directions request failed due to ' + status);
+                window.alert('การนำทางล้มเหลวเนื่องจาก ' + status);
             }
         });
     });
@@ -343,7 +343,7 @@ function buildAccCodeChart() {
                         labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "ช่วยเหลือสำเร็จ"],
                         datasets: [{
                                 data: codeSeries,
-                                backgroundColor: ['#ff8080', '#ffc107', '#80e5ff', '#80ff80']
+                                backgroundColor: ['#dc3545', '#ffc107', '#007bff', '#28a745']
                             }] 
                     }
                 });
@@ -475,16 +475,16 @@ $('document').ready(function () {
             // alert(accCodeText);
             if (accCodeText === "A") {
                 $nRow.css({"background-color": "#ff8080"});
-                accCodeDesc = "Waiting for Rescue";
+                accCodeDesc = "รอการช่วยเหลือ";
             } else if (accCodeText === "G") {
                 $nRow.css({"background-color": "#ffc107"});
-                accCodeDesc = "Going";
+                accCodeDesc = "กำลังเดินทางไป";
             } else if (accCodeText === "R") {
                 $nRow.css({"background-color": "#80e5ff"});
-                accCodeDesc = "Rescuing";
+                accCodeDesc = "กำลังช่วยเหลือ";
             } else if (accCodeText === "C") {
                 $nRow.css({"background-color": "#80ff80"});
-                accCodeDesc = "Closed";
+                accCodeDesc = "ช่วยเหลือสำเร็จ";
             }
             $("td", nRow).eq(1).prepend("<img src='image/acctype/" + aData.accType + ".png' width='50px' class='img img-thumbnail'/>");
             $("td", nRow).eq(3).html(accCodeDesc);

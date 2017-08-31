@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>  WeeWorh | Main  </title>
+        <title>  WeeWorh | หน้าหลัก  </title>
 
         <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
@@ -48,17 +48,17 @@
         <nav class="navbar navbar-default" role="navigation-demo" id="demo-navbar">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand">Welcome to WeeWorh System!</a>
+                <a class="navbar-brand">ขอต้อนรับเข้าสู่ Weeworh System</a>
                 <div class="collapse navbar-collapse" id="navigation-example-2">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="To?opt=stat">Open Statistics</a>
+                            <a href="To?opt=stat">สถิติ</a>
                         </li>
                         <li>
-                            <a href="To?opt=sett">Setting</a>
+                            <a href="To?opt=sett">ตั้งค่าเว็บไซต์</a>
                         </li>
                         <li>
-                            <a href="Logout">Logout / Invalidate</a>
+                            <a href="Logout">ลงชื่อออก</a>
                         </li>
                     </ul>
                 </div>
@@ -66,7 +66,7 @@
         </nav>         
         <div class="alert alert-danger landing-alert">
             <div class="container text-center">
-                <p>Welcome :  ${pf.firstName} ${pf.lastName} </p>
+                <p>ยินดีต้อนรับ คุณ :  ${pf.firstName} ${pf.lastName} </p>
             </div>
         </div>
 
@@ -79,12 +79,12 @@
                             <table id="acctable" style="width: 100%;"> 
                                 <thead> 
                                     <tr>
-                                        <th>Time</th>
-                                        <th>Type</th>
-                                        <th>Location</th>
-                                        <th>Status</th>
-                                        <th>Direction</th>
-                                        <th>Nearest Hospital</th> 
+                                        <th>เวลา</th>
+                                        <th>ประเภท</th>
+                                        <th>สถานที่เกิดอุบัติเหต</th>
+                                        <th>สถานะ</th>
+                                        <th>ระบบนำทาง</th>
+                                        <th>โรงพยาบาลที่ใกล้ที่สุด</th> 
                                     </tr>
                                 </thead>
                                 <tbody style="text-align: left">

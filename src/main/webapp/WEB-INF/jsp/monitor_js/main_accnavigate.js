@@ -32,7 +32,7 @@ function navigate(crashLatLng) {
             if (status == 'OK') {
                 directionsDisplay.setDirections(response);
             } else {
-                window.alert('Directions request failed due to ' + status);
+                window.alert('การนำทางล้มเหลวเนื่องจาก ' + status);
             }
         });
     });

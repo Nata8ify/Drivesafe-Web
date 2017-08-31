@@ -17,19 +17,19 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title>Setting</title>
+        <title>หน้าตั้งค่า</title>
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation-demo" id="demo-navbar">
             <div class="container">
-                <a class="navbar-brand">Weeworh Setting</a>
+                <a class="navbar-brand">ตั้งค่าเว็บไซต์ Weeworh</a>
                 <div class="collapse navbar-collapse" id="navigation-example-2">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="To?opt=main">Main</a>
+                            <a href="To?opt=main">หน้าหลัก</a>
                         </li>
                         <li>
-                            <a href="Logout">Logout / Invalidate</a>
+                            <a href="Logout">ลงชื่อออก</a>
                         </li>
                     </ul>
                 </div>
@@ -49,16 +49,16 @@
                     </div>
                     <div class="col-sm-4">
                         <fieldset>
-                            <input placeholder="Enter Somewhere (ex. สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
+                            <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
                             <hr/>
-                            <input type="number" id="spec-location-lat-input" placeholder="Enter the Latitude" required="" value="${param.lat}" class="form-control"/><br/>
-                            <input type="number" id="spec-location-lng-input" placeholder="Enter the Longitude" required="" value="${param.lng}" class="form-control"/><br/>
-                            <input type="number" id="spec-location-boundrds-input" placeholder="Enter the Bound Radius (Km.)" required="" value="${param.bound}" class="form-control"/><br/>
-                            <input type="number" id="spec-location-mboundrds-input" placeholder="Enter the Main Bound Radius (Km.)" value="${param.mainBound}" class="form-control"/><br/>
+                            <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
+                            <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>
+                            <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง (กิโลเมตร)" required="" value="${param.bound}" class="form-control"/><br/>
+                            <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก (กิโลเมตร)" value="${param.mainBound}" class="form-control"/><br/>
                             <div class="row">
                                 <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
-                                <div class="col-sm-6"><input type="button" id="update-location-submit" value="Update" class="btn btn-primary" style="width: 100%"/><br/><br/></div>
-                                <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="Get Current Location" class="btn btn-default" style="width: 100%"/><br/><br/></div>
+                                <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-primary" style="width: 100%"/><br/><br/></div>
+                                <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="ดึงค่าสถานที่ปัจจุบัน" class="btn btn-default" style="width: 100%"/><br/><br/></div>
                             </div>
                             <hr/>
                         </fieldset>
