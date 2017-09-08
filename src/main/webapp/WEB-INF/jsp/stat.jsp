@@ -53,10 +53,10 @@
                 <hr/>
                 <div id="acc-stat-map" style="width: 100%; height: 600px; padding: 30px;"></div>
                 <br/>
-                <div id="crashspeed-stat-section">
+<!--                <div id="crashspeed-stat-section">
                      <legend>สถิถิของความเร็วในการเกิดอุบัติเหตุ</legend>
                      <div id="crashspeed-stat-chart" class="ct-chart ct-major-twelfth"></div>
-                </div>
+                </div>-->
             </div>
             <script>
                 <jsp:include page="monitor_js/accident_stat.js"/>

@@ -203,12 +203,16 @@ function callbackMessage(str) {
                 // alert(accCodeText);
                 if (accCodeText === "A") {
                     $nRow.css({"background-color": "#ff8080"});
+                    $nRow.find("td").eq(1).css({"background-color": "#dc3545"});
                 } else if (accCodeText === "G") {
-                    $nRow.css({"background-color": "#ffc107"});
+                    $nRow.css({"background-color": "#ffdd55"});
+                    $nRow.find("td").eq(1).css({"background-color": "#ffc107"});
                 } else if (accCodeText === "R") {
                     $nRow.css({"background-color": "#80e5ff"});
+                    $nRow.find("td").eq(1).css({"background-color": "#007bff"});
                 } else if (accCodeText === "C") {
                     $nRow.css({"background-color": "#80ff80"});
+                    $nRow.find("td").eq(1).css({"background-color": "#28a745"});
                 }
                 $("td", nRow).eq(1).empty();
                 $("td", nRow).eq(1).prepend("<img class='img-acc-ico' src='image/acctype/" + aData.accType + ".png' width='40px' />");
