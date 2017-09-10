@@ -70,7 +70,7 @@
                                 Charts</span>
                         </a>
                     </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">
                         <a class="nav-link" href="To?opt=sett">
                             <i class="fa fa-fw fa-cog"></i>
                             <span class="nav-link-text">

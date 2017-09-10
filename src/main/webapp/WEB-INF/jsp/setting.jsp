@@ -49,12 +49,17 @@
                     </div>
                     <div class="col-sm-4">
                         <fieldset>
+                            <input type="text" value="ชื่อสถานที่" <br/>
                             <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
                             <hr/>
+                            <input type="text" value="ละติจูด" <br/>
                             <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
+                            <input type="text" value="ลองจิจูด" <br/>
                             <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>
-                            <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง (กิโลเมตร)" required="" value="${param.bound}" class="form-control"/><br/>
-                            <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก (กิโลเมตร)" value="${param.mainBound}" class="form-control"/><br/>
+                            <input type="text" value="ระยะทำการรอง (กิโลเมตร)" <br/>
+                            <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
+                            <input type="text" value="ระยะทำการหลัก (กิโลเมตร)" <br/>
+                            <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${param.mainBound}" class="form-control"/><br/>
                             <div class="row">
                                 <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
                                 <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-primary" style="width: 100%"/><br/><br/></div>
