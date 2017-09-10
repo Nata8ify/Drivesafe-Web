@@ -84,7 +84,6 @@
                                         <th>สถานที่เกิดอุบัติเหต</th>
                                         <th>สถานะ</th>
                                         <th>ระบบนำทาง</th>
-                                        <th>โรงพยาบาลที่ใกล้ที่สุด</th> 
                                     </tr>
                                 </thead>
                                 <tbody style="text-align: left">

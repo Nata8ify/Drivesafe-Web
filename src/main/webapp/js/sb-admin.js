@@ -454,14 +454,9 @@ $('document').ready(function () {
             {"width": "50%"},
             {"data": "accCode", "width": "10%"},
             {"data": "goToAcc", "width": "10%"},
-            {"data": "hospital", "width": "10%"}
         ],
         "order": [[1, "asc"]],
         "columnDefs": [{
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<button class='btnNearHospital btn btn-default'> &nbsp;<i class='glyphicon glyphicon-search'></i></button>"//< ปุ่มกดไปโรงบาล โค้ดอันล่างสุด 
-            }, {
                 "targets": -2,
                 "data": null,
                 "defaultContent": "<button class='accident btn btn-default'> &nbsp;<i class='glyphicon glyphicon-map-marker'></i></button>"
