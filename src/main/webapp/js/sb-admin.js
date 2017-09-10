@@ -344,7 +344,7 @@ function buildAccCodeChart() {
                     type: 'pie',
                     animation: false,
                     data: {
-                        labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "ช่วยเหลือสำเร็จ"],
+                        labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "การช่วยเหลือเสร็จสิ้น"],
                         datasets: [{
                                 data: codeSeries,
                                 backgroundColor: ['#dc3545', '#ffc107', '#007bff', '#28a745']
@@ -402,7 +402,7 @@ function getFeeds() {
                                     feedBodyMessage = " เจ้าที่หน้าที่กำลังช่วยเหลือผู้ประสบภัยที่ ".concat(place);
                                     break;
                                 case "C" :
-                                    feedBodyMessage = " การช่วยเหลือเสร็จสิ้น สถานการณ์ปลอดภัย ";
+                                    feedBodyMessage = " การช่วยเหลือเสร็จสิ้น";
                                     break;
                                 case "U" :
                                     feedBodyMessage = " ยกเลิกการขอความช่วยเหลือ ";
