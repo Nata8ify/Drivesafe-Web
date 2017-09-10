@@ -5,6 +5,7 @@
  */
 package com.senior.g40.service;
 
+import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.extras.LatLng;
@@ -24,9 +25,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -184,7 +187,7 @@ public class AccidentService {
             if (pstm.executeUpdate() != 0) {
                 result = new Result(true, "Update Success!");
                 saveFeed(rescuerId, accId, accCode);
-                boardcastUpdateRescueRequest(onUpdateCodeAccident);
+                //boardcastUpdateRescueRequest(onUpdateCodeAccident);
             }
         } catch (SQLException ex) {
             result = new Result(false, "Update 'accCode' Failed", ex);
@@ -646,8 +649,9 @@ public class AccidentService {
             System.out.println("is NEAR_RANGE " + (distance < NEAR_RANGE));
             if (distance < NEAR_RANGE) {
                 if (accType == accident.getAccType()) {
-                    //if accCode Check?
-                    return false;
+                    if(accident.getAccCode() == Accident.ACC_CODE_A || accident.getAccCode() == Accident.ACC_CODE_R || accident.getAccCode() == Accident.ACC_CODE_G){
+                        return false;
+                    }
                 }
             }
         }
@@ -718,9 +722,12 @@ public class AccidentService {
             message.put("to", TOPIC_INCIDENT); //<-- What App Auth>
             message.put("priority", "high");
 
+            String bLocation = getReportFromByLatLng(new LatLng(acc.getLatitude(), acc.getLongitude()));
+
             JSONObject notification = new JSONObject();
-            notification.put("title", "Accident ID " + acc.getAccidentId());
-            notification.put("body", "Reported Date : " + acc.getDate().toString() + " | " + acc.getTime());
+            notification.put("title", getIncidentByType(acc.getAccType())+" Incident is Detected");
+            notification.put("body", "Reported from : " + bLocation +" (Tap for more details)");
+            notification.put("click_action", "Navigate");
             message.put("notification", notification);
 
             JSONObject data = new JSONObject();
@@ -732,13 +739,12 @@ public class AccidentService {
             data.put("accType", acc.getAccType());
             data.put("accCode", acc.getAccCode());
             data.put("userId", acc.getUserId());
+            data.put("report_from", bLocation);
 //            Add more for User Profile.
             message.put("data", data);
 
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
-            System.out.println("Response : " + httpResponse);
-            System.out.println("Message : " + message.toString());
             result = new Result(true, httpResponse.toString());
             return result;
         } catch (JSONException ex) {
@@ -764,6 +770,7 @@ public class AccidentService {
             JSONObject notification = new JSONObject();
             notification.put("title", acc.getTime());
             notification.put("body", acc.getResponsibleRescr() + " now " + acc.getAccCode() + " on " + acc.getAccType());
+            notification.put("click_action", "Navigate");
             message.put("notification", notification);
 
             JSONObject data = new JSONObject();
@@ -781,8 +788,6 @@ public class AccidentService {
 
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
-            System.out.println("Response : " + httpResponse);
-            System.out.println("Message : " + message.toString());
             result = new Result(true, httpResponse.toString());
             return result;
         } catch (JSONException ex) {
@@ -793,10 +798,48 @@ public class AccidentService {
         return result;
     }
 
+    public String getReportFromByLatLng(LatLng latLng) {
+        try {
+            String latLngStr = latLng.getLatitude() + "," + latLng.getLongitude();
+            String url = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=" + latLngStr;
+            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpGet httpGet = new HttpGet(url);
+            httpGet.setHeader("Content-Type", "application/json");
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            System.out.println("Response : " + httpResponse);
+            //String fmtAddress = new JSONObject(EntityUtils.toString(httpResponse.getEntity())).optString("formatted_address");
+            String fmtAddress = new JSONObject(EntityUtils.toString(httpResponse.getEntity())).getJSONArray("results").getJSONObject(1).getString("formatted_address");
+            return fmtAddress;
+        } catch (IOException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Undefined Location (Open Navigator Map for see)";
+    }
+
     private void saveFeed(long userId, long accidentId, char updatedAccCode) {
         FeedService.getInstance().save(userId, accidentId, updatedAccCode);
     }
 //    --------------------------------- Other
+
+    public String getIncidentByType(byte accType) {
+        switch (accType) {
+            case Accident.ACC_TYPE_TRAFFIC:
+                return "Traffic";
+            case Accident.ACC_TYPE_FIRE:
+                 return "Fire";
+            case Accident.ACC_TYPE_PATIENT:
+                 return "Coma Patient or Serious Injuring";
+            case Accident.ACC_TYPE_ANIMAL:
+                return "Dangerous Animal";
+            case Accident.ACC_TYPE_BRAWL:
+                return "Brawl";
+            case Accident.ACC_TYPE_OTHER :
+                return  "Other";
+        }
+        return "Other";
+    }
 
     public List<Accident> getBoundedAccidents() {
         return currentDateBoundedAccidents;

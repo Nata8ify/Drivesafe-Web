@@ -6,6 +6,7 @@
 $.fn.dataTable.ext.errMode = 'none';
 
 var dataTable;
+
 $('document').ready(function () {
     var quickAccURL = "Monitor?opt=currentDateInBoundReq";
     dataTable = $('#acctable').DataTable({
@@ -21,31 +22,25 @@ $('document').ready(function () {
             {"width": "50%"},
             {"data": "accCode", "width": "10%"},
             {"data": "goToAcc", "width": "10%"},
-            {"data": "hospital", "width": "10%"}
         ],
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='btnNearHospital btn btn-default'> &nbsp;<i class='glyphicon glyphicon-search'></i></button>"//< ปุ่มกดไปโรงบาล โค้ดอันล่างสุด 
-            }, {
-                "targets": -2,
-                "data": null,
                 "defaultContent": "<button class='accident btn btn-default'> &nbsp;<i class='glyphicon glyphicon-map-marker'></i></button>"
             }
-
         ],
         "order": [[4, "asc"]],
         "language": {
             "loadingRecords":"Pending",
             "zeroRecords": "No Accident" //<- Not Work?
         },
-        "fnRowCallback": function (nRow, aData) {
+        "fnRowCallback": function (nRow, aData) {          
             var accCodeText = aData.accCode; // ID is returned by the server as part of the data
             var $nRow = $(nRow); // cache the row wrapped up in jQuery
             var accCodeDesc;
             // alert(accCodeText);
             if (accCodeText === "A") {
-                $nRow.css({"background-color": "#ff8080"});
+                $nRow.css({"background-color": "#ff8080"});             
                 accCodeDesc = "รอการช่วยเหลือ";
             } else if (accCodeText === "G") {
                 $nRow.css({"background-color": "#ffc107"});
@@ -73,8 +68,6 @@ $('document').ready(function () {
             return nRow
         },
         "order": [[0, "desc"]]
-
-
     });
 });
 
@@ -93,7 +86,6 @@ setInterval(function () {
 
 
 $('#acctable tbody ').on('click', 'tr .accident', function () {
-
     var accRow = dataTable.row($(this).parents('tr')).data();
     var lat = accRow.latitude;
     var lng = accRow.longitude;
@@ -102,44 +94,3 @@ $('#acctable tbody ').on('click', 'tr .accident', function () {
     crashLatLng = {lat: lat, lng: lng};
     navigate(crashLatLng);
 });
-
-$('#acctable tbody ').on('click', 'tr .btnNearHospital', function () {
-    var accRow = dataTable.row($(this).parents('tr')).data();
-    var lat = accRow.latitude;
-    var lng = accRow.longitude;
-    crashLatLng = {lat: lat,lng: lng};
-    
-    map = new google.maps.Map(document.getElementById('map'),{
-        center: crashLatLng,
-        zoom: 15,
-    });
-    
-    infowindow = new google.maps.InfoWindow();
-    var service = new google.maps.places.PlacesService(map);
-    service.nearbySearch({
-        location: crashLatLng,
-        types: ['hospital'],
-        radius: 5000,
-        rankBy: google.maps.places.RankBy.PROMINENCE
-    }, callback);
-});
-
-function callback(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            createMarker(results[i]);
-        }
-    }
-}
-
-function createMarker(place) {
-    var marker = new google.maps.Marker({
-        map: map,
-        position: place.geometry.location
-    });
-
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(place.name);
-        infowindow.open(map, this);
-    });
-}

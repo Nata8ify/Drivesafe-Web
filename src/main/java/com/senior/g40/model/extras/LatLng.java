@@ -5,6 +5,12 @@
  */
 package com.senior.g40.model.extras;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 /**
  *
  * @author PNattawut
@@ -38,6 +44,5 @@ public class LatLng {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-    
     
 }

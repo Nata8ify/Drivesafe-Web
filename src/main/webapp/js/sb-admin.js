@@ -203,12 +203,16 @@ function callbackMessage(str) {
                 // alert(accCodeText);
                 if (accCodeText === "A") {
                     $nRow.css({"background-color": "#ff8080"});
+                    $nRow.find("td").eq(1).css({"background-color": "#dc3545"});
                 } else if (accCodeText === "G") {
-                    $nRow.css({"background-color": "#ffc107"});
+                    $nRow.css({"background-color": "#ffdd55"});
+                    $nRow.find("td").eq(1).css({"background-color": "#ffc107"});
                 } else if (accCodeText === "R") {
                     $nRow.css({"background-color": "#80e5ff"});
+                    $nRow.find("td").eq(1).css({"background-color": "#007bff"});
                 } else if (accCodeText === "C") {
                     $nRow.css({"background-color": "#80ff80"});
+                    $nRow.find("td").eq(1).css({"background-color": "#28a745"});
                 }
                 $("td", nRow).eq(1).empty();
                 $("td", nRow).eq(1).prepend("<img class='img-acc-ico' src='image/acctype/" + aData.accType + ".png' width='40px' />");
@@ -340,7 +344,7 @@ function buildAccCodeChart() {
                     type: 'pie',
                     animation: false,
                     data: {
-                        labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "ช่วยเหลือสำเร็จ"],
+                        labels: ["รอการช่วยเหลือ", "กำลังเดินทางไป", "กำลังช่วยเหลือ", "การช่วยเหลือเสร็จสิ้น"],
                         datasets: [{
                                 data: codeSeries,
                                 backgroundColor: ['#dc3545', '#ffc107', '#007bff', '#28a745']
@@ -398,7 +402,7 @@ function getFeeds() {
                                     feedBodyMessage = " เจ้าที่หน้าที่กำลังช่วยเหลือผู้ประสบภัยที่ ".concat(place);
                                     break;
                                 case "C" :
-                                    feedBodyMessage = " การช่วยเหลือเสร็จสิ้น สถานการณ์ปลอดภัย ";
+                                    feedBodyMessage = " การช่วยเหลือเสร็จสิ้น";
                                     break;
                                 case "U" :
                                     feedBodyMessage = " ยกเลิกการขอความช่วยเหลือ ";
@@ -450,14 +454,9 @@ $('document').ready(function () {
             {"width": "50%"},
             {"data": "accCode", "width": "10%"},
             {"data": "goToAcc", "width": "10%"},
-            {"data": "hospital", "width": "10%"}
         ],
         "order": [[1, "asc"]],
         "columnDefs": [{
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<button class='btnNearHospital btn btn-default'> &nbsp;<i class='glyphicon glyphicon-search'></i></button>"//< ปุ่มกดไปโรงบาล โค้ดอันล่างสุด 
-            }, {
                 "targets": -2,
                 "data": null,
                 "defaultContent": "<button class='accident btn btn-default'> &nbsp;<i class='glyphicon glyphicon-map-marker'></i></button>"
