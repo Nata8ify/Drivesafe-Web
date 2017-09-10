@@ -18,7 +18,65 @@
         <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         <title>หน้าสถิติ</title>
     </head>
-    <body>
+    <body class="fixed-nav" id="page-top">
+       
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+            <a class="navbar-brand" href="#">Weeworh</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav navbar-sidenav">
+                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-fw fa-dashboard"></i>
+                            <span class="nav-link-text">
+                                Dashboard</span>
+                        </a>
+                    </li> 
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                        <a class="nav-link" href="To?opt=dayReport">
+                            <i class="fa fa-fw fa-table"></i>
+                            <span class="nav-link-text">
+                                Day Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                        <a class="nav-link" href="To?opt=stat">
+                            <i class="fa fa-fw fa-area-chart"></i>
+                            <span class="nav-link-text">
+                                Charts</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">
+                        <a class="nav-link" href="To?opt=sett">
+                            <i class="fa fa-fw fa-cog"></i>
+                            <span class="nav-link-text">
+                                Setting</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav sidenav-toggler">
+                    <li class="nav-item">
+                        <a class="nav-link text-center" id="sidenavToggler">
+                            <i class="fa fa-fw fa-angle-left" id="i-collapse-menu"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="Logout">
+                            <i class="fa fa-fw fa-sign-out"></i>
+                            ลงชื่อออก</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+          
+          
+          
         <div class="container">
             <!--<h3><a href="#acc-stat-chart">Number of Accident Statistic</a> <a href="#acc-stat-map">Visualizing Accident Location</a></h3><br/>-->
             <br/><br/><br/><br/>

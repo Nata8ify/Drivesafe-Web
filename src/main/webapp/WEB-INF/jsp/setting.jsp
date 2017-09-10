@@ -19,20 +19,66 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title>หน้าตั้งค่า</title>
     </head>
-    <body>
+    <body class="fixed-nav" id="page-top">
+        
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+            <a class="navbar-brand" href="#">Weeworh</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav navbar-sidenav">
+                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-fw fa-dashboard"></i>
+                            <span class="nav-link-text">
+                                Dashboard</span>
+                        </a>
+                    </li> 
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                        <a class="nav-link" href="To?opt=dayReport">
+                            <i class="fa fa-fw fa-table"></i>
+                            <span class="nav-link-text">
+                                Day Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                        <a class="nav-link" href="To?opt=stat">
+                            <i class="fa fa-fw fa-area-chart"></i>
+                            <span class="nav-link-text">
+                                Charts</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">
+                        <a class="nav-link" href="To?opt=sett">
+                            <i class="fa fa-fw fa-cog"></i>
+                            <span class="nav-link-text">
+                                Setting</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav sidenav-toggler">
+                    <li class="nav-item">
+                        <a class="nav-link text-center" id="sidenavToggler">
+                            <i class="fa fa-fw fa-angle-left" id="i-collapse-menu"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="Logout">
+                            <i class="fa fa-fw fa-sign-out"></i>
+                            ลงชื่อออก</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation-demo" id="demo-navbar">
             <div class="container">
                 <a class="navbar-brand">ตั้งค่าเว็บไซต์ Weeworh</a>
-                <div class="collapse navbar-collapse" id="navigation-example-2">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="To?opt=main">หน้าหลัก</a>
-                        </li>
-                        <li>
-                            <a href="Logout">ลงชื่อออก</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </nav>
         <br/><br/><br/><br/><br/><br/>
