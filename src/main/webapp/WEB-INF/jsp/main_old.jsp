@@ -51,14 +51,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
-                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
                         <a class="nav-link" href="To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
                         </a>
                     </li> 
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Tables">
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">
