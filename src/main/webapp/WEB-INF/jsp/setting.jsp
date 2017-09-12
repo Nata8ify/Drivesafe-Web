@@ -10,8 +10,23 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <jsp:include page="includes/bslibraries.jsp"/>
+        
+        <!-- Bootstrap core CSS -->
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom fonts for this template -->
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- Plugin CSS -->
+        <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
         <link href="css/sb-admin.css" rel="stylesheet">
+        
+        
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- jQuery library -->
@@ -30,7 +45,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="#To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
@@ -77,12 +92,7 @@
         </nav>
         
         
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation-demo" id="demo-navbar">
-            <div class="container">
-                <a class="navbar-brand">ตั้งค่าเว็บไซต์ Weeworh</a>
-            </div>
-        </nav>
-        <br/><br/><br/><br/><br/><br/>
+        <br/>
     <center>
         <div id="spec-location-section">
             <div class="container">
@@ -96,17 +106,17 @@
                     </div>
                     <div class="col-sm-4">
                         <fieldset>
-                            <input type="text" value="ชื่อสถานที่" <br/>
+                            <p style="float: left"> ชื่อสถานที่ </p><br/>
                             <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
                             <hr/>
-                            <label value="ละติจูด" style="float: left"></label><br/>
+                            <p style="float: left"> ละติจูด </p><br/>
                             <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
-                            <label value="ลองจิจูด" style="float: left"></label><br/>
-                            <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>
-                            <label value="ระยะทำการรอง (กิโลเมตร)" style="float: left"></label><br/>
-                            <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
-                            <label value="ระยะทำการหลัก (กิโลเมตร)" style="float: left"></label><br/>
+                            <p style="float: left"> ลองจิจูด </p><br/>
+                            <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>         
+                            <p style="float: left">ระยะทำการหลัก (กิโลเมตร)</p><br/>
                             <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${param.mainBound}" class="form-control"/><br/>
+                            <p style="float: left">ระยะทำการรอง (กิโลเมตร)</p><br/>
+                            <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
                             <div class="row">
                                 <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
                                 <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-primary" style="width: 100%"/><br/><br/></div>

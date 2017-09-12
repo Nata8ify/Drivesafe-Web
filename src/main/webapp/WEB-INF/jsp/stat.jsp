@@ -10,14 +10,28 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+        <!-- Bootstrap core CSS -->
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom fonts for this template -->
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- Plugin CSS -->
+        <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="css/sb-admin.css" rel="stylesheet">
+        
+        
         <jsp:include page="includes/bslibraries.jsp"/>
         <!--moment.js-->
         <script src="https://momentjs.com/downloads/moment.min.js"></script>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
         <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         
-        <link href="css/sb-admin.css" rel="stylesheet">
         <title>หน้าสถิติ</title>
     </head>
     <body class="fixed-nav" id="page-top">
@@ -30,7 +44,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="#To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
@@ -75,7 +89,6 @@
                 </ul>
             </div>
         </nav>
-
           
           
           
@@ -113,10 +126,7 @@
                 <hr/>
                 <div id="acc-stat-map" style="width: 100%; height: 600px; padding: 30px;"></div>
                 <br/>
-<!--                <div id="crashspeed-stat-section">
-                     <legend>สถิถิของความเร็วในการเกิดอุบัติเหตุ</legend>
-                     <div id="crashspeed-stat-chart" class="ct-chart ct-major-twelfth"></div>
-                </div>-->
+
             </div>
             <script>
                 <jsp:include page="monitor_js/accident_stat.js"/>

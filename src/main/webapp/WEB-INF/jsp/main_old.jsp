@@ -12,6 +12,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>  ตารางอุบัติเหตุ  </title>
 
         <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
@@ -21,13 +23,24 @@
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
 
-        <link href="css/bootstrap.css" rel="stylesheet" />
-        <link href="css/ct-paper.css" rel="stylesheet"/>
-        <link href="css/demo.css" rel="stylesheet" /> 
+       
+        <!-- Bootstrap core CSS -->
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom fonts for this template -->
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- Plugin CSS -->
+        <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
         <link href="css/sb-admin.css" rel="stylesheet">
         
         
-
+        <link href="css/bootstrap.css" rel="stylesheet" />
+        <link href="css/ct-paper.css" rel="stylesheet"/>
+        <link href="css/demo.css" rel="stylesheet" /> 
+        
         <!--     Fonts and icons     -->
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
@@ -39,12 +52,13 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <style>
-            #acctable tr:hover{ 
-                background-color: #FF841E;
+            #acctable { 
+                background-color: rgba(0, 0, 0, 0.03);
                 cursor: pointer
             }
         </style>
     </head>
+    
     <body class="fixed-nav" id="page-top">
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -55,7 +69,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="#To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
@@ -101,23 +115,8 @@
             </div>
         </nav>
         
-        
-        
-        
-        <nav class="navbar navbar-default" role="navigation-demo" id="demo-navbar">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand">ขอต้อนรับเข้าสู่ Weeworh System</a>
-                <div class="collapse navbar-collapse" id="navigation-example-2">
-                </div>
-            </div>
-        </nav>         
-        <div class="alert alert-danger landing-alert">
-            <div class="container text-center">
-                <p>ยินดีต้อนรับ คุณ :  ${pf.firstName} ${pf.lastName} </p>
-            </div>
-        </div>
-
+      
+            
         <div class="wrapper">
             <div class="landing-header section" style="background-color:#9A958D">
                 <div class="container">
@@ -150,8 +149,7 @@
                             <i id="callback-msg"></i>
                             <!--<div class="col-md-8 col-md-offset-2">-->
                             <div style="padding:0px">
-                                <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>
-                                <button id="btn-go-top" >Back to Top</button>
+                                <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>                             
                                 <br/><hr/>
                                 <script>
                                     <%@include file="monitor_js/main_accnavigate.js"  %>
