@@ -102,7 +102,7 @@
         <div class="content-wrapper py-3">
             <div class="container-fluid">
                 <div class="card-header">
-                    <legend> ตารางแสดงอุบัติเหตุทั้งหมด </legend>
+                    <legend> ตารางแสดงอุบัติเหตุ </legend>
                 </div>
                 <div class="card-body">
                     <div class="wrapper" >

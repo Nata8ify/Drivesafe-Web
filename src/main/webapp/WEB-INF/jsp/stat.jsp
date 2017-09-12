@@ -89,7 +89,7 @@
         <div class="content-wrapper py-3">
             <div class="container-fluid"> 
                 <!--<h3><a href="#acc-stat-chart">Number of Accident Statistic</a> <a href="#acc-stat-map">Visualizing Accident Location</a></h3><br/>-->
-                <br/>
+                
                 <div class="card-header" >
                     <legend>โปรดระบุช่วงเวลาการเกิดอุบัติเหตที่ท่านต้องการ <b id="acc-period-title"></b></legend>
                 </div>
