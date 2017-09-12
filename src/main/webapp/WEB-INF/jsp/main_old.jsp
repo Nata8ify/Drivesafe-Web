@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>  ตารางอุบัติเหตุ  </title>
+        <title> ตารางอุบัติเหตุ </title>
 
         <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
@@ -23,7 +23,7 @@
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
 
-       
+
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -35,30 +35,13 @@
 
         <!-- Custom styles for this template -->
         <link href="css/sb-admin.css" rel="stylesheet">
-        
-        
-        <link href="css/bootstrap.css" rel="stylesheet" />
-        <link href="css/ct-paper.css" rel="stylesheet"/>
-        <link href="css/demo.css" rel="stylesheet" /> 
-        
-        <!--     Fonts and icons     -->
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <style>
-            #acctable { 
-                background-color: rgba(0, 0, 0, 0.03);
-                cursor: pointer
-            }
-        </style>
+
     </head>
-    
+
     <body class="fixed-nav" id="page-top">
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -69,7 +52,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#To?opt=main">
+                        <a class="nav-link" href="To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
@@ -114,66 +97,67 @@
                 </ul>
             </div>
         </nav>
-        
-      
-            
-        <div class="wrapper">
-            <div class="landing-header section" style="background-color:#9A958D">
-                <div class="container">
 
-                    <div class="">                                                                              
-                        <div>
-                            <table id="acctable" style="width: 100%;"> 
-                                <thead> 
-                                    <tr>
-                                        <th>เวลา</th>
-                                        <th>ประเภท</th>
-                                        <th>สถานที่เกิดอุบัติเหต</th>
-                                        <th>สถานะ</th>
-                                        <th>ระบบนำทาง</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="text-align: left">
-                                </tbody>
-                            </table>
-                        </div>                 
-                    </div>
-                    <br/>
-                </div>    
-            </div>                               
-            <div class="main">
-                <div class="section text-center landing-section">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <br/>
-                            <i id="callback-msg"></i>
-                            <!--<div class="col-md-8 col-md-offset-2">-->
-                            <div style="padding:0px">
-                                <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>                             
-                                <br/><hr/>
-                                <script>
-                                    <%@include file="monitor_js/main_accnavigate.js"  %>
-                                    <%@include file="monitor_js/main_accupdater.js"  %>
-                                </script>
-                                <script async defer
-                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
-                                </script>
+    <center>
+        <div class="content-wrapper py-3">
+            <div class="container-fluid">
+                <div class="card-header">
+                    <legend> ตารางแสดงอุบัติเหตุทั้งหมด </legend>
+                </div>
+                <div class="card-body">
+                    <div class="wrapper" >
+                        <div class="landing-header section" style="background-color:#CFCFC5">
+                            <div class="card-header">
+
+
+
+                                <div>
+                                    <table id="acctable" style="width: 100%;"> 
+                                        <thead > 
+                                            <tr class="card-header">
+                                                <th>เวลา</th>
+                                                <th>ประเภท</th>
+                                                <th>สถานที่เกิดอุบัติเหตุ</th>
+                                                <th>สถานะ</th>
+                                                <th>ระบบนำทาง</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="text-align: left">
+                                        </tbody>
+                                    </table>
+                                </div>                 
+
                                 <br/>
+
                             </div>
                         </div>
-                    </div>
-                </div>    
-            </div>     
-        </div>
-        <footer class="footer-demo section-dark">
-            <div class="container">
-                <nav class="pull-left">
-
-                </nav>
-                <div class="copyright pull-right">
-
+                        <div class="section text-center landing-section">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <br/>
+                                    <i id="callback-msg"></i>
+                                    <!--<div class="col-md-8 col-md-offset-2">-->
+                                    <div style="padding:0px">
+                                        <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>                             
+                                        <br/><hr/>
+                                        <script>
+                                            <%@include file="monitor_js/main_accnavigate.js"  %>
+                                            <%@include file="monitor_js/main_accupdater.js"  %>
+                                        </script>
+                                        <script async defer
+                                                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
+                                        </script>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div> 
                 </div>
             </div>
-        </footer>
-    </body>
+        </div>
+    </center>
+
+
+</body>
 </html>

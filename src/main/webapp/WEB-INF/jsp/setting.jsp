@@ -1,19 +1,17 @@
-<%-- 
-    Document   : setting
-    Created on : Apr 14, 2017, 12:52:06 AM
-    Author     : PNattawut
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page session="false" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title> ตั้งค่า </title>
+        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <jsp:include page="includes/bslibraries.jsp"/>
+
+        <meta name="description" content="">
+        <meta name="author" content="">
         
+
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -27,16 +25,14 @@
         <link href="css/sb-admin.css" rel="stylesheet">
         
         
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title>หน้าตั้งค่า</title>
+
+
     </head>
     <body class="fixed-nav" id="page-top">
-        
+
+        <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
             <a class="navbar-brand" href="#">Weeworh</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +41,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#To?opt=main">
+                        <a class="nav-link" href="To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
@@ -90,45 +86,55 @@
                 </ul>
             </div>
         </nav>
-        
-        
+
+
+
         <br/>
     <center>
-        <div id="spec-location-section">
-            <div class="container">
-
-                <div class="row">
-                    <div class="col-sm-12"><i id="callback-msg"></i></div>
+        <div class="content-wrapper py-3">
+            <div class="container-fluid">
+                <div class="card-header">
+                    <legend> กำหนดจุดศุนย์กลางของหน่วยกู้ภัย </legend> 
+                   
                 </div>
-                <div class="row well">
-                    <div class="col-sm-8">
-                        <div id="spec-location-map" style="width: 100%; height: 600px; padding: 30px;" ></div>
-                    </div>
-                    <div class="col-sm-4">
-                        <fieldset>
-                            <p style="float: left"> ชื่อสถานที่ </p><br/>
-                            <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
-                            <hr/>
-                            <p style="float: left"> ละติจูด </p><br/>
-                            <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
-                            <p style="float: left"> ลองจิจูด </p><br/>
-                            <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>         
-                            <p style="float: left">ระยะทำการหลัก (กิโลเมตร)</p><br/>
-                            <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${param.mainBound}" class="form-control"/><br/>
-                            <p style="float: left">ระยะทำการรอง (กิโลเมตร)</p><br/>
-                            <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
-                            <div class="row">
-                                <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
-                                <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-primary" style="width: 100%"/><br/><br/></div>
-                                <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="ดึงค่าสถานที่ปัจจุบัน" class="btn btn-default" style="width: 100%"/><br/><br/></div>
-                            </div>
-                            <hr/>
-                        </fieldset>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div id="spec-location-map" style="width: 100%; height: 600px; padding: 30px;" ></div>
+                        </div>
+                        
+                        
+                        <div class="col-sm-4">
+                            <br/>
+                            <fieldset>
+                                <p style="float: left"> ชื่อสถานที่ </p><br/>
+                                <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/><br/>                          
+                                <p style="float: left"> ละติจูด </p><br/>
+                                <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
+                                <p style="float: left"> ลองจิจูด </p><br/>
+                                <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>         
+                                <p style="float: left">ระยะทำการหลัก (กิโลเมตร)</p><br/>
+                                <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${param.mainBound}" class="form-control"/><br/>
+                                <p style="float: left">ระยะทำการรอง (กิโลเมตร)</p><br/>
+                                <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
+                                <div class="row">
+                                    <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
+                                    <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-primary" style="width: 100%"/><br/><br/></div>
+                                    <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="ดึงค่าสถานที่ปัจจุบัน" class="btn btn-default" style="width: 100%"/><br/><br/></div>
+                                </div>
+                                <hr/>
+                            </fieldset>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </center>
+
+
+
+
+
 
     <script>
         <jsp:include page="monitor_js/setting.js" flush="true"/>

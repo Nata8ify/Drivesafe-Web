@@ -19,7 +19,7 @@
 
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Dashboard - Weeworh</title>
+        <title> Dashboard - Weeworh </title>
 
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#To?opt=main">
+                        <a class="nav-link" href="To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
