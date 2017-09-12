@@ -9,7 +9,7 @@
     }
 %>
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,7 +58,7 @@
                                 Dashboard</span>
                         </a>
                     </li> 
-                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Incident tables">
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">
@@ -106,7 +106,7 @@
                 </div>
                 <div class="card-body">
                     <div class="wrapper" >
-                        <div class="landing-header section" style="background-color:#CFCFC5">
+                        <div class="landing-header section" style="background-color:#E2E2D2">
                             <div class="card-header">
 
 
@@ -157,7 +157,48 @@
             </div>
         </div>
     </center>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
 
+    <!-- Logout Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Select "Logout" below if you are ready to end your current session.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="js/moment.js"></script>
+    <script src="dashboard_js/main_accnavigate.js"></script>
+    <script src="dashboard_js/main_accupdater.js"></script>
+    <script src="js/sb-admin.js"></script>
+    <script>
+            $("#i-collapse-menu").click();
+    </script>
 </body>
 </html>

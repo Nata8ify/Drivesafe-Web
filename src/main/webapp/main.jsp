@@ -56,7 +56,7 @@
                                 Dashboard</span>
                         </a>
                     </li> 
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Incident tables">
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">
@@ -131,11 +131,11 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>                   
                             <div class="card-footer small text-muted" id="acctable-lastest-update">
-
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -174,6 +174,7 @@
                         </div>
 
                     </div>
+
                 </div>
             </div>
 
@@ -189,7 +190,7 @@
                 <div class="card-footer small text-muted" id="history-report-lastest-update">
 
                 </div>
-            </div>
+            </div> 
 
 
 
