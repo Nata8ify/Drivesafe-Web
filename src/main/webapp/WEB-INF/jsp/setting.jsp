@@ -11,6 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="includes/bslibraries.jsp"/>
+        <link href="css/sb-admin.css" rel="stylesheet">
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- jQuery library -->
@@ -98,13 +99,13 @@
                             <input type="text" value="ชื่อสถานที่" <br/>
                             <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/>
                             <hr/>
-                            <input type="text" value="ละติจูด" <br/>
+                            <label value="ละติจูด" style="float: left"></label><br/>
                             <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
-                            <input type="text" value="ลองจิจูด" <br/>
+                            <label value="ลองจิจูด" style="float: left"></label><br/>
                             <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>
-                            <input type="text" value="ระยะทำการรอง (กิโลเมตร)" <br/>
+                            <label value="ระยะทำการรอง (กิโลเมตร)" style="float: left"></label><br/>
                             <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
-                            <input type="text" value="ระยะทำการหลัก (กิโลเมตร)" <br/>
+                            <label value="ระยะทำการหลัก (กิโลเมตร)" style="float: left"></label><br/>
                             <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${param.mainBound}" class="form-control"/><br/>
                             <div class="row">
                                 <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
