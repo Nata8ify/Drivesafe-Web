@@ -41,16 +41,16 @@ $('document').ready(function () {
             // alert(accCodeText);
             if (accCodeText === "A") {
                 $nRow.css({"background-color": "#ff8080"});             
-                accCodeDesc = "รอการช่วยเหลือ";
+                accCodeDesc = "Waiting for rescue";
             } else if (accCodeText === "G") {
                 $nRow.css({"background-color": "#ffc107"});
-                accCodeDesc = "กำลังเดินทางไป";
+                accCodeDesc = "Ongoing";
             } else if (accCodeText === "R") {
                 $nRow.css({"background-color": "#80e5ff"});
-                accCodeDesc = "กำลังช่วยเหลือ";
+                accCodeDesc = "Rescuing";
             } else if (accCodeText === "C") {
                 $nRow.css({"background-color": "#80ff80"});
-                accCodeDesc = "ช่วยเหลือสำเร็จ";
+                accCodeDesc = "Rescue success";
             }
             $("td", nRow).eq(1).prepend("<img src='image/acctype/"+aData.accType+".png' width='50px' class='img img-thumbnail'/>");
             $("td", nRow).eq(3).html(accCodeDesc);

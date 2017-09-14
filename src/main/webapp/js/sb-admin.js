@@ -289,6 +289,7 @@ function buildReportFreqChart() {
                     },
                     options: {
                         animation: false,
+                        responsive : true,
                         scales: {
                             xAxes: [{
                                     time: {
@@ -298,7 +299,12 @@ function buildReportFreqChart() {
                                         display: false
                                     },
                                     ticks: {
-                                        maxTicksLimit: 6
+                                        autoSkip : false,
+                                        maxTicksLimit: 6,
+                                        //For making bar chart only show the recent statistics incident
+                                        /*callback: function(value) {
+                                            return value
+                                        }*/
                                     }
                                 }],
                             yAxes: [{
