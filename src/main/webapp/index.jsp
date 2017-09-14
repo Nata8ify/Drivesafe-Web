@@ -63,7 +63,7 @@
             </div><!-- /.container-->
         </nav> 
         <div class="wrapper">
-            <div class="landing-header section" style="background-image: url('image/bg_landing.jpg');">
+            <div class="landing-header section" style="background-color:#9A958D">
                 <div class="container">
                     <div class="motto" >
                         <div class="col-md-8 col-md-offset-2">

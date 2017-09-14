@@ -19,7 +19,7 @@
 
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Dashboard - Weeworh</title>
+        <title> Dashboard - Weeworh </title>
 
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -50,13 +50,13 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav">
                     <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="To?opt=main">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">
                                 Dashboard</span>
                         </a>
                     </li> 
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Incident tables">
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">
@@ -70,7 +70,7 @@
                                 Charts</span>
                         </a>
                     </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">
                         <a class="nav-link" href="To?opt=sett">
                             <i class="fa fa-fw fa-cog"></i>
                             <span class="nav-link-text">
@@ -131,11 +131,11 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>                   
                             <div class="card-footer small text-muted" id="acctable-lastest-update">
-
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -174,6 +174,7 @@
                         </div>
 
                     </div>
+
                 </div>
             </div>
 
@@ -189,7 +190,7 @@
                 <div class="card-footer small text-muted" id="history-report-lastest-update">
 
                 </div>
-            </div>
+            </div> 
 
 
 

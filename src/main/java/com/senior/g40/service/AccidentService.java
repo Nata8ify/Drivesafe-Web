@@ -649,8 +649,9 @@ public class AccidentService {
             System.out.println("is NEAR_RANGE " + (distance < NEAR_RANGE));
             if (distance < NEAR_RANGE) {
                 if (accType == accident.getAccType()) {
-                    //if accCode Check?
-                    return false;
+                    if(accident.getAccCode() == Accident.ACC_CODE_A || accident.getAccCode() == Accident.ACC_CODE_R || accident.getAccCode() == Accident.ACC_CODE_G){
+                        return false;
+                    }
                 }
             }
         }
@@ -837,7 +838,7 @@ public class AccidentService {
             case Accident.ACC_TYPE_OTHER :
                 return  "Other";
         }
-        return "Not Available";
+        return "Other";
     }
 
     public List<Accident> getBoundedAccidents() {
