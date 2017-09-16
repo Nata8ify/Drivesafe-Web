@@ -710,6 +710,7 @@ public class AccidentService {
     private final String TOPIC_INCIDENT = "/topics/incident";
     private final String TOPIC_UPDATE_CODE = "/topics/update";
 
+    
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -740,6 +741,9 @@ public class AccidentService {
             data.put("accCode", acc.getAccCode());
             data.put("userId", acc.getUserId());
             data.put("report_from", bLocation);
+            for(OperatingLocation location : (List<OperatingLocation>)SettingService.getInstance().getAllOpertingLocation()){
+                System.out.println(location.getOrganizationId());
+            }
 //            Add more for User Profile.
             message.put("data", data);
 

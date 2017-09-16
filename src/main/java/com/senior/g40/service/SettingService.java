@@ -157,6 +157,36 @@ public class SettingService {
         }
         return result;
     }
+    
+    public Result getAllOpertingLocation() {
+        Result result = null;
+        List<OperatingLocation> locations = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `properties`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (locations == null) {
+                    locations = new ArrayList<>();
+                }
+                locations.add( new OperatingLocation(
+                    new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization")));
+            }
+            result = new Result(true, "Getting Operating Laocation Success",locations);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+            result = new Result(false, "Getting Operating Location Failed.", ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return result;
+    }
 
     /* Organiaztion Module */
     public Result createOrganization(Organization organization) {
@@ -267,6 +297,28 @@ public class SettingService {
         return organization;
     }
 
+    public OperatingLocation getOperatingLocationByUserId(long userId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        OperatingLocation location = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT `opOrganization` FROM `properties` WHERE `userId` = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, userId);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                //TODO
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return location;
+    }
+    
     public int getLatestOrganizationId(Connection conn) {
         PreparedStatement pstm = null;
         ResultSet rs = null;

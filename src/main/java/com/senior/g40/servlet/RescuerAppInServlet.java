@@ -10,6 +10,7 @@ import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.User;
 import com.senior.g40.service.AccidentService;
+import com.senior.g40.service.SettingService;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.App;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class RescuerAppInServlet extends HttpServlet {
         this.response = response;
         AccidentService accService = AccidentService.getInstance();
         UserService usrService = UserService.getInstance();
+        SettingService settingService = SettingService.getInstance();
         String option = request.getParameter("opt");
         switch (option) {
             case "login": //1. Rescuer Login Section START ---- 
@@ -113,6 +115,10 @@ public class RescuerAppInServlet extends HttpServlet {
             case "get_userinfo" :
                 request.setAttribute("result", usrService.getProfileByUserId(getAsLong("userId")).toJson());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+            case "get_organization_id" :
+                request.setAttribute("result", settingService.getOrganizationById(getAsInteger("userId")).getOrganizationId());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
             default:
                     request.setAttribute("result", "WOW");
                 return;
@@ -135,6 +141,10 @@ public class RescuerAppInServlet extends HttpServlet {
         return Long.valueOf(request.getParameter(param));
     }
 
+    private int getAsInteger(String param) {
+        return Integer.valueOf(request.getParameter(param));
+    }
+    
     private float getAsFloat(String param) {
         return Float.valueOf(request.getParameter(param));
     }
