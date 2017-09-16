@@ -649,7 +649,7 @@ public class AccidentService {
             System.out.println("is NEAR_RANGE " + (distance < NEAR_RANGE));
             if (distance < NEAR_RANGE) {
                 if (accType == accident.getAccType()) {
-                    if(accident.getAccCode() == Accident.ACC_CODE_A || accident.getAccCode() == Accident.ACC_CODE_R || accident.getAccCode() == Accident.ACC_CODE_G){
+                    if (accident.getAccCode() == Accident.ACC_CODE_A || accident.getAccCode() == Accident.ACC_CODE_R || accident.getAccCode() == Accident.ACC_CODE_G) {
                         return false;
                     }
                 }
@@ -710,7 +710,6 @@ public class AccidentService {
     private final String TOPIC_INCIDENT = "/topics/incident";
     private final String TOPIC_UPDATE_CODE = "/topics/update";
 
-    
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
@@ -726,8 +725,8 @@ public class AccidentService {
             String bLocation = getReportFromByLatLng(new LatLng(acc.getLatitude(), acc.getLongitude()));
 
             JSONObject notification = new JSONObject();
-            notification.put("title", getIncidentByType(acc.getAccType())+" Incident is Detected");
-            notification.put("body", "Reported from : " + bLocation +" (Tap for more details)");
+            notification.put("title", getIncidentByType(acc.getAccType()) + " Incident is Detected");
+            notification.put("body", "Reported from : " + bLocation + " (Tap for more details)");
             notification.put("click_action", "Navigate");
             message.put("notification", notification);
 
@@ -741,15 +740,24 @@ public class AccidentService {
             data.put("accCode", acc.getAccCode());
             data.put("userId", acc.getUserId());
             data.put("report_from", bLocation);
-            for(OperatingLocation location : (List<OperatingLocation>)SettingService.getInstance().getAllOpertingLocation()){
-                System.out.println(location.getOrganizationId());
-            }
 //            Add more for User Profile.
             message.put("data", data);
 
             httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             result = new Result(true, httpResponse.toString());
+            for (OperatingLocation location : (List<OperatingLocation>) SettingService.getInstance().getAllOpertingLocation().getObj()) {
+                System.out.println(location.getOrganizationId());
+                if (isBoundWithin(location.getUserId(), acc)) {
+                    message.remove("to");
+                    message.put("to", String.valueOf(location.getOrganizationId()));
+                    httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
+                    httpClient.execute(httpPost);
+                    System.out.println("Bounded!!");
+                } else {
+                    System.out.println("Not Bounded!!");
+                }
+            }
             return result;
         } catch (JSONException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -832,15 +840,15 @@ public class AccidentService {
             case Accident.ACC_TYPE_TRAFFIC:
                 return "Traffic";
             case Accident.ACC_TYPE_FIRE:
-                 return "Fire";
+                return "Fire";
             case Accident.ACC_TYPE_PATIENT:
-                 return "Coma Patient or Serious Injuring";
+                return "Coma Patient or Serious Injuring";
             case Accident.ACC_TYPE_ANIMAL:
                 return "Dangerous Animal";
             case Accident.ACC_TYPE_BRAWL:
                 return "Brawl";
-            case Accident.ACC_TYPE_OTHER :
-                return  "Other";
+            case Accident.ACC_TYPE_OTHER:
+                return "Other";
         }
         return "Other";
     }

@@ -175,7 +175,7 @@ public class SettingService {
                 }
                 locations.add( new OperatingLocation(
                     new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization")));
+                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"), rs.getLong("userId")));
             }
             result = new Result(true, "Getting Operating Laocation Success",locations);
 
@@ -311,7 +311,7 @@ public class SettingService {
             if (rs.next()) {
                 location = new OperatingLocation(
                     new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"));
+                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"), rs.getLong("userId"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);

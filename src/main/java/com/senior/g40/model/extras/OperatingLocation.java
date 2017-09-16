@@ -12,6 +12,7 @@ import com.google.gson.Gson;
  * @author PNattawut
  */
 public class OperatingLocation {
+    private long userId;
     private LatLng latLng;
     private int neutralBound;
     private int mainBound;
@@ -37,12 +38,30 @@ public class OperatingLocation {
         this.organizationId = organizationId;
     }
     
+    public OperatingLocation(LatLng latLng, int neutralBound, int mainBound, int organizationId, long userId) {
+        this.latLng = latLng;
+        this.neutralBound = neutralBound;
+        this.mainBound = mainBound;
+        this.organizationId = organizationId;
+        this.userId = userId;
+    }
+    
     public static OperatingLocation getInstance(OperatingLocation location){
         if(OperatingLocation.location == null){
             OperatingLocation.location = location;
         }
         return OperatingLocation.location;
     }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+    
+    
     
     public LatLng getLatLng() {
         return latLng;
