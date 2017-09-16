@@ -116,7 +116,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 request.setAttribute("result", usrService.getProfileByUserId(getAsLong("userId")).toJson());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
             case "get_organization_id" :
-                request.setAttribute("result", settingService.getOrganizationById(getAsInteger("userId")).getOrganizationId());
+                request.setAttribute("result", settingService.getOperatingLocationByUserId(getAsInteger("userId")).getOrganizationId());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             default:

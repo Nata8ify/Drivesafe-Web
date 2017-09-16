@@ -304,12 +304,14 @@ public class SettingService {
         OperatingLocation location = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT `opOrganization` FROM `properties` WHERE `userId` = ?;";
+            String sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setLong(1, userId);
             rs = pstm.executeQuery();
             if (rs.next()) {
-                //TODO
+                location = new OperatingLocation(
+                    new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
