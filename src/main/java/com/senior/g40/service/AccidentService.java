@@ -50,6 +50,8 @@ public class AccidentService {
         return accService;
     }
 
+    private final SettingService settingService = SettingService.getInstance();
+
     public AccidentService() {
         currentDateBoundedAccidents = new ArrayList<>();
     }
@@ -709,6 +711,7 @@ public class AccidentService {
     private final String KEY_SERVER = "key=AAAAxdi1-iE:APA91bFgKGtyC8n5foSKwYdQfVDUjOZGT0yTv0JDOqDm7cLFOi1xnqnuG8FEmarC-iRsD3oYMr9iAt21WotVHgMZ1W6y0j2X1uCZPEv1h5mkh0hxoKrLtPgngE0Zjt0hZWCCIMlToCro";
     private final String TOPIC_INCIDENT = "/topics/incident";
     private final String TOPIC_UPDATE_CODE = "/topics/update";
+    private final String TOPIC_ = "/topics/";
 
     public Result boardcastRescueRequest(Accident acc) {
         Result result = null;
@@ -743,17 +746,18 @@ public class AccidentService {
 //            Add more for User Profile.
             message.put("data", data);
 
-            httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            result = new Result(true, httpResponse.toString());
-            for (OperatingLocation location : (List<OperatingLocation>) SettingService.getInstance().getAllOpertingLocation().getObj()) {
+//            httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
+//            HttpResponse httpResponse = httpClient.execute(httpPost);
+//            result = new Result(true, httpResponse.toString());
+            System.out.println(message.toString());
+            for (OperatingLocation location : (List<OperatingLocation>) settingService.getAllOpertingLocation().getObj()) {
                 System.out.println(location.getOrganizationId());
                 if (isBoundWithin(location.getUserId(), acc)) {
                     message.remove("to");
-                    message.put("to", String.valueOf(location.getOrganizationId()));
+                    message.put("to", TOPIC_.concat(String.valueOf(location.getOrganizationId())));
                     httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
                     httpClient.execute(httpPost);
-                    System.out.println("Bounded!!");
+                    System.out.println("Bounded!! " + message.toString());
                 } else {
                     System.out.println("Not Bounded!!");
                 }
@@ -767,7 +771,7 @@ public class AccidentService {
         return result;
     }
 
-    public Result boardcastUpdateRescueRequest(Accident acc) {
+    /*public Result boardcastUpdateRescueRequest(Accident acc) {
         Result result = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send");
@@ -808,8 +812,7 @@ public class AccidentService {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
-    }
-
+    }*/
     public String getReportFromByLatLng(LatLng latLng) {
         try {
             String latLngStr = latLng.getLatitude() + "," + latLng.getLongitude();
@@ -818,7 +821,6 @@ public class AccidentService {
             HttpGet httpGet = new HttpGet(url);
             httpGet.setHeader("Content-Type", "application/json");
             HttpResponse httpResponse = httpClient.execute(httpGet);
-            System.out.println("Response : " + httpResponse);
             //String fmtAddress = new JSONObject(EntityUtils.toString(httpResponse.getEntity())).optString("formatted_address");
             String fmtAddress = new JSONObject(EntityUtils.toString(httpResponse.getEntity())).getJSONArray("results").getJSONObject(1).getString("formatted_address");
             return fmtAddress;
