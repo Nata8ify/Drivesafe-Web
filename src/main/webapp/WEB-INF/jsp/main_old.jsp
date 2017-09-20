@@ -135,19 +135,18 @@
 
                             </div>
                         </div>
-                        <div class="section text-center landing-section">
+                        <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>
+                        <script>
+                            <%@include file="monitor_js/main_accnavigate.js"  %>
+                            <%@include file="monitor_js/main_accupdater.js"  %>
+                        </script>
+                        <div class="section text-center landing-section" >
                             <div class="container-fluid">
                                 <div class="row">
                                     <br/>
                                     <i id="callback-msg"></i>
                                     <!--<div class="col-md-8 col-md-offset-2">-->
                                     <div style="padding:0px">
-                                        <div id="map" style="background-color: #ddd;width: 100%;height: 500px;"></div><br/>                             
-                                        <br/><hr/>
-                                        <script>
-                                            <%@include file="monitor_js/main_accnavigate.js"  %>
-                                            <%@include file="monitor_js/main_accupdater.js"  %>
-                                        </script>
                                         <script async defer
                                                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
                                         </script>
@@ -188,12 +187,9 @@
 
     <!-- Plugin JavaScript -->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
     <script src="js/sb-admin-main-old.js"></script>
     <script>
-            $("#i-collapse-menu").click();
+                            $("#i-collapse-menu").click();
     </script>
 </body>
 </html>

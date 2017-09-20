@@ -21,12 +21,12 @@ $('document').ready(function () {
             {"width": "5%"},
             {"width": "50%"},
             {"data": "accCode", "width": "10%"},
-            {"data": "goToAcc", "width": "10%"},
+            {"data": "goToAcc", "width": "10%"}
         ],
         "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='accident btn btn-default'> &nbsp;<i class='glyphicon glyphicon-map-marker'></i></button>"
+                "defaultContent": "<button class='accident btn btn-default' style='cursor:pointer;'> &nbsp;<i class='glyphicon glyphicon-map-marker'></i>View</button>"
             }
         ],
         "order": [[4, "asc"]],
