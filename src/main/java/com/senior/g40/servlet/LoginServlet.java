@@ -6,6 +6,8 @@
 package com.senior.g40.servlet;
 
 import com.senior.g40.model.Profile;
+import com.senior.g40.model.User;
+import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.service.SettingService;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.App;
@@ -28,15 +30,19 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("usrn");
         String password = request.getParameter("pswd");
         char userType = request.getParameter("utyp").charAt(0);
-        
+
         Profile pf = UserService.getInstance().login(username, password, userType);
         if (pf != null) {
             request.setAttribute("msg", username);
             request.getSession(true).setAttribute("pf", pf);
-             Profile.setInstance(pf);
+            Profile.setInstance(pf);
+            if (userType == User.TYPE_RESCUER_USER) {
+                OperatingLocation op = SettingService.getInstance().getOperatingLocationByUserId(pf.getUserId());
+                System.out.println("op :: "+op.toJSON());
+                request.getSession(true).setAttribute("op", op);
+            }
             getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
-           
-            
+
         } else {
             request.setAttribute("msg", "<p style='color:red'>" + username + " is not found or incorrect password</p>");
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

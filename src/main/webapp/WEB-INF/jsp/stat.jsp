@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page session="false" %>
+<%@page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -64,13 +64,17 @@
                                 Charts</span>
                         </a>
                     </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">
-                        <a class="nav-link" href="To?opt=sett">
-                            <i class="fa fa-fw fa-cog"></i>
-                            <span class="nav-link-text">
-                                Setting</span>
-                        </a>
-                    </li>
+                    <c:choose>
+                        <c:when test="${sessionScope.op != null}">
+                            <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
+                                <a class="nav-link" href="To?opt=sett&lat=${op.latLng.latitude}&lng=${op.latLng.longitude}&bound=${op.neutralBound}&mainBound=${op.mainBound}">
+                                    <i class="fa fa-fw fa-cog"></i>
+                                    <span class="nav-link-text">
+                                        Setting</span>
+                                </a>
+                            </li>
+                        </c:when>
+                    </c:choose>
                 </ul>
                 <ul class="navbar-nav sidenav-toggler">
                     <li class="nav-item">

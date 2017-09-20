@@ -16,6 +16,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title> ตารางอุบัติเหตุ </title>
 
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/popper/popper.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+
         <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>    
@@ -45,7 +52,7 @@
     <body class="fixed-nav" id="page-top">
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <a class="navbar-brand" href="#">Weeworh</a>
+            <a class="navbar-brand" href="To?opt=main">Weeworh</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -108,9 +115,6 @@
                     <div class="wrapper" >
                         <div class="landing-header section" style="background-color:#E2E2D2">
                             <div class="card-header">
-
-
-
                                 <div>
                                     <table id="acctable" style="width: 100%;"> 
                                         <thead > 
@@ -181,22 +185,13 @@
             </div>
         </div>
     </div>
-    
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-    <!-- Custom scripts for this template -->
-    <script src="js/moment.js"></script>
-    <script src="dashboard_js/main_accnavigate.js"></script>
-    <script src="dashboard_js/main_accupdater.js"></script>
-    <script src="js/sb-admin.js"></script>
+    <script src="js/sb-admin-main-old.js"></script>
     <script>
             $("#i-collapse-menu").click();
     </script>

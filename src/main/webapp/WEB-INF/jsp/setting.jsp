@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page session="false" %>
+<%@page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -64,9 +64,9 @@
                         </a>
                     </li>
                     <c:choose>
-                        <c:when test="${op == null}">
+                        <c:when test="${sessionScope.op != null}">
                             <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
-                                <a class="nav-link" href="To?opt=sett">
+                                <a class="nav-link" href="To?opt=sett&lat=${op.latLng.latitude}&lng=${op.latLng.longitude}&bound=${op.neutralBound}&mainBound=${op.mainBound}">
                                     <i class="fa fa-fw fa-cog"></i>
                                     <span class="nav-link-text">
                                         Setting</span>
@@ -121,9 +121,8 @@
                                 <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
                                 <div class="row">
                                     <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
-                                    <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-success" style="width: 100%"/><br/><br/></div>                                   
-                                    <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="ดึงค่าสถานที่ปัจจุบัน" class="btn btn-primary" style="width: 100%"/><br/><br/></div>
-
+                                    <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-success" style="width: 100%; cursor: pointer;"/><br/><br/></div>                                   
+                                    <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="ดึงค่าสถานที่ปัจจุบัน" class="btn btn-primary" style="width: 100%; cursor: pointer;"/><br/><br/></div>
                                 </div>
                                 <hr/>
                             </fieldset>
