@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page session="false" %>
 <!DOCTYPE html>
@@ -18,15 +19,16 @@
         <!-- Custom fonts for this template -->
         <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-        <!-- Plugin CSS -->
-        <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-
         <!-- Custom styles for this template -->
         <link href="css/sb-admin.css" rel="stylesheet">
 
 
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/popper/popper.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
 
     </head>
@@ -61,13 +63,17 @@
                                 Charts</span>
                         </a>
                     </li>
-                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
-                        <a class="nav-link" href="To?opt=sett">
-                            <i class="fa fa-fw fa-cog"></i>
-                            <span class="nav-link-text">
-                                Setting</span>
-                        </a>
-                    </li>
+                    <c:choose>
+                        <c:when test="${op == null}">
+                            <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
+                                <a class="nav-link" href="To?opt=sett">
+                                    <i class="fa fa-fw fa-cog"></i>
+                                    <span class="nav-link-text">
+                                        Setting</span>
+                                </a>
+                            </li>
+                        </c:when>
+                    </c:choose>
                 </ul>
                 <ul class="navbar-nav sidenav-toggler">
                     <li class="nav-item">
@@ -86,10 +92,6 @@
                 </ul>
             </div>
         </nav>
-
-
-
-
     <center>
         <div class="content-wrapper py-3">
             <div class="container-fluid">
@@ -135,21 +137,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fa fa-angle-up"></i>
     </a>
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-    <!-- Custom scripts for this template -->
-    <script src="js/moment.js"></script>
-    <script src="dashboard_js/main_accnavigate.js"></script>
-    <script src="dashboard_js/main_accupdater.js"></script>
-    <script src="js/sb-admin.js"></script>
 
     <!-- Logout Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -171,11 +158,15 @@
             </div>
         </div>
     </div>
-    
 
 
-    <script>
-        <jsp:include page="monitor_js/setting.js" flush="true"/>
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <script src="js/sb-admin-sett.js"></script>
+
+    <script language="javaScript">
+        <jsp:include page="monitor_js/setting.js"/>
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">

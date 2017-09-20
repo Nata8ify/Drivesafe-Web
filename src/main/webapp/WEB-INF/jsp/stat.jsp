@@ -28,6 +28,11 @@
         <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
 
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
     </head>
     <body class="fixed-nav" id="page-top">
 
@@ -158,11 +163,6 @@
     </div>
 
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
     <!-- Plugin JavaScript -->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="vendor/chart.js/Chart.min.js"></script>
@@ -170,9 +170,7 @@
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
     <!-- Custom scripts for this template -->
     <script src="js/moment.js"></script>
-    <script src="dashboard_js/main_accnavigate.js"></script>
-    <script src="dashboard_js/main_accupdater.js"></script>
-    <script src="js/sb-admin.js"></script>
+    <script src="js/sb-admin-stat.js"></script>
     <script>
         $("#i-collapse-menu").click();
     </script>

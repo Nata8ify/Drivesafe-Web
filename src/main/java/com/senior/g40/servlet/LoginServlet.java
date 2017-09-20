@@ -6,6 +6,7 @@
 package com.senior.g40.servlet;
 
 import com.senior.g40.model.Profile;
+import com.senior.g40.service.SettingService;
 import com.senior.g40.service.UserService;
 import com.senior.g40.utils.App;
 import java.io.IOException;
@@ -31,8 +32,8 @@ public class LoginServlet extends HttpServlet {
         Profile pf = UserService.getInstance().login(username, password, userType);
         if (pf != null) {
             request.setAttribute("msg", username);
-            request.getSession(true).setAttribute("pf", pf);       
-            Profile.setInstance(pf);
+            request.getSession(true).setAttribute("pf", pf);
+             Profile.setInstance(pf);
             getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
            
             
