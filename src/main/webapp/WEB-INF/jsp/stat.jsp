@@ -67,7 +67,7 @@
                     <c:choose>
                         <c:when test="${sessionScope.op != null}">
                             <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
-                                <a class="nav-link" href="To?opt=sett&lat=${op.latLng.latitude}&lng=${op.latLng.longitude}&bound=${op.neutralBound}&mainBound=${op.mainBound}">
+                                <a class="nav-link" href="To?opt=sett">
                                     <i class="fa fa-fw fa-cog"></i>
                                     <span class="nav-link-text">
                                         Setting</span>

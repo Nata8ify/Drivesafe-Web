@@ -1,5 +1,15 @@
+<%@page import="com.senior.g40.model.extras.OperatingLocation"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page session="true" %>
+<%
+    if(request.getSession(false).getAttribute("op") != null){
+        OperatingLocation op = (OperatingLocation)request.getSession(false).getAttribute("op");
+        pageContext.setAttribute("lat", op.getLatLng().getLatitude());
+        pageContext.setAttribute("lng", op.getLatLng().getLongitude());
+        pageContext.setAttribute("bound", op.getNeutralBound());
+        pageContext.setAttribute("mainBound", op.getMainBound());
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -65,7 +75,7 @@
                     <c:choose>
                         <c:when test="${sessionScope.op != null}">
                             <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
-                                <a class="nav-link" href="To?opt=sett&lat=${op.latLng.latitude}&lng=${op.latLng.longitude}&bound=${op.neutralBound}&mainBound=${op.mainBound}">
+                                <a class="nav-link" href="To?opt=sett">
                                     <i class="fa fa-fw fa-cog"></i>
                                     <span class="nav-link-text">
                                         Setting</span>
@@ -96,7 +106,7 @@
             <div class="container-fluid">
                 <div class="card-header">
                     <legend> กำหนดจุดศุนย์กลางของหน่วยกู้ภัย </legend> 
-
+                    <p id="callback-msg"></p>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -111,13 +121,13 @@
                                 <p style="float: left"> ชื่อสถานที่ </p><br/>
                                 <input placeholder="โปรดใส่ชื่อสถานที่ (เช่น สถานีรถไฟหัวลำโพง)" id="spec-location-input" placeholder="Enter the place" class="form-control"/><br/>                          
                                 <p style="float: left"> ละติจูด </p><br/>
-                                <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${param.lat}" class="form-control"/><br/>
+                                <input type="number" id="spec-location-lat-input" placeholder="โปรดใส่ละติจูด" required="" value="${lat}" class="form-control"/><br/>
                                 <p style="float: left"> ลองจิจูด </p><br/>
-                                <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${param.lng}" class="form-control"/><br/>         
+                                <input type="number" id="spec-location-lng-input" placeholder="โปรดใส่ลองจิจูด" required="" value="${lng}" class="form-control"/><br/>         
                                 <p style="float: left">ระยะทำการหลัก (กิโลเมตร)</p><br/>
-                                <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${param.mainBound}" class="form-control"/><br/>
+                                <input type="number" id="spec-location-mboundrds-input" placeholder="โปรดใส่ระยะทำการหลัก" value="${mainBound}" class="form-control"/><br/>
                                 <p style="float: left">ระยะทำการรอง (กิโลเมตร)</p><br/>
-                                <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${param.bound}" class="form-control"/><br/>
+                                <input type="number" id="spec-location-boundrds-input" placeholder="โปรดใส่ระยะทำการรอง" required="" value="${bound}" class="form-control"/><br/>
                                 <div class="row">
                                     <!--<div class="col-sm-3"><input type="button" id="spec-location-submit" value="Submit" class="btn btn-success" style="width: 100%" /><br/><br/></div>-->
                                     <div class="col-sm-6"><input type="button" id="update-location-submit" value="ตั้งค่าศูนย์ปฏิบัติการ" class="btn btn-success" style="width: 100%; cursor: pointer;"/><br/><br/></div>                                   

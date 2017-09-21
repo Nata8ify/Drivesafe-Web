@@ -54,7 +54,6 @@ public class ToServlet extends HttpServlet {
             default:
                 return;
         }
-
     }
 
     private void to(String destination) throws ServletException, IOException {

@@ -21,18 +21,23 @@ function initMap() {
         title: "Drag into new Operting Location",
         icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
 
+//    google.maps.event.addListener(opMarker, 'dragend', function (evt) {
+//        $.ajax({
+//            url: "Setting?&opt=" + OPT_UPDATE_OL,
+//            data: {
+//                lat: this.getPosition().lat(),
+//                lng: this.getPosition().lng(),
+//                boundRds: $('#spec-location-boundrds-input').val(),
+//                mBoundRds: $('#spec-location-mboundrds-input').val()
+//            }}).done(function (aresult) {
+//            callbackMessage(aresult);
+//        });
+//    });
+    
     google.maps.event.addListener(opMarker, 'dragend', function (evt) {
-        $.ajax({
-            url: "Setting?&opt=" + OPT_UPDATE_OL,
-            data: {
-                lat: this.getPosition().lat(),
-                lng: this.getPosition().lng(),
-                boundRds: $('#spec-location-boundrds-input').val(),
-                mBoundRds: $('#spec-location-mboundrds-input').val()
-            }}).done(function (aresult) {
-            callbackMessage(aresult);
-        });
+        setNewOpMarker(opLocationMap, {lat: this.getPosition().lat() ,lng: this.getPosition().lng()});
     });
+    
     google.maps.event.addListener(opLocationMap, 'dblclick', function (evt) {
         var dblLatLng = {lat: evt.latLng.lat(), lng: evt.latLng.lng()};
         setNewOpMarker(opLocationMap, dblLatLng);
@@ -58,6 +63,9 @@ function setNewOpMarker(opLocationMap, OpLocation) {
         draggable: true,
         title: "Drag into new Operting Location",
         icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"});
+    google.maps.event.addListener(opMarker, 'dragend', function (evt) {
+        setNewOpMarker(opLocationMap, {lat: this.getPosition().lat() ,lng: this.getPosition().lng()});
+    });
     opLocationMap.setCenter(OpLocation);
     setInputLatLng(OpLocation.lat, OpLocation.lng);
 }
@@ -83,9 +91,6 @@ function setInputLatLng(lat, lng) {
 }
 
 /* Event Listener */
-
-
-
 
 $('#spec-location-submit').click(function () {
     var lat = $('#spec-location-lat-input').val();
@@ -128,7 +133,8 @@ $('#getcur-location-submit').click(function () {
         $('#spec-location-lat-input').val(opProperties['latLng']['latitude']);
         $('#spec-location-lng-input').val(opProperties['latLng']['longitude']);
         $('#spec-location-boundrds-input').val(opProperties['neutralBound']);
-        callbackMessage("Current Operating Location is " + aresult);
+        setNewOpMarker(opLocationMap, {lat: opProperties['latLng']['latitude'] ,lng: opProperties['latLng']['longitude']});
+    callbackMessage("Current Operating Location is " + aresult);
     });
 });
 

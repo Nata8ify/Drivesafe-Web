@@ -38,7 +38,7 @@ public class SettingServlet extends HttpServlet {
         Result result;
         SettingService settingService = SettingService.getInstance();
         switch (option) {
-            case "storeOpLocation":
+            case "storeOpLocation" :
                 result = settingService.storeOpertingLocation(
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
@@ -46,7 +46,7 @@ public class SettingServlet extends HttpServlet {
                 attrName = App.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
-            case "updateOpLocation":
+            case "updateOpLocation" :
                 result = request.getParameter("mBoundRds").equals("") ? settingService.updateOpertingLocation(
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
@@ -54,6 +54,10 @@ public class SettingServlet extends HttpServlet {
                         Integer.valueOf(request.getParameter("boundRds")),
                         Integer.valueOf(request.getParameter("mBoundRds")),
                         pf.getUserId());
+                if(request.getSession(false).getAttribute("op") != null){
+                    request.getSession(false).removeAttribute("op");
+                    request.getSession(true).setAttribute("op", (SettingService.getInstance().getOpertingLocation(pf.getUserId()).getObj()));
+                };
                 attrName = App.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
