@@ -50,28 +50,28 @@
                                 Dashboard</span>
                         </a>
                     </li> 
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Incident tables">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Overview">
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
-                            <span class="nav-link-text">
-                                Day Report</span>
+                            <span class="nav-link-text">Overview</span>
                         </a>
                     </li>
-                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Charts">
+                    <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Report Statistic">
                         <a class="nav-link" href="To?opt=stat">
                             <i class="fa fa-fw fa-area-chart"></i>
-                            <span class="nav-link-text">
-                                Charts</span>
+                            <span class="nav-link-text">Report Statistic</span>
                         </a>
                     </li>
                     <c:choose>
                         <c:when test="${sessionScope.op != null}">
-                            <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">
+                            <center>
                                 <a class="nav-link" href="To?opt=sett">
                                     <i class="fa fa-fw fa-cog"></i>
-                                    <span class="nav-link-text">
-                                        Setting</span>
+                                    <span class="nav-link-text">Setting</span>
                                 </a>
+                            </center>
+                                
                             </li>
                         </c:when>
                     </c:choose>

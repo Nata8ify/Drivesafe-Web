@@ -56,18 +56,18 @@
                                 Dashboard</span>
                         </a>
                     </li> 
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Incident tables">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Overview">
                         <a class="nav-link" href="To?opt=dayReport">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">
-                                Day Report</span>
+                                Overview</span>
                         </a>
                     </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Report Statistic">
                         <a class="nav-link" href="To?opt=stat">
                             <i class="fa fa-fw fa-area-chart"></i>
                             <span class="nav-link-text">
-                                Charts</span>
+                                Report Statistic</span>
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Setting">

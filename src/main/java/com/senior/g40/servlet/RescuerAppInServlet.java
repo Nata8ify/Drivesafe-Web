@@ -6,6 +6,7 @@
 package com.senior.g40.servlet;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.User;
@@ -86,7 +87,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 long rescuerId = Long.parseLong(request.getParameter("userId"));
                 List<Accident> boundActiveAccidents = accService.getCurrentDateInBoundAccidents(rescuerId);
                 if (boundActiveAccidents != null) {
-                    request.setAttribute("result", new Gson().toJson(boundActiveAccidents));
+                    request.setAttribute("result", new GsonBuilder().setDateFormat("yyyy-MM-").create().toJson(boundActiveAccidents));
                 } else {
                     request.setAttribute("result", "WOW");
                 }
