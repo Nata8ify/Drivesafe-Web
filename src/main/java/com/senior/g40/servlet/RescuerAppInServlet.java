@@ -87,7 +87,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 long rescuerId = Long.parseLong(request.getParameter("userId"));
                 List<Accident> boundActiveAccidents = accService.getCurrentDateInBoundAccidents(rescuerId);
                 if (boundActiveAccidents != null) {
-                    request.setAttribute("result", new GsonBuilder().setDateFormat("yyyy-MM-").create().toJson(boundActiveAccidents));
+                    request.setAttribute("result", new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(boundActiveAccidents));
                 } else {
                     request.setAttribute("result", "WOW");
                 }
