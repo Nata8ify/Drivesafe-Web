@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title> ตารางอุบัติเหตุ </title>
+        <title> ภาพรวมการแจ้งเหตุ </title>
 
 
         <!-- Bootstrap core JavaScript -->
@@ -109,7 +109,7 @@
         <div class="content-wrapper py-3">
             <div class="container-fluid">
                 <div class="card-header">
-                    <legend> ตารางแสดงอุบัติเหตุ </legend>
+                    <legend> ตารางแสดงอการแจ้งเหตุ </legend>
                 </div>
                 <div class="card-body">
                     <div class="wrapper" >
@@ -121,7 +121,7 @@
                                             <tr class="card-header">
                                                 <th>เวลา</th>
                                                 <th>ประเภท</th>
-                                                <th>สถานที่เกิดอุบัติเหตุ</th>
+                                                <th>สถานที่แจ้งเหตุ</th>
                                                 <th>สถานะ</th>
                                                 <th>ระบบนำทาง</th>
                                             </tr>

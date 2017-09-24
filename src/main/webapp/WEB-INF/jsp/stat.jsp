@@ -100,7 +100,7 @@
                 <!--<h3><a href="#acc-stat-chart">Number of Accident Statistic</a> <a href="#acc-stat-map">Visualizing Accident Location</a></h3><br/>-->
 
                 <div class="card-header" >
-                    <legend> ระบุช่วงเวลาการเกิดอุบัติเหตที่ต้องการ <b id="acc-period-title"></b></legend>
+                    <legend> ระบุช่วงเวลาการแจ้งเหตุที่ต้องการ <b id="acc-period-title"></b></legend>
                 </div>
                 <div class="card-body" >
                     <form action="#">

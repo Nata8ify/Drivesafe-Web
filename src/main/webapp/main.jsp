@@ -114,14 +114,14 @@
                         <div class="card mb-3">
                             <div class="card-header">
                                 <i class="fa fa-table"></i>
-                                ภาพรวมของการเกิดอุบัติเหต
+                                ภาพรวมของการแจ้งเหตุ
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
                                     <thead style="display: none;">
                                         <tr>
                                             <th>เวลา</th>
-                                            <th>ประเภทของอุบัติเหต</th>
+                                            <th>ประเภทของแจ้งเหตุ</th>
                                             <th>สถานที่เกิด</th>
                                         </tr>
                                     </thead>
@@ -163,7 +163,7 @@
                         <div class="card mb-3">
                             <div class="card-header">
                                 <i class="fa fa-pie-chart"></i>
-                                แผนภูมิวงกลมแสดงสถานะของอุบัติเหตภายในวันนี้
+                                แผนภูมิวงกลมแสดงสถานะของแจ้งเหตุรายวัน
                             </div>
                             <div class="card-body">
                                 <canvas id="myPieChart" width="100%" height="100"></canvas>
@@ -182,7 +182,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fa fa-area-chart"></i>
-                    แผนภูมิสถิติแสดงจำนวนของอุบัติเหตภายในวันนี้
+                    แผนภูมิสถิติแสดงจำนวนของการเหตภายในวันนี้
                 </div>
                 <div class="card-body">
                     <canvas id="myBarChart" width="100%" height="15"></canvas>

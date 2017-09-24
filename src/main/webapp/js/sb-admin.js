@@ -127,7 +127,7 @@ function callbackMessage(str) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-
+ var incidentTable;
 (function ($) {
     "use strict"; // Start of use strict
 
@@ -181,7 +181,7 @@ function callbackMessage(str) {
     });
 
     // Call the dataTables jQuery plugin
-    var incidentTable;
+   
     var accTableUpdateMsg = $("#acctable-lastest-update");
     $(document).ready(function () {
         incidentTable = $('#dataTable').DataTable({
@@ -234,7 +234,7 @@ function callbackMessage(str) {
                 return nRow;
             },
             "language": {
-                "loadingRecords": "ไม่มีอุบัติเหตเกิดขึ้น"
+                "loadingRecords": "ไม่มีแจ้งเหตุเกิดขึ้น"
             },
             "searching": false,
             "bLengthChange": false,
@@ -553,6 +553,7 @@ function updateIncidentMarkers(opMap) {
             var marker;
             removeMarkers(incidentMarkers);
             incidentMarkers = [];
+            try {
             $.each(JSON.parse(result), function (index, acc) {
                 marker = new google.maps.Marker({
                     position: {lat: acc.latitude, lng: acc.longitude},
@@ -562,6 +563,11 @@ function updateIncidentMarkers(opMap) {
                 });
                 incidentMarkers.push(marker);
             });
+        } catch(err){
+            console.log(err);
+            incidentTable.clear();
+            incidentTable.draw();
+        }
         }
     });
 }
