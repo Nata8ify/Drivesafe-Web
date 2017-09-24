@@ -729,7 +729,7 @@ public class AccidentService {
 
             JSONObject notification = new JSONObject();
             notification.put("title", getIncidentByType(acc.getAccType()) + " Incident is Detected");
-            notification.put("body", "Reported from : " + bLocation + " (Tap for more details)");
+            notification.put("body", "Reported from : " + bLocation);
             notification.put("click_action", "Navigate");
             message.put("notification", notification);
 
@@ -750,7 +750,12 @@ public class AccidentService {
 //            HttpResponse httpResponse = httpClient.execute(httpPost);
 //            result = new Result(true, httpResponse.toString());
             System.out.println(message.toString());
+            int prevOrganizationId = -1;
             for (OperatingLocation location : (List<OperatingLocation>) settingService.getAllOpertingLocation().getObj()) {
+                if (prevOrganizationId == location.getOrganizationId()) {
+                    continue;
+                }
+                prevOrganizationId = location.getOrganizationId();
                 System.out.println(location.getOrganizationId());
                 if (isBoundWithin(location.getUserId(), acc)) {
                     message.remove("to");

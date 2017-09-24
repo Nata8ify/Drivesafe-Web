@@ -166,7 +166,7 @@ public class SettingService {
         ResultSet rs = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `properties`;";
+            String sqlCmd = "SELECT * FROM `properties` ORDER BY `properties`.`opOrganization` ASC;";
             pstm = conn.prepareStatement(sqlCmd);
             rs = pstm.executeQuery();
             while (rs.next()) {
