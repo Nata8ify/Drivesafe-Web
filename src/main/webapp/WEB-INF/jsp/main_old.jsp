@@ -109,7 +109,7 @@
         <div class="content-wrapper py-3">
             <div class="container-fluid">
                 <div class="card-header">
-                    <legend> ตารางแสดงอการแจ้งเหตุ </legend>
+                    <legend> ตารางแสดงการแจ้งเหตุ </legend>
                 </div>
                 <div class="card-body">
                     <div class="wrapper" >
