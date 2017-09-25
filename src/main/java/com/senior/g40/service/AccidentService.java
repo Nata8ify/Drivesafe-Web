@@ -154,6 +154,7 @@ public class AccidentService {
     }
 
     public Result updateOnGoingAccc(long rescuerId, long accId) {
+        
         return updateAccCodeStatus(rescuerId, accId, Accident.ACC_CODE_G);
     }
 
@@ -174,7 +175,9 @@ public class AccidentService {
     }
 
     public Result updateAccCodeStatus(long rescuerId, long accId, char accCode) {
-
+        if(accCode == Accident.ACC_CODE_G){
+            if(getAccidentById(accId).getAccCode() != Accident.ACC_CODE_A){return new Result(false);}
+        }
         Connection conn = null;
         PreparedStatement pstm = null;
         Result result = null;

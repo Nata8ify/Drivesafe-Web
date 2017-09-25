@@ -93,6 +93,10 @@ public class RescuerAppInServlet extends HttpServlet {
                 }
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
+                case "get_accbyid" :
+                    request.setAttribute("result", accService.getAccidentById(getAsLong("accidentId")).toJson());
+                    goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                    break;
             case "set_customcode" :
                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), getAsChar(App.Param.accCode)).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
