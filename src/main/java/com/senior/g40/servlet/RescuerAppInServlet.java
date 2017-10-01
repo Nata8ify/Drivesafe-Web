@@ -93,39 +93,43 @@ public class RescuerAppInServlet extends HttpServlet {
                 }
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-                case "get_accbyid" :
-                    request.setAttribute("result", accService.getAccidentById(getAsLong("accidentId")).toJson());
-                    goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
-                    break;
-            case "set_customcode" :
+            case "get_accbyid":
+                request.setAttribute("result", accService.getAccidentById(getAsLong("accidentId")).toJson());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
+            case "get_inresponsibleacc" :
+                request.setAttribute("result", new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(accService.getRescuerInResponsibleAccident(getAsLong("userId")))); //userId is Id of rescuer.
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
+            case "set_customcode":
                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), getAsChar(App.Param.accCode)).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "set_ongoing" :
-                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_G).isSuccess());
+            case "set_ongoing":
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_G).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "set_onrescue" :
-                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_R).isSuccess());
+            case "set_onrescue":
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_R).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "set_closed" : //As  a Stupid "Clear"
-                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
+            case "set_closed": //As  a Stupid "Clear"
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
-                break;    
+                break;
             case "sys_accfalse":
-                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr) , getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS).isSuccess());
+                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "get_userinfo" :
+            case "get_userinfo":
                 request.setAttribute("result", usrService.getProfileByUserId(getAsLong("userId")).toJson());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
-            case "get_organization_id" :
+            case "get_organization_id":
                 request.setAttribute("result", settingService.getOperatingLocationByUserId(getAsInteger("userId")).getOrganizationId());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             default:
-                    request.setAttribute("result", "WOW");
+                request.setAttribute("result", "WOW");
                 return;
         }
     }
@@ -137,7 +141,7 @@ public class RescuerAppInServlet extends HttpServlet {
     private String getAsString(String param) {
         return request.getParameter(param);
     }
-    
+
     private char getAsChar(String param) {
         return request.getParameter(param).charAt(0);
     }
@@ -149,7 +153,7 @@ public class RescuerAppInServlet extends HttpServlet {
     private int getAsInteger(String param) {
         return Integer.valueOf(request.getParameter(param));
     }
-    
+
     private float getAsFloat(String param) {
         return Float.valueOf(request.getParameter(param));
     }

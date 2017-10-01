@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.junit.Test;
 
 public class Area51 {
-
+    
     @Test
     public static void main(String[] args) throws SQLException, JSONException {
         Gson gson = new Gson();
@@ -40,5 +40,6 @@ public class Area51 {
 //            System.out.println(feed.toString());
 //        }
 //        System.out.println(FeedService.getInstance().getFeeds(new Date(System.currentTimeMillis()), 5));
+        System.out.println(AccidentService.getInstance().getRescuerInResponsibleAccident(1));
     }
 }

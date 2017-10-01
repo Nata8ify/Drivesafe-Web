@@ -268,6 +268,8 @@ public class AccidentService {
         }
         return accidentId;
     }
+    
+    
 
     //Its name says anythings.
     public Accident getAccidentById(long accidentId) {
@@ -295,6 +297,31 @@ public class AccidentService {
         return accident;
     }
 
+     public Accident getRescuerInResponsibleAccident(long accidentId) {
+        Connection conn = null;
+        Accident accident = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        String sqlCmd;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            sqlCmd = "SELECT * FROM `accident` WHERE `responsibleRescr` = ? AND `accCode` IN ('G', 'R') ;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, accidentId);
+            rs = pstm.executeQuery();
+            if (rs.next()) {
+                accident = new Accident();
+                setAccident(rs, accident);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return accident;
+    }
+    
     //should we have an area code for each rescue operation center?. [yes, we should.. USE IPGEOLOCATION]
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = null;
