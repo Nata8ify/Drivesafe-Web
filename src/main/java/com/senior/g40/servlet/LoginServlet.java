@@ -39,7 +39,9 @@ public class LoginServlet extends HttpServlet {
             if (userType == User.TYPE_RESCUER_USER) {
                 OperatingLocation op = SettingService.getInstance().getOperatingLocationByUserId(pf.getUserId());
                 System.out.println("op :: "+op.toJSON());
-                request.getSession(true).setAttribute("op", op);
+                if(request.getParameter("skipSession") == null){
+                    request.getSession(true).setAttribute("op", op);
+                }
             }
             getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
 
@@ -48,6 +50,7 @@ public class LoginServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

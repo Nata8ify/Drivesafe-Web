@@ -97,6 +97,10 @@ public class RescuerAppInServlet extends HttpServlet {
                 request.setAttribute("result", accService.getAccidentById(getAsLong("accidentId")).toJson());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
+            case "get_case_rscr" : // Get rescuer profile who responses for each incidednt case
+                request.setAttribute("result", usrService.getRescuerProfileByIncidentId(getAsLong("accidentId")).toJson());
+                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
             case "get_inresponsibleacc" :
                 request.setAttribute("result", new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(accService.getRescuerInResponsibleAccident(getAsLong("userId")))); //userId is Id of rescuer.
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");

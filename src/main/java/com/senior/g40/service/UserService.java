@@ -54,7 +54,7 @@ public class UserService {
             if (rs.next()) {//If there is account existed.
                 //TODO
                 pf = getProfileByUserId(rs.getLong("userId"));
-                if(userType == User.TYPE_RESCUER_USER){
+                if (userType == User.TYPE_RESCUER_USER) {
                     sqlCmd = "SELECT * FROM `properties` WHERE `userId` = ?;";
                     pstm = conn.prepareStatement(sqlCmd);
                     pstm.setLong(1, pf.getUserId());
@@ -65,6 +65,30 @@ public class UserService {
                     System.out.println(OperatingLocation.getInstance(null));
                 }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return pf;
+    }
+
+    public Profile getRescuerProfileByIncidentId(long accidentId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Profile pf = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT p.* FROM `profile` p JOIN `accident` a ON p.userId = a.responsibleRescr WHERE a.accidentId = ?;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setLong(1, accidentId);
+            rs = pstm.executeQuery();
+            if (rs.first()) {
+                pf = new Profile();
+                setProfile(rs, pf);
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -202,11 +226,11 @@ public class UserService {
             result = new Result(false, ex.toString());
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            ConnectionHandler.closeSQLProperties(conn, pstm,null );
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
         return result;
     }
-    
+
     private static void setProfile(ResultSet rs, Profile pf) throws SQLException {
         pf.setUserId(rs.getLong("userId"));
         pf.setFirstName(rs.getString("firstName"));

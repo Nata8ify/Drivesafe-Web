@@ -7,6 +7,7 @@ import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.FeedService;
 import com.senior.g40.service.StatisticService;
+import com.senior.g40.service.UserService;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -40,6 +41,7 @@ public class Area51 {
 //            System.out.println(feed.toString());
 //        }
 //        System.out.println(FeedService.getInstance().getFeeds(new Date(System.currentTimeMillis()), 5));
-        System.out.println(AccidentService.getInstance().getRescuerInResponsibleAccident(1));
+//        System.out.println(AccidentService.getInstance().getRescuerInResponsibleAccident(1));
+//        System.out.println(UserService.getInstance().getRescuerProfileByIncidentId(1611));
     }
 }
