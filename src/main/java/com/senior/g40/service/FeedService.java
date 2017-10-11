@@ -91,7 +91,6 @@ public class FeedService {
                 long userId = rs.getLong("userId");
                 Timestamp timestamp = rs.getTimestamp("timestamp");
                 feed.setAccident(AccidentService.getInstance().getAccidentById(accidentId));
-                System.out.println(Profile.getInsatance());
                 if (isBoundWithin(Profile.getInsatance().getUserId(), feed.getAccident())) {
                     feed.setFeedId(feedId);
                     feed.setTimestamp(timestamp);

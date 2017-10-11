@@ -152,7 +152,7 @@
                             <div class="list-group list-group-flush small">
                                 <div id='append-feed'></div>
                                 <a href="To?opt=feed" class="list-group-item list-group-item-action">
-<!--                                    ดูเหตุการณ์ที่เกิดขึ้นทั้งหมด-->
+                                    ดูเหตุการณ์ที่เกิดขึ้นทั้งหมด
                                 </a>
                             </div>
                         </div>

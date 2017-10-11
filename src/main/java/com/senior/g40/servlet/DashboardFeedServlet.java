@@ -7,9 +7,12 @@ package com.senior.g40.servlet;
 
 import com.google.gson.Gson;
 import com.senior.g40.service.FeedService;
+import com.senior.g40.utils.ConnectionBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -48,14 +51,13 @@ public class DashboardFeedServlet extends HttpServlet {
                     out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis()), getAsInteger("limit"))));
                     break;
                 case "getall":
-                    System.out.println("getall");
                     out.print(gson.toJson(fs.getFeeds(null, null)));
                     break;
                 default:
                     out.print("err");
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, e);
 
         }
     }
