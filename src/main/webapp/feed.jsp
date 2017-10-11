@@ -17,7 +17,7 @@
 
         <!-- Custom fonts for this template -->
         <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+        <script src="https://momentjs.com/downloads/moment.js" type="text/javascript"></script>
 
     </head>
     <body>
@@ -71,6 +71,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
+                    <input type="date" id="input-feed-date" class="form-control" style="margin-bottom: 10px;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     <!-- Example Notifications Card -->
                     <div class="card mb-3">
                         <div class="list-group list-group-flush small">
@@ -94,23 +99,45 @@
         <!-- Plugin JavaScript -->
         <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
         <script>
+
+            $("document").ready(function () {
+                $("#input-feed-date").val(moment().format("YYYY-MM-DD"));
+            });
+
+            /* If Date is Changed */
+            $("#input-feed-date").change(function () {
+                var date = $(this).val();
+                if (moment(date, "YYYY-MM-DD").isAfter(moment())) {
+                    alert("ไม่พบเหตุการณ์สำหรับอนาคต");
+                    return;
+                }
+                getFeeds(date);
+            });
+
             /* Feed Here (Below)  */
             var feeds;
             setTimeout(function () {
-                getFeeds();
-                setInterval(getFeeds, 10000);
+                getFeeds(moment().format("YYYY-MM-DD"));
+                //setInterval(getFeeds, 10000);
             }, 10);
-            function getFeeds() {
+            function getFeeds(date) {
                 feeds = [];
                 $.ajax({
-                    url: "DashboardFeed?opt=get",
+                    url: "DashboardFeed?opt=get_fordate",
+                    data: {date: date},
                     success: function (resultFeeds) {
+                        console.log(resultFeeds);
+                        if (resultFeeds === "null") {
+                            $("#append-feed").empty();
+                            feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'>ไม่พบเหตุการณ์ในวันที่ระบุ ("+moment(date).locale("th").format('DD-MM-YYYY')+")</div></span>");
+                            $("#append-feed").append(feedContent);
+                            return;
+                        }
                         feeds = JSON.parse(resultFeeds);
                         var feedBodyMessage;
                         var feedContent;
                         $.each(feeds, function (index, feed) {
                             $("#append-feed").empty();
-                            console.log(feed);
                             $.ajax({
                                 "url": "http://maps.googleapis.com/maps/api/geocode/json",
                                 "data": {"sensor": true, "latlng": (feed.accident.latitude) + "," + (feed.accident.longitude)},
@@ -123,13 +150,13 @@
                                                 feedBodyMessage = " ขอความช่วยเหลือที่ ".concat(place);
                                                 break;
                                             case "G" :
-                                                feedBodyMessage = " เจ้าหน้าที่กำลังเดินทางไปช่วยที่ ".concat(place);
+                                                feedBodyMessage = " กำลังเดินทางไปช่วยที่ ".concat(place);
                                                 break;
                                             case "R" :
-                                                feedBodyMessage = " เจ้าที่หน้าที่กำลังช่วยเหลือผู้ประสบภัยที่ ".concat(place);
+                                                feedBodyMessage = " กำลังช่วยเหลือผู้ประสบภัยที่ ".concat(place);
                                                 break;
                                             case "C" :
-                                                feedBodyMessage = " การช่วยเหลือเสร็จสิ้น สถานการณ์ปลอดภัย ";
+                                                feedBodyMessage = " การช่วยเหลือเสร็จสิ้น";
                                                 break;
                                             case "U" :
                                                 feedBodyMessage = " ยกเลิกการขอความช่วยเหลือ ";
