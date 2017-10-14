@@ -24,7 +24,7 @@ public class ConnectionBuilder {
 //            String dbUrl = "jdbc:mysql://nata8ify.me/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
 //            String user = "drvsafeany";
 //            String pw = "@Qwerty69";
-            String dbUrl = "jdbc:mysql://localhost/rescuePrompt?useUnicode=true&characterEncoding=UTF-8"; //t
+            String dbUrl = "jdbc:mysql://localhost:3306/rescuePrompt?useUnicode=true&characterEncoding=UTF-8"; //t
             String user = "drvsafe";
             String pw = "@Qwerty69";
 //            String user = "root";
@@ -39,7 +39,7 @@ public class ConnectionBuilder {
             System.out.println("Try... Connected with Host.");
             //If-Failed -> Connect to Localhost Database.
             String dbDriver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://54.254.187.201/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
+            String dbUrl = "jdbc:mysql://wwh.nata8ify.me/rescuePrompt?useUnicode=true&characterEncoding=UTF-8";
             String user = "drvsafeany";
             String pw = "@Qwerty69";
             try {
