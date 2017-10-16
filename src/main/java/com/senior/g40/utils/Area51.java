@@ -49,11 +49,12 @@ public class Area51 {
 //        hospital.setName("Kamppa");
 //        hospital.setLatitude(14.007284);
 //        hospital.setLongitude(99.974667);
-        Hospital hospital = new Hospital();
-        hospital.setName("Ramathibodhi Hospital");
-        hospital.setLatitude(13.766550);
-        hospital.setLongitude(100.524639);
-        System.out.println(SettingService.getInstance().saveHospital(hospital));
-System.out.println(SettingService.getInstance().getAllHospital());
+//        Hospital hospital = new Hospital();
+//        hospital.setName("โรงพยาบาล มนารมย์");
+//        hospital.setLatitude(13.664788);
+//        hospital.setLongitude(100.601728);
+//        System.out.println(SettingService.getInstance().saveHospital(hospital));
+//        System.out.println(SettingService.getInstance().getAllHospital());
+        System.out.println(SettingService.getInstance().get3NearestHospitalByRscrPosition(new LatLng(13.658289, 100.607360)));
     }
 }

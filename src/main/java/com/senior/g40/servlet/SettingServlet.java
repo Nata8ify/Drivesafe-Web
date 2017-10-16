@@ -78,12 +78,6 @@ public class SettingServlet extends HttpServlet {
                     request.setAttribute(attrName, result.getMessage() + " \"" + ol.toString() + "\"");
                 }
                 break;
-            case "regisHospital":
-                System.out.println("Setting?opt=regisHospital&name=รามา&latitude=13.766566&longitude=100.524655");
-                Hospital hospital = (Hospital)settingService.saveHospital(new Hospital(getAsString("name"), getAsDouble("latitude"), getAsDouble("longitude"))).getObj();
-                request.setAttribute("result", new Gson().toJson(hospital));
-                getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
-                break;
             default: System.out.println("default");;
         }
         if (attrName.equals(App.Attr.MESSAGE)) {

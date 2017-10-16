@@ -7,6 +7,7 @@ package com.senior.g40.service;
 
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.extras.Hospital;
+import com.senior.g40.model.extras.HospitalDistance;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.model.extras.Organization;
@@ -18,6 +19,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -343,8 +346,8 @@ public class SettingService {
 
     /* Hospital */
     public Result saveHospital(Hospital hospital) {
-        Hospital nearByHospital  = getNearByHospitalByHospital(hospital);
-        if(nearByHospital != null){
+        Hospital nearByHospital = getNearByHospitalByHospital(hospital);
+        if (nearByHospital != null) {
             addHospitalScore(nearByHospital.getHospitalId());
             return new Result(true, "Hospital Score is add", nearByHospital);
         }
@@ -410,11 +413,6 @@ public class SettingService {
         return hospitals;
     }
 
-    public List<Hospital> getNearestHospital(LatLng rscrLatLng) {
-        List<Hospital> hospitals = getAllHospital();
-        return hospitals;
-    }
-    
     //    --------------------------------- Other
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
@@ -425,8 +423,6 @@ public class SettingService {
 
         // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
         for (Hospital itrHospital : getAllHospital()) {
-            System.out.println(regisHospital.toString());
-            System.out.println(itrHospital.toString());
             double dLat = DR * (itrHospital.getLatitude() - regisHospital.getLatitude());
             double dLng = DR * (itrHospital.getLongitude() - regisHospital.getLongitude());
             double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
@@ -434,13 +430,41 @@ public class SettingService {
                     * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             double distance = c * RADIAN_OF_EARTH_IN_KM;
-            System.out.println("Distance : "+distance);
+            System.out.println("Distance : " + distance);
             if (distance * 1000 < HOSPITAL_NEAR_RANGE) {
                 return itrHospital;
             }
         }
 
         return null;
+    }
+
+    public List<Hospital> get3NearestHospitalByRscrPosition(LatLng latLng) {
+        List<Hospital> hospitals = getAllHospital();
+        if(hospitals == null){  return null;}
+        List<HospitalDistance> hospitalDistances = null;
+        for (Hospital itrHospital : hospitals) {
+             if(hospitalDistances == null){hospitalDistances = new ArrayList<>();}
+            double dLat = DR * (itrHospital.getLatitude() - latLng.getLatitude());
+            double dLng = DR * (itrHospital.getLongitude() - latLng.getLongitude());
+            double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                    + (Math.cos(latLng.getLatitude() * DR) * Math.cos(itrHospital.getLatitude() * DR))
+                    * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = c * RADIAN_OF_EARTH_IN_KM;
+            hospitalDistances.add(new HospitalDistance(itrHospital, distance));
+        }
+        Collections.sort(hospitalDistances, new Comparator<HospitalDistance>() {
+            @Override
+            public int compare(HospitalDistance t, HospitalDistance t1) {
+                return (int)t.getDistance() - (int)t1.getDistance();
+            }
+        });
+        hospitals.clear();
+        hospitals.add(hospitalDistances.get(0).getHospital());
+        hospitals.add(hospitalDistances.get(1).getHospital());
+        hospitals.add(hospitalDistances.get(2).getHospital());
+        return hospitals;
     }
 
     /* Object-relation Mapping */

@@ -10,6 +10,8 @@ import com.google.gson.GsonBuilder;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.model.User;
+import com.senior.g40.model.extras.Hospital;
+import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.SettingService;
 import com.senior.g40.service.UserService;
@@ -132,9 +134,14 @@ public class RescuerAppInServlet extends HttpServlet {
                 request.setAttribute("result", settingService.getOperatingLocationByUserId(getAsInteger("userId")).getOrganizationId());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "get_nearest_hospital" : 
-                request.setAttribute("result", settingService.getNearestHospital();
+            case "get_3nearest_hospital" : //<- new
+                request.setAttribute("result", new Gson().toJson(settingService.get3NearestHospitalByRscrPosition(new LatLng(getAsString("latitude"), getAsString("longitude")))));
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                break;
+            case "register_hospital": //<- new
+                Hospital hospital = (Hospital)settingService.saveHospital(new Hospital(getAsString("name"), getAsDouble("latitude"), getAsDouble("longitude"))).getObj();
+                request.setAttribute("result", new Gson().toJson(hospital));
+                getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
                 break;
             default:
                 request.setAttribute("result", "WOW");
@@ -166,6 +173,10 @@ public class RescuerAppInServlet extends HttpServlet {
         return Float.valueOf(request.getParameter(param));
     }
 
+        private double getAsDouble(String param) {
+        return Double.valueOf(request.getParameter(param));
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

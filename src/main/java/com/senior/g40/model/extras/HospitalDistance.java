@@ -33,6 +33,11 @@ public class HospitalDistance {
     public void setDistance(double distance) {
         this.distance = distance;
     }
+
+    @Override
+    public String toString() {
+        return "HospitalDistance{" + "hospital=" + hospital + ", distance=" + distance + '}';
+    }
     
     
 }
