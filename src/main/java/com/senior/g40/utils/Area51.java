@@ -3,9 +3,11 @@ package com.senior.g40.utils;
 import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.extras.Feed;
+import com.senior.g40.model.extras.Hospital;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.service.AccidentService;
 import com.senior.g40.service.FeedService;
+import com.senior.g40.service.SettingService;
 import com.senior.g40.service.StatisticService;
 import com.senior.g40.service.UserService;
 import java.sql.Date;
@@ -17,7 +19,7 @@ import org.json.JSONException;
 import org.junit.Test;
 
 public class Area51 {
-    
+
     @Test
     public static void main(String[] args) throws SQLException, JSONException {
         Gson gson = new Gson();
@@ -43,5 +45,15 @@ public class Area51 {
 //        System.out.println(FeedService.getInstance().getFeeds(new Date(System.currentTimeMillis()), 5));
 //        System.out.println(AccidentService.getInstance().getRescuerInResponsibleAccident(1));
 //        System.out.println(UserService.getInstance().getRescuerProfileByIncidentId(1611));
+//        Hospital hospital = new Hospital();
+//        hospital.setName("Kamppa");
+//        hospital.setLatitude(14.007284);
+//        hospital.setLongitude(99.974667);
+        Hospital hospital = new Hospital();
+        hospital.setName("Ramathibodhi Hospital");
+        hospital.setLatitude(13.766550);
+        hospital.setLongitude(100.524639);
+        System.out.println(SettingService.getInstance().saveHospital(hospital));
+System.out.println(SettingService.getInstance().getAllHospital());
     }
 }

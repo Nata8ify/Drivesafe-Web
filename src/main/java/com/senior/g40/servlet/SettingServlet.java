@@ -71,6 +71,9 @@ public class SettingServlet extends HttpServlet {
                     request.setAttribute(attrName, result.getMessage() + " \"" + ol.toString() + "\"");
                 }
                 break;
+            case "regisHospital" :
+                
+                break;
             default: ;
         }
         if (attrName.equals(App.Attr.MESSAGE)) {

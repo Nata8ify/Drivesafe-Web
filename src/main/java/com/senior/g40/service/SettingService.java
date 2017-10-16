@@ -5,6 +5,8 @@
  */
 package com.senior.g40.service;
 
+import com.senior.g40.model.Accident;
+import com.senior.g40.model.extras.Hospital;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.model.extras.Organization;
@@ -83,7 +85,7 @@ public class SettingService {
         }
         return result;
     }
-    
+
     public Result updateOpertingLocation(LatLng latLng, float boundRadius, long userId) {
         Result result = null;
         Connection conn = null;
@@ -157,7 +159,7 @@ public class SettingService {
         }
         return result;
     }
-    
+
     public Result getAllOpertingLocation() {
         Result result = null;
         List<OperatingLocation> locations = null;
@@ -173,11 +175,11 @@ public class SettingService {
                 if (locations == null) {
                     locations = new ArrayList<>();
                 }
-                locations.add( new OperatingLocation(
-                    new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"), rs.getLong("userId")));
+                locations.add(new OperatingLocation(
+                        new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                        rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"), rs.getLong("userId")));
             }
-            result = new Result(true, "Getting Operating Laocation Success",locations);
+            result = new Result(true, "Getting Operating Laocation Success", locations);
 
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
@@ -310,8 +312,8 @@ public class SettingService {
             rs = pstm.executeQuery();
             if (rs.next()) {
                 location = new OperatingLocation(
-                    new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
-                    rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"), rs.getLong("userId"));
+                        new LatLng(rs.getDouble("opLat"), rs.getDouble("opLng")),
+                        rs.getInt("opNeutralBound"), rs.getInt("opMainBound"), rs.getInt("opOrganization"), rs.getLong("userId"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
@@ -320,7 +322,7 @@ public class SettingService {
         }
         return location;
     }
-    
+
     public int getLatestOrganizationId(Connection conn) {
         PreparedStatement pstm = null;
         ResultSet rs = null;
@@ -337,6 +339,103 @@ public class SettingService {
             ConnectionHandler.closeSQLProperties(conn, pstm, rs);
         }
         return 0;
+    }
+
+    /* Hospital */
+    public Result saveHospital(Hospital hospital) {
+        Hospital nearByHospital  = getNearByHospitalByHospital(hospital);
+        if(nearByHospital != null){
+            addHospitalScore(nearByHospital.getHospitalId());
+            return new Result(true, "Hospital Score is add");
+        }
+        Result result = null;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "INSERT INTO `hospital`(`name`, `latitude`, `longitude`, `score`) VALUES (?, ?, ?, 1);";
+            pstm = conn.prepareStatement(sql);
+            pstm.setString(1, hospital.getName());
+            pstm.setDouble(2, hospital.getLatitude());
+            pstm.setDouble(3, hospital.getLongitude());
+            if (pstm.executeUpdate() == 1) {
+                result = new Result(true, "Hospital is Saved");
+            }
+        } catch (SQLException ex) {
+            result = new Result(false, ex);
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
+        }
+        return result;
+    }
+
+    public void addHospitalScore(int hospitalId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "UPDATE `hospital` SET `score`= `score` + 1 WHERE `hospitalId` = ?;";
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, hospitalId);
+            pstm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
+        }
+    }
+
+    public List<Hospital> getAllHospital() {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        List<Hospital> hospitals = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `hospital`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (hospitals == null) {
+                    hospitals = new ArrayList<>();
+                }
+                hospitals.add(new Hospital(rs.getInt("hospitalId"), rs.getString("name"), rs.getDouble("latitude"), rs.getDouble("longitude"), rs.getInt("score")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return hospitals;
+    }
+
+    //    --------------------------------- Other
+    private final double DR = Math.PI / 180; //DEG_TO_RAD
+    private final int RADIAN_OF_EARTH_IN_KM = 6371;
+    private final int RADIAN_OF_EARTH_IN_M = 6371000;
+    private final double HOSPITAL_NEAR_RANGE = 350; //Kilometers
+
+    private Hospital getNearByHospitalByHospital(Hospital regisHospital) {
+
+        // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
+        for (Hospital itrHospital : getAllHospital()) {
+            System.out.println(regisHospital.toString());
+            System.out.println(itrHospital.toString());
+            double dLat = DR * (itrHospital.getLatitude() - regisHospital.getLatitude());
+            double dLng = DR * (itrHospital.getLongitude() - regisHospital.getLongitude());
+            double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                    + (Math.cos(regisHospital.getLatitude() * DR) * Math.cos(itrHospital.getLatitude() * DR))
+                    * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = c * RADIAN_OF_EARTH_IN_KM;
+            System.out.println("Distance : "+distance);
+            if (distance * 1000 < HOSPITAL_NEAR_RANGE) {
+                return itrHospital;
+            }
+        }
+
+        return null;
     }
 
     /* Object-relation Mapping */
