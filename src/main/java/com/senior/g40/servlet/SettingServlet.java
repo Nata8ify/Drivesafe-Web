@@ -5,7 +5,9 @@
  */
 package com.senior.g40.servlet;
 
+import com.google.gson.Gson;
 import com.senior.g40.model.Profile;
+import com.senior.g40.model.extras.Hospital;
 import com.senior.g40.model.extras.LatLng;
 import com.senior.g40.model.extras.OperatingLocation;
 import com.senior.g40.service.SettingService;
@@ -24,9 +26,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SettingServlet extends HttpServlet {
 
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        this.request = request;
+        this.response = response;
         Profile pf = (Profile) request.getSession(false).getAttribute("pf"); // Retriveing User's Profile on Current Session
         System.out.println("pf: " + pf.toString());
         String option = request.getParameter("opt");
@@ -38,7 +44,7 @@ public class SettingServlet extends HttpServlet {
         Result result;
         SettingService settingService = SettingService.getInstance();
         switch (option) {
-            case "storeOpLocation" :
+            case "storeOpLocation":
                 result = settingService.storeOpertingLocation(
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
@@ -46,7 +52,7 @@ public class SettingServlet extends HttpServlet {
                 attrName = App.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
-            case "updateOpLocation" :
+            case "updateOpLocation":
                 result = request.getParameter("mBoundRds").equals("") ? settingService.updateOpertingLocation(
                         new LatLng(request.getParameter("lat"), request.getParameter("lng")),
                         Integer.valueOf(request.getParameter("boundRds")),
@@ -54,10 +60,11 @@ public class SettingServlet extends HttpServlet {
                         Integer.valueOf(request.getParameter("boundRds")),
                         Integer.valueOf(request.getParameter("mBoundRds")),
                         pf.getUserId());
-                if(request.getSession(false).getAttribute("op") != null){
+                if (request.getSession(false).getAttribute("op") != null) {
                     request.getSession(false).removeAttribute("op");
                     request.getSession(true).setAttribute("op", (SettingService.getInstance().getOpertingLocation(pf.getUserId()).getObj()));
-                };
+                }
+                ;
                 attrName = App.Attr.MESSAGE;
                 request.setAttribute(attrName, result.getMessage());
                 break;
@@ -71,10 +78,13 @@ public class SettingServlet extends HttpServlet {
                     request.setAttribute(attrName, result.getMessage() + " \"" + ol.toString() + "\"");
                 }
                 break;
-            case "regisHospital" :
-                
+            case "regisHospital":
+                System.out.println("Setting?opt=regisHospital&name=รามา&latitude=13.766566&longitude=100.524655");
+                Hospital hospital = (Hospital)settingService.saveHospital(new Hospital(getAsString("name"), getAsDouble("latitude"), getAsDouble("longitude"))).getObj();
+                request.setAttribute("result", new Gson().toJson(hospital));
+                getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
                 break;
-            default: ;
+            default: System.out.println("default");;
         }
         if (attrName.equals(App.Attr.MESSAGE)) {
             System.out.println((App.Path.JSP_RESULT_DIR) + "msg.jsp");
@@ -84,6 +94,29 @@ public class SettingServlet extends HttpServlet {
         }
     }
 
+    private String getAsString(String param) {
+        return request.getParameter(param);
+    }
+
+    private char getAsChar(String param) {
+        return request.getParameter(param).charAt(0);
+    }
+
+    private long getAsLong(String param) {
+        return Long.valueOf(request.getParameter(param));
+    }
+
+    private int getAsInteger(String param) {
+        return Integer.valueOf(request.getParameter(param));
+    }
+
+    private float getAsFloat(String param) {
+        return Float.valueOf(request.getParameter(param));
+    }
+
+    private double getAsDouble(String param) {
+        return Double.valueOf(request.getParameter(param));
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

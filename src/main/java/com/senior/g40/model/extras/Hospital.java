@@ -23,6 +23,12 @@ public class Hospital {
         this.longitude = longitude;
         this.score = score;
     }
+
+    public Hospital(String name, double latitude, double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
     
     
 

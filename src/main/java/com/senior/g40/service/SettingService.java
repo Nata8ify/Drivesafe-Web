@@ -346,7 +346,7 @@ public class SettingService {
         Hospital nearByHospital  = getNearByHospitalByHospital(hospital);
         if(nearByHospital != null){
             addHospitalScore(nearByHospital.getHospitalId());
-            return new Result(true, "Hospital Score is add");
+            return new Result(true, "Hospital Score is add", nearByHospital);
         }
         Result result = null;
         Connection conn = null;
@@ -359,7 +359,7 @@ public class SettingService {
             pstm.setDouble(2, hospital.getLatitude());
             pstm.setDouble(3, hospital.getLongitude());
             if (pstm.executeUpdate() == 1) {
-                result = new Result(true, "Hospital is Saved");
+                result = new Result(true, "Hospital is Saved", hospital);
             }
         } catch (SQLException ex) {
             result = new Result(false, ex);
@@ -410,6 +410,11 @@ public class SettingService {
         return hospitals;
     }
 
+    public List<Hospital> getNearestHospital(LatLng rscrLatLng) {
+        List<Hospital> hospitals = getAllHospital();
+        return hospitals;
+    }
+    
     //    --------------------------------- Other
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
