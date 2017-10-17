@@ -55,6 +55,6 @@ public class Area51 {
 //        hospital.setLongitude(100.601728);
 //        System.out.println(SettingService.getInstance().saveHospital(hospital));
 //        System.out.println(SettingService.getInstance().getAllHospital());
-        System.out.println(SettingService.getInstance().get3NearestHospitalByRscrPosition(new LatLng(13.658289, 100.607360)));
+        System.out.println(SettingService.getInstance().getNearestHospitalByRscrPosition(new LatLng(13.658289, 100.607360)));
     }
 }

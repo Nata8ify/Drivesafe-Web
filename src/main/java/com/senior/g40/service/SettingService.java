@@ -373,22 +373,42 @@ public class SettingService {
         return result;
     }
 
-    public void addHospitalScore(int hospitalId) {
+    public boolean addHospitalScore(int hospitalId) {
         Connection conn = null;
         PreparedStatement pstm = null;
+        boolean isDelSuccess = false;
         try {
             conn = ConnectionBuilder.getConnection();
             String sql = "UPDATE `hospital` SET `score`= `score` + 1 WHERE `hospitalId` = ?;";
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, hospitalId);
-            pstm.executeUpdate();
+            isDelSuccess = pstm.executeUpdate() == 1;
         } catch (SQLException ex) {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionHandler.closeSQLProperties(conn, pstm, null);
         }
+        return isDelSuccess;
     }
 
+    public boolean deleteHospital(int hospitalId){
+       Connection conn = null;
+        PreparedStatement pstm = null;
+        boolean isDelSuccess = false;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "DELETE FROM `hospital` WHERE `hospitalId` = ?;";
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, hospitalId);
+            isDelSuccess = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
+        } 
+        return isDelSuccess;
+    }
+    
     public List<Hospital> getAllHospital() {
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -417,7 +437,7 @@ public class SettingService {
     private final double DR = Math.PI / 180; //DEG_TO_RAD
     private final int RADIAN_OF_EARTH_IN_KM = 6371;
     private final int RADIAN_OF_EARTH_IN_M = 6371000;
-    private final double HOSPITAL_NEAR_RANGE = 350; //Kilometers
+    private final double HOSPITAL_NEAR_RANGE = 100; //meters
 
     private Hospital getNearByHospitalByHospital(Hospital regisHospital) {
 
@@ -439,7 +459,7 @@ public class SettingService {
         return null;
     }
 
-    public List<Hospital> get3NearestHospitalByRscrPosition(LatLng latLng) {
+    public List<HospitalDistance> getNearestHospitalByRscrPosition(LatLng latLng) {
         List<Hospital> hospitals = getAllHospital();
         if(hospitals == null){  return null;}
         List<HospitalDistance> hospitalDistances = null;
@@ -460,11 +480,10 @@ public class SettingService {
                 return (int)t.getDistance() - (int)t1.getDistance();
             }
         });
-        hospitals.clear();
-        hospitals.add(hospitalDistances.get(0).getHospital());
-        hospitals.add(hospitalDistances.get(1).getHospital());
-        hospitals.add(hospitalDistances.get(2).getHospital());
-        return hospitals;
+        if(hospitalDistances.size() > 3){
+            return hospitalDistances.subList(0, 3);
+        }
+        return hospitalDistances;
     }
 
     /* Object-relation Mapping */

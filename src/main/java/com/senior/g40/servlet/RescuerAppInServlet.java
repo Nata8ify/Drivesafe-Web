@@ -134,14 +134,9 @@ public class RescuerAppInServlet extends HttpServlet {
                 request.setAttribute("result", settingService.getOperatingLocationByUserId(getAsInteger("userId")).getOrganizationId());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "get_3nearest_hospital" : //<- new
-                request.setAttribute("result", new Gson().toJson(settingService.get3NearestHospitalByRscrPosition(new LatLng(getAsString("latitude"), getAsString("longitude")))));
+            case "get_nearest_hospital" : //<- new
+                request.setAttribute("result", new Gson().toJson(settingService.getNearestHospitalByRscrPosition(new LatLng(getAsString("latitude"), getAsString("longitude")))));
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
-                break;
-            case "register_hospital": //<- new
-                Hospital hospital = (Hospital)settingService.saveHospital(new Hospital(getAsString("name"), getAsDouble("latitude"), getAsDouble("longitude"))).getObj();
-                request.setAttribute("result", new Gson().toJson(hospital));
-                getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
                 break;
             default:
                 request.setAttribute("result", "WOW");
