@@ -439,7 +439,7 @@ public class SettingService {
     private final int RADIAN_OF_EARTH_IN_M = 6371000;
     private final double HOSPITAL_NEAR_RANGE = 100; //meters
 
-    private Hospital getNearByHospitalByHospital(Hospital regisHospital) {
+    public Hospital getNearByHospitalByHospital(Hospital regisHospital) {
 
         // Haversine Formula Here. > http://www.movable-type.co.uk/scripts/latlong.html
         for (Hospital itrHospital : getAllHospital()) {

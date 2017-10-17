@@ -51,6 +51,9 @@ public class HospitalSettingServlet extends HttpServlet {
                     Hospital hospital = (Hospital) settingService.saveHospital(new Hospital(getAsString("name"), getAsDouble("latitude"), getAsDouble("longitude"))).getObj();
                     out.print(gson.toJson(hospital));
                     break;
+                case "get_nearest_hospital_one": //<- new
+                    out.print(gson.toJson(settingService.getNearByHospitalByHospital(new Hospital(null, getAsDouble("latitude"), getAsDouble("longitude")))));
+                    break;    
                 case "delete_hospital":
                     out.print(settingService.deleteHospital(getAsInteger("hospitalId")));
                     break;
