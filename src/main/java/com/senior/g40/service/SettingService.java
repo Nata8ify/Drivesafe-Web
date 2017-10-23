@@ -427,6 +427,24 @@ public class SettingService {
         return isUnFlagSuccess;
     }
 
+    public boolean flagHospital(int hospitalId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        boolean isFlagSuccess = false;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "UPDATE `hospital` SET `flag` = 1 WHERE `hospitalId` = ?;";
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, hospitalId);
+            isFlagSuccess = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
+        }
+        return isFlagSuccess;
+    }
+    
     public List<Hospital> getAllHospital() {
         Connection conn = null;
         PreparedStatement pstm = null;

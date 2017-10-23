@@ -54,6 +54,10 @@ public class AdministratorServlet extends HttpServlet {
                     goTo(App.Path.JSP_OTHER_DIR.concat("admin_signin.jsp"));
                 }
                 break;
+            case "flag_hospital":
+                System.out.println(settingService.flagHospital(getAsInteger("hospitalId")));
+                goTo("/To?opt=sett");
+                break;
             case "unflag_hospital":
                 settingService.unFlagHospital(getAsInteger("hospitalId"));
                 goToAdminPagewithAttrs();

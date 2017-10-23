@@ -1,15 +1,20 @@
+<%@page import="com.senior.g40.service.SettingService"%>
+<%@page import="java.util.List"%>
+<%@page import="com.senior.g40.model.extras.Hospital"%>
 <%@page import="com.senior.g40.model.extras.OperatingLocation"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page session="true" %>
 <%
-    if(request.getSession(false).getAttribute("op") != null){
-        OperatingLocation op = (OperatingLocation)request.getSession(false).getAttribute("op");
+    if (request.getSession(false).getAttribute("op") != null) {
+        OperatingLocation op = (OperatingLocation) request.getSession(false).getAttribute("op");
         pageContext.setAttribute("lat", op.getLatLng().getLatitude());
         pageContext.setAttribute("lng", op.getLatLng().getLongitude());
         pageContext.setAttribute("bound", op.getNeutralBound());
         pageContext.setAttribute("mainBound", op.getMainBound());
     }
 %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -75,7 +80,7 @@
                     <c:choose>
                         <c:when test="${sessionScope.op != null}">
                             <li class="nav-item active" data-toggle="tooltip" data-placement="right" title="Setting">
-                                <center><a class="nav-link" href="To?opt=sett">
+                            <center><a class="nav-link" href="To?opt=sett">
                                     <i class="fa fa-fw fa-cog"></i>
                                     <span class="nav-link-text">
                                         Setting</span>
@@ -134,6 +139,46 @@
                                     <div class="col-sm-6"><input type="button" id="getcur-location-submit" value="ดึงค่าสถานที่ปัจจุบัน" class="btn btn-primary" style="width: 100%; cursor: pointer;"/><br/><br/></div>
                                 </div>
                                 <hr/>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <%
+                        List<Hospital> hospitals = SettingService.getInstance().getAllHospital();
+                        pageContext.setAttribute("hospitals", hospitals);
+                    %>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr/>
+                            <fieldset>
+                                <legend>การแจ้งขอถอดถอนโรงพยาบาล</legend>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ชื่อโรงพยาบาล</th>
+                                            <th>การทำงาน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:choose>
+                                            <c:when test="${not empty hospitals}">
+                                                <c:forEach items="${hospitals}" var="hospital">
+                                                    <tr>
+                                                        <td>${hospital.name}</td>
+                                                        <td colspan="3">
+                                                            <a href="https://www.google.com/maps/search/?api=1&query=${hospital.latitude},${hospital.longitude}" target="_blank">ตรวจสอบพิกัด</a>&nbsp;
+                                                            <a href="Admin?opt=flag_hospital&hospitalId=${hospital.hospitalId}">รายงาน</a>&nbsp;
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr>
+                                                    <td colspan="2">ไม่พบโรงพยาบาลในฐานข้อมูล</td>
+                                                </tr>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </tbody>
+                                </table>
                             </fieldset>
                         </div>
                     </div>
