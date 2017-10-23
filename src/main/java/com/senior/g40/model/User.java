@@ -82,4 +82,5 @@ public class User {
     
     public static final char TYPE_GENERAL_USER = 'M';
     public static final char TYPE_RESCUER_USER = 'T'; 
+    public static final char TYPE_ADMINISTRATOR_USER = 'A'; 
 }

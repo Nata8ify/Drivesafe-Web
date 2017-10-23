@@ -48,11 +48,14 @@ public class ToServlet extends HttpServlet {
             case "rregis":
                 to(App.Path.JSP_OTHER_DIR + "rregis.jsp");
                 break;
+            case "admin":
+                to(App.Path.JSP_OTHER_DIR + "admin_signin.jsp");
+                break;
              case "feed":
                 to("/feed.jsp");
                 break;    
             default:
-                return;
+                throw new IOException("No Such Case");
         }
     }
 

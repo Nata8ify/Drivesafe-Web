@@ -84,6 +84,10 @@
         <servlet-name>HospitalSettingServlet</servlet-name>
         <servlet-class>com.senior.g40.servlet.HospitalSettingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdministratorServlet</servlet-name>
+        <servlet-class>com.senior.g40.servlet.AdministratorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ToServlet</servlet-name>
         <url-pattern>/To</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>HospitalSettingServlet</servlet-name>
         <url-pattern>/HospitalSetting</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdministratorServlet</servlet-name>
+        <url-pattern>/Admin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

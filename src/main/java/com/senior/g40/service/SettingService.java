@@ -391,8 +391,8 @@ public class SettingService {
         return isDelSuccess;
     }
 
-    public boolean deleteHospital(int hospitalId){
-       Connection conn = null;
+    public boolean deleteHospital(int hospitalId) {
+        Connection conn = null;
         PreparedStatement pstm = null;
         boolean isDelSuccess = false;
         try {
@@ -405,10 +405,28 @@ public class SettingService {
             Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionHandler.closeSQLProperties(conn, pstm, null);
-        } 
+        }
         return isDelSuccess;
     }
-    
+
+    public boolean unFlagHospital(int hospitalId) {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        boolean isUnFlagSuccess = false;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sql = "UPDATE `hospital` SET `flag` = 0 WHERE `hospitalId` = ?;";
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, hospitalId);
+            isUnFlagSuccess = pstm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, null);
+        }
+        return isUnFlagSuccess;
+    }
+
     public List<Hospital> getAllHospital() {
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -417,6 +435,30 @@ public class SettingService {
         try {
             conn = ConnectionBuilder.getConnection();
             String sqlCmd = "SELECT * FROM `hospital`;";
+            pstm = conn.prepareStatement(sqlCmd);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                if (hospitals == null) {
+                    hospitals = new ArrayList<>();
+                }
+                hospitals.add(new Hospital(rs.getInt("hospitalId"), rs.getString("name"), rs.getDouble("latitude"), rs.getDouble("longitude"), rs.getInt("score")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return hospitals;
+    }
+
+    public List<Hospital> getFlagHospitals() { //Reported Hospital
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        List<Hospital> hospitals = null;
+        try {
+            conn = ConnectionBuilder.getConnection();
+            String sqlCmd = "SELECT * FROM `hospital` WHERE flag = 1;";
             pstm = conn.prepareStatement(sqlCmd);
             rs = pstm.executeQuery();
             while (rs.next()) {
@@ -461,10 +503,14 @@ public class SettingService {
 
     public List<HospitalDistance> getNearestHospitalByRscrPosition(LatLng latLng) {
         List<Hospital> hospitals = getAllHospital();
-        if(hospitals == null){  return null;}
+        if (hospitals == null) {
+            return null;
+        }
         List<HospitalDistance> hospitalDistances = null;
         for (Hospital itrHospital : hospitals) {
-             if(hospitalDistances == null){hospitalDistances = new ArrayList<>();}
+            if (hospitalDistances == null) {
+                hospitalDistances = new ArrayList<>();
+            }
             double dLat = DR * (itrHospital.getLatitude() - latLng.getLatitude());
             double dLng = DR * (itrHospital.getLongitude() - latLng.getLongitude());
             double a = (Math.sin(dLat / 2) * Math.sin(dLat / 2))
@@ -477,10 +523,10 @@ public class SettingService {
         Collections.sort(hospitalDistances, new Comparator<HospitalDistance>() {
             @Override
             public int compare(HospitalDistance t, HospitalDistance t1) {
-                return (int)t.getDistance() - (int)t1.getDistance();
+                return (int) t.getDistance() - (int) t1.getDistance();
             }
         });
-        if(hospitalDistances.size() > 3){
+        if (hospitalDistances.size() > 3) {
             return hospitalDistances.subList(0, 3);
         }
         return hospitalDistances;

