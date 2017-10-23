@@ -61,11 +61,11 @@ a:hover {
     transition: .5s ease;
 }
 .tab-group li a:hover {
-    background: #179b77;
+    background: #C66100;
     color: #ffffff;
 }
 .tab-group .active a {
-    background: #1ab188;
+    background: #FF7C00;
     color: #ffffff;
 }
 
@@ -76,8 +76,9 @@ a:hover {
 h1 {
     text-align: center;
     color: #ffffff;
-    font-weight: 300;
+    font-weight: 200;
     margin: 0 0 40px;
+    font-size: 23px;
 }
 
 h2 {
@@ -95,6 +96,15 @@ h3 {
     margin: 0 0 40px;
 }
 
+h4 {
+    text-align: center;
+    color: #ffffff;
+    font-weight: 300;
+    margin: 0 0 40px;
+    font-size: 31px;
+}
+
+
 label {
     position: absolute;
     -webkit-transform: translateY(6px);
@@ -105,11 +115,12 @@ label {
     transition: all 0.25s ease;
     -webkit-backface-visibility: hidden;
     pointer-events: none;
-    font-size: 22px;
+    font-size: 20px;
+    font-weight: 100;
 }
 label .req {
     margin: 2px;
-    color: #1ab188;
+    color: #FF7C00;
 }
 
 label.active {
@@ -142,7 +153,7 @@ input, textarea {
 }
 input:focus, textarea:focus {
     outline: 0;
-    border-color: #1ab188;
+    border-color: #FF7C00;
 }
 
 textarea {
@@ -177,12 +188,12 @@ textarea {
     padding: 15px 0;
     font-size: 25px;
     font-weight: 200;
-    background: #1ab188;
+    background: #FF7C00;
     color: #ffffff;
 
 }
 .button:hover, .button:focus {
-    background: #179b77;
+    background: #C66100;
 }
 
 
@@ -196,13 +207,13 @@ textarea {
     padding: 15px 0;
     font-size: 25px;
     font-weight: 200;
-    background: #FFCA25;
+    background: #FFE325;
     color: #ffffff;
 
 }
 
 .button2:hover, .button2:focus {
-    background: #ECB100;
+    background: #DBBF02;
 }
 
 .button3 {
@@ -215,12 +226,12 @@ textarea {
     padding: 15px 0;
     font-size: 25px;
     font-weight: 200;
-    background: #1ab188;
+    background: #FF7C00;
     color: #ffffff;
 
 }
 .button3:hover, .button3:focus {
-    background: #179b77;
+    background: #C66100;
 }
 
 .forgot {
@@ -237,15 +248,7 @@ textarea {
     cursor: pointer;
 }
 
-.sel::before {
-    position: absolute;
-    content: '\f063';
-    font-family: 'FontAwesome';
-    font-size: 20px;
-    color: #FFF;
-    right: 20px;
-    top: calc(50% - 0.5em);
-}
+
 
 .sel.active::before {
     transform: rotateX(-180deg);
@@ -317,17 +320,11 @@ textarea {
     display: none;
 }
 
-.sel__box__options.selected::after {
-    display: inline;
-}
 
 .sel__box__options:hover {
-    background-color: #ebedef;
+    background-color: #FF7C00;
 }
 
-.sel {
-    border-bottom: 4px solid rgba(0, 0, 0, 0.3);
-}
 
 .sel--black-panther {
     z-index: 3;

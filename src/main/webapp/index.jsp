@@ -26,56 +26,20 @@
         <header>
             
                 
-            <h1> WeeWorh System </h1>
+            <h4> WeeWorh System </h4>
             
         </header>
 
         <div class="form">
 
             <ul class="tab-group">
-                <li class="tab active"><a href="#login">เข้าสู่ระบบ</a></li>
-                <li class="tab "><a href="#signup">สมัครสมาชิก</a></li>
+                <li class="tab active"><a href="#signup">สมัครสมาชิก</a></li>
+                <li class="tab "><a href="#login">เข้าสู่ระบบ</a></li>
+                
 
             </ul>
 
-            <div class="tab-content">
-
-                <div id="login">   
-                    <h1>ส่วนเข้าใช้งานสำหรับสมาชิกหน่วยกู้ภัย ${msg}</h1>                  
-
-                    <form action="Login" method="post">
-
-                        <div class="field-wrap">
-                            
-                            <!--
-                            <label>
-                                ชื่อผู้ใช้<span class="req">*</span>
-                            </label>
-                            -->
-                            <input name="usrn" type="text" required="" value="root" autocomplete="off"/>                         
-                        </div>
-
-                        <div class="field-wrap">
-                             
-                            <!--
-                            <label>
-                                รหัสผ่าน<span class="req">*</span>
-                            </label>
-                            -->
-                            <input name="pswd" type="password"  required="" value="master" autocomplete="off"/>
-
-                        </div>
-                        <input name="utyp" type="hidden"  value="T" required=""/>
-                        <!--
-                                                <p class="forgot"><a href="#">Forgot Password?</a></p>
-                        -->
-                        <center><button type="submit" class="button button-block"/>เข้าใช้งาน</button></center>
-                        
-
-
-                    </form>
-
-                </div>
+            <div class="tab-content">                
 
                 <div id="signup">   
                     <h1>สมัครสมาชิกสำหรับผู้ใช้งานทั่วไป</h1>
@@ -155,6 +119,45 @@
                     </form>
 
                 </div>
+                <div id="login">   
+                    <h1>ส่วนเข้าใช้งานสำหรับสมาชิกหน่วยกู้ภัย ${msg}</h1>                  
+
+                    <form action="Login" method="post">
+
+                        <div class="field-wrap">
+                            
+                            <!--
+                            <label>
+                                ชื่อผู้ใช้<span class="req">*</span>
+                            </label>
+                            -->
+                            <input name="usrn" type="text" required="" value="root" autocomplete="off"/>                         
+                        </div>
+
+                        <div class="field-wrap">
+                             
+                            <!--
+                            <label>
+                                รหัสผ่าน<span class="req">*</span>
+                            </label>
+                            -->
+                            <input name="pswd" type="password"  required="" value="master" autocomplete="off"/>
+
+                        </div>
+                        <input name="utyp" type="hidden"  value="T" required=""/>
+                        <!--
+                                                <p class="forgot"><a href="#">Forgot Password?</a></p>
+                        -->
+                        <center><button type="submit" class="button button-block"/>เข้าใช้งาน</button></center>
+                        
+
+
+                    </form>
+
+                </div>
+                
+                
+                
             </div><!-- tab-content -->
 
         </div> 

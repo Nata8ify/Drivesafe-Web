@@ -7,8 +7,7 @@ body {
     background: #343a40; }
 
 body.fixed-nav {
-    padding-top: 54px; 
-    background: #4F575E;}
+    padding-top: 54px; }
 @media (min-width: 992px) {
     body.fixed-nav {
         padding-top: 56px; } }
@@ -165,7 +164,7 @@ body.fixed-nav {
         padding-left: 3em; }
     #mainNav .navbar-collapse .navbar-sidenav li.active a {
         color: white;
-        background-color: #1ab188; }
+        background-color: #FF7C00; }
     #mainNav .navbar-collapse .navbar-sidenav li.active a:focus, #mainNav .navbar-collapse .navbar-sidenav li.active a:hover {
         color: white; }
     #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown > .nav-link {
