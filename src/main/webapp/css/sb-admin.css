@@ -164,7 +164,7 @@ body.fixed-nav {
         padding-left: 3em; }
     #mainNav .navbar-collapse .navbar-sidenav li.active a {
         color: white;
-        background-color: #FF7C00; }
+        background-color: #E40031; }
     #mainNav .navbar-collapse .navbar-sidenav li.active a:focus, #mainNav .navbar-collapse .navbar-sidenav li.active a:hover {
         color: white; }
     #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown > .nav-link {

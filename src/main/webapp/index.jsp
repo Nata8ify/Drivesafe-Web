@@ -126,29 +126,29 @@
 
                         <div class="field-wrap">
                             
-                            <!--
+                            
                             <label>
                                 ชื่อผู้ใช้<span class="req">*</span>
                             </label>
-                            -->
-                            <input name="usrn" type="text" required="" value="root" autocomplete="off"/>                         
+                            
+                            <input name="usrn" type="text" required=""  autocomplete="off"/>                         
                         </div>
 
                         <div class="field-wrap">
                              
-                            <!--
+                            
                             <label>
                                 รหัสผ่าน<span class="req">*</span>
                             </label>
-                            -->
-                            <input name="pswd" type="password"  required="" value="master" autocomplete="off"/>
+                            
+                            <input name="pswd" type="password"  required=""  autocomplete="off"/>
 
                         </div>
                         <input name="utyp" type="hidden"  value="T" required=""/>
                         <!--
                                                 <p class="forgot"><a href="#">Forgot Password?</a></p>
                         -->
-                        <center><button type="submit" class="button button-block"/>เข้าใช้งาน</button></center>
+                        <center><button type="submit" class="button3 button-block"/>เข้าใช้งาน</button></center>
                         
 
 

@@ -73,6 +73,43 @@ a:hover {
     display: none;
 }
 
+.tab-group2 {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+}
+.tab-group2:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.tab-group2 li a {
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    background: rgba(160, 179, 176, 0.25);
+    color: #a0b3b0;
+    font-size: 20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    -webkit-transition: .5s ease;
+    transition: .5s ease;
+}
+.tab-group2 li a:hover {
+    background: #E40031;
+    color: #ffffff;
+}
+.tab-group2 .active a {
+    background: #B30026;
+    color: #ffffff;
+}
+
+.tab-content2 > div:last-child {
+    display: none;
+}
+
 h1 {
     text-align: center;
     color: #ffffff;
@@ -161,6 +198,11 @@ textarea {
     resize: vertical;
 }
 
+textarea2 {
+    border: 2px solid #a0b3b0;
+    resize: vertical;
+}
+
 .field-wrap {
     position: relative;
     margin-bottom: 40px;
@@ -188,12 +230,12 @@ textarea {
     padding: 15px 0;
     font-size: 25px;
     font-weight: 200;
-    background: #FF7C00;
+    background: #E40031;
     color: #ffffff;
-
+    cursor: pointer;
 }
 .button:hover, .button:focus {
-    background: #C66100;
+    background: #B30026;
 }
 
 
@@ -209,7 +251,7 @@ textarea {
     font-weight: 200;
     background: #FFE325;
     color: #ffffff;
-
+    cursor: pointer;
 }
 
 .button2:hover, .button2:focus {
@@ -228,7 +270,7 @@ textarea {
     font-weight: 200;
     background: #FF7C00;
     color: #ffffff;
-
+    cursor: pointer;
 }
 .button3:hover, .button3:focus {
     background: #C66100;
