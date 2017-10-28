@@ -97,23 +97,7 @@
                     </table>
                 </div>
 
-            </div>
-            <div class="form-main2">
-                <div class="form2">    
-                    <div class="tab1">
-                        <h1> แผนที่ </h1>   
-                    </div>
-                </div>
-                <div class="form3">
-
-
-
-
-                </div>
-            </div>
-        </div>
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCbVqCqiShDFum-nR8q4aWKDtjYw-w8Hs&libraries=places&callback=initMap">
-        </script>
+            </div>         
+        </div>      
     </body>
 </html>
