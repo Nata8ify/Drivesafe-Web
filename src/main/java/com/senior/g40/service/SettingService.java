@@ -476,7 +476,7 @@ public class SettingService {
         List<Hospital> hospitals = null;
         try {
             conn = ConnectionBuilder.getConnection();
-            String sqlCmd = "SELECT * FROM `hospital` WHERE flag = 1;";
+            String sqlCmd = "SELECT * FROM `hospital` WHERE flag = 1 ORDER BY `score` ASC;";
             pstm = conn.prepareStatement(sqlCmd);
             rs = pstm.executeQuery();
             while (rs.next()) {
