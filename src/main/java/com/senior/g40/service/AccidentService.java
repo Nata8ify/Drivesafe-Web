@@ -761,6 +761,7 @@ public class AccidentService {
             notification.put("title", getIncidentByType(acc.getAccType()) + " Incident is Detected");
             notification.put("body", "Reported from : " + bLocation);
             notification.put("click_action", "Navigate");
+            notification.put("sound", "default");
             message.put("notification", notification);
 
             JSONObject data = new JSONObject();
