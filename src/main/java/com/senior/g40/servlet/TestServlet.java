@@ -49,7 +49,10 @@ public class TestServlet extends HttpServlet {
                 break;
             case "instancetest":
                 System.out.println(OperatingLocation.getInstance(null).toJSON());
-                request.setAttribute("msg", "op ".concat(OperatingLocation.getInstance(null).toJSON()));    
+                request.setAttribute("msg", "op ".concat(OperatingLocation.getInstance(null).toJSON()));
+                break;
+            case "report":
+                getServletContext().getRequestDispatcher("/ReporterAppIn?opt=report&usrid=14&lat=13.64672565460205&lng=100.48986053466797&accc=A&time=11:11&acctype=1").forward(request, response);
                 break;
             case "buildchk":
                 request.setAttribute("msg", "1120010817");

@@ -119,7 +119,7 @@ public class RescuerAppInServlet extends HttpServlet {
                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_R).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
-            case "set_closed": //As  a Stupid "Clear"
+            case "set_closed": 
                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
