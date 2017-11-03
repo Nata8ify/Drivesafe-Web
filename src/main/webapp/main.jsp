@@ -182,7 +182,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fa fa-area-chart"></i>
-                    แผนภูมิสถิติแสดงจำนวนของการเหตภายในวันนี้
+                    แผนภูมิสถิติแสดงจำนวนการจ้งเหตุในวันนี้
                 </div>
                 <div class="card-body">
                     <canvas id="myBarChart" width="100%" height="15"></canvas>

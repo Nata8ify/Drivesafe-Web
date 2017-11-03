@@ -56,6 +56,9 @@ public class TestServlet extends HttpServlet {
                 break;
             case "buildchk":
                 request.setAttribute("msg", "1120010817");
+            case "writer" :
+                response.getWriter().print("wrting thing");
+                return;
             default: //TODO
         }
         getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "message.jsp").forward(request, response);

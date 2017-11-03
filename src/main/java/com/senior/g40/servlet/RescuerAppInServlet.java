@@ -113,17 +113,19 @@ public class RescuerAppInServlet extends HttpServlet {
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "set_ongoing":
-                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_G).isSuccess());
-                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
-                break;
+//                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_G).isSuccess());
+//                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                response.getWriter().print(accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_G).isSuccess());
+                return;
             case "set_onrescue":
                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_R).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
                 break;
             case "set_closed": 
-                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
-                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
-                break;
+//                request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
+//                goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
+                response.getWriter().print(accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_C).isSuccess());
+                return;
             case "sys_accfalse":
                 request.setAttribute("result", accService.updateAccCodeStatus(getAsLong(App.Param.responsibleRescr), getAsLong(App.Param.accidentId), Accident.ACC_CODE_ERRS).isSuccess());
                 goTo(App.Path.JSP_RESULT_DIR + "result.jsp");
