@@ -13,6 +13,7 @@ import com.senior.g40.service.UserService;
 import com.senior.g40.utils.App;
 import com.senior.g40.utils.Result;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
@@ -39,7 +40,7 @@ public class ReporterAppInServlet extends HttpServlet {
     private HttpServletResponse response;
     private AccidentService accService;
     private UserService usrService;
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.request = request;
@@ -59,25 +60,25 @@ public class ReporterAppInServlet extends HttpServlet {
                 /* User Send Incident Report on their Specific Type. */
                 // AccType IS NOT FUNCTION BY NOW. 
                 report(getAccidentData());
-                break;
+                return;
             case "report_crash":
                 report(getCustomAccidentData(Accident.ACC_TYPE_TRAFFIC));
-                break;
+                return;
             case "report_fire":
                 report(getCustomAccidentData(Accident.ACC_TYPE_FIRE));
-                break;
+                return;
             case "report_patient": //coma patient's case.
                 report(getCustomAccidentData(Accident.ACC_TYPE_PATIENT));
-                break;
+                return;
             case "report_animal":
                 report(getCustomAccidentData(Accident.ACC_TYPE_ANIMAL));
-                break;
+                return;
             case "report_brawl":
                 report(getCustomAccidentData(Accident.ACC_TYPE_BRAWL));
-                break;
+                return;
             case "report_other":
                 report(getCustomAccidentData(Accident.ACC_TYPE_OTHER));
-                break;
+                return;
             case "usr_accfalse":
                 /*3. for receive/acknowledge user false positive data.*/
                 Result rs = accService.updateOnUserFalseAccc(Long.valueOf(request.getParameter("userId")), Long.valueOf(request.getParameter("accid")));
@@ -106,7 +107,7 @@ public class ReporterAppInServlet extends HttpServlet {
                 getAsByte("acctype"),
                 Accident.ACC_CODE_A);
     }
-
+    
     private Accident getCustomAccidentData(byte accType) {
         Date currentDate = new Date(System.currentTimeMillis());
         return new Accident(getAsLong("usrid"),
@@ -117,29 +118,34 @@ public class ReporterAppInServlet extends HttpServlet {
                 accType,
                 Accident.ACC_CODE_A);
     }
-
-    private void report(Accident acc) {
-        Result rs = accService.saveNonCrashAccident(acc);
-        if (rs.isSuccess()) {
-            Accident savedAcc = (Accident) rs.getObj();
-            request.setAttribute("result", savedAcc.toJson());
-        } else {
-            request.setAttribute("result", null);
+    
+    private void report(Accident acc) throws IOException {
+        try (PrintWriter writer = response.getWriter()) {
+            Result rs = accService.saveNonCrashAccident(acc);
+            if (rs.isSuccess()) {
+                Accident savedAcc = (Accident) rs.getObj();
+                writer.print(savedAcc.toJson());
+                //request.setAttribute("result", savedAcc.toJson());
+            } else {
+                writer.print("null");
+                //request.setAttribute("result", null);
+            }
+            writer.close();
         }
     }
-
+    
     private String getAsString(String param) {
         return request.getParameter(param);
     }
-
+    
     private byte getAsByte(String param) {
         return Byte.valueOf(request.getParameter(param));
     }
-
+    
     private long getAsLong(String param) {
         return Long.valueOf(request.getParameter(param));
     }
-
+    
     private float getAsFloat(String param) {
         return Float.valueOf(request.getParameter(param));
     }
