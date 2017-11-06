@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <title> สถิติ </title>
-        <meta charset="utf-8">
+        <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -106,7 +106,7 @@
                     <form action="#">
                         <div class="row">
                             <div class="alert alert-danger" id="alrt-invalid-period" hidden="">
-                                <strong>ท่านใส่ช่วงเวลาผิดพลาด! : </strong><span id="alrt-ip-msg"></span>
+                                <strong>ช่วงเวลาไม่ถูกต้อง! : </strong><span id="alrt-ip-msg"></span>
                             </div>
                         </div>
                         <div class="row">
@@ -136,7 +136,7 @@
             </div>
         </div>
     </center>
-    <script>
+    <script  charset="UTF-8" >
         <jsp:include page="monitor_js/accident_stat.js"/>
     </script>
     <script async defer

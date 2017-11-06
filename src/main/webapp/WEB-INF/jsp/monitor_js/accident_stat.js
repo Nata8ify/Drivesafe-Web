@@ -65,11 +65,11 @@ $('#input-b-date, #input-e-date').change(function () {
         prepareNumAccidentData(SEVLT_STATOPT_SPEC_PERIOD, null);
     } else if (endInputDate < beginInputDate) {
         $('#alrt-ip-msg').html("Begin Date shouldn't be after the present date. (" + moment(new Date()).format("YYYY-MM-DD") + ")");
-        $('#alrt-invalid-period').fadeIn();
+        $('#alrt-invalid-period').prop("hidden", false);
         $('#input-b-date').val(beginDate);
     } else {
         $('#alrt-ip-msg').html("End Date shouldn't be after the present date. (" + moment(new Date()).format("YYYY-MM-DD") + ")");
-        $('#alrt-invalid-period').fadeIn();
+        $('#alrt-invalid-period').prop("hidden", false);
         $('#input-e-date').val(endDate);
     }
 });
