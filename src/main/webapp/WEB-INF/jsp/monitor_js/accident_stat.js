@@ -252,15 +252,34 @@ function emptyMarker() {
 
 function setMarker(json) {
     $.each(json, function (index, element) {
+        console.log(element);
         var lat = element.latitude;
         var lng = element.longitude;
         var marker = new google.maps.Marker({
             position: {lat, lng},
             map: nAccStatMap,
-            draggable: false
+            draggable: false,
+            icon: markerIcon(element.accType)
         });
         markers.push(marker);
     });
+}
+
+function markerIcon(accType){
+    switch(accType){
+        case 1 :
+            return "image/markeracctype/1.png";
+        case 2 :
+            return "image/markeracctype/2.png";
+        case 3 :
+            return "image/markeracctype/3.png";
+        case 4 :
+            return "image/markeracctype/4.png";
+        case 5 :
+            return "image/markeracctype/5.png";
+        default :
+            return "image/markeracctype/99.png";
+    }
 }
 
 /* Chartist.js Properties*/

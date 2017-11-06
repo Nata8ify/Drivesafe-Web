@@ -375,7 +375,7 @@ public class StatisticService {
         ResultSet rs = null;
         try {
 
-            String sqlCmd = "SELECT latitude, longitude FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
+            String sqlCmd = "SELECT latitude, longitude, accType FROM `accident` WHERE date BETWEEN ? AND ? AND accCode NOT IN('1', '2');";
             pstm = conn.prepareStatement(sqlCmd);
             pstm.setDate(1, beginDate);
             pstm.setDate(2, lastDate);
@@ -387,6 +387,7 @@ public class StatisticService {
                 accGeoC = new GeoCoordinate();
                 accGeoC.setLatitude(rs.getFloat("latitude"));
                 accGeoC.setLongitude(rs.getFloat("longitude"));
+                accGeoC.setAccType(rs.getByte("accType"));
                 accGeoCList.add(accGeoC);
             }
         } catch (SQLException ex) {
@@ -848,6 +849,14 @@ public class StatisticService {
             this.longitude = longitude;
         }
 
-    }
+        private byte accType;
 
+        public byte getAccType() {
+            return accType;
+        }
+
+        public void setAccType(byte accType) {
+            this.accType = accType;
+        }
+    }
 }
