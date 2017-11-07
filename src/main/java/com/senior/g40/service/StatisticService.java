@@ -126,6 +126,31 @@ public class StatisticService {
         return accStatHashMap;
     }
 
+    public List<DateTypeIncident> getIncidentTypeByDatePeriod(Date beginDate, Date lastDate) {
+        List<DateTypeIncident> dtis = null;
+        Connection conn = ConnectionBuilder.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        String sqlCmd;
+        try {
+            sqlCmd = "SELECT date, accType, COUNT(accType) FROM accident WHERE accCode NOT IN('1', '2') AND (date BETWEEN ? AND ?) GROUP BY date, accType;";
+            pstm = conn.prepareStatement(sqlCmd);
+            pstm.setDate(1, beginDate);
+            pstm.setDate(2, lastDate);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                if(dtis == null){ dtis = new ArrayList<>();}
+                dtis.add(new DateTypeIncident(rs.getDate(1), rs.getByte(2), rs.getInt(3)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
+        }
+        return dtis;
+    }
+
+    
     // Get Number of False Accident Statistic (including UserFalse and SystemFalse) on Specific Period Date.  -- Still need to reform the code better.  
     public HashMap<Date, Integer> getNumberOfFalseAccidentViaDate(Date beginDate, Date lastDate) {
         LinkedHashMap<Date, Integer> accStatHashMap = null;
@@ -599,24 +624,24 @@ public class StatisticService {
 //        } finally {
 //            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
 //        }
-        for(Accident acc : AccidentService.getInstance().getBoundedAccidents()){
+        for (Accident acc : AccidentService.getInstance().getBoundedAccidents()) {
             if (statusCount == null) {
-                    statusCount = new Integer[]{0, 0, 0, 0}; //A G R C
-                }
-                switch (acc.getAccCode()) {
-                    case Accident.ACC_CODE_A:
-                        statusCount[0] += 1;
-                        break;
-                    case Accident.ACC_CODE_G:
-                        statusCount[1] += 1;
-                        break;
-                    case Accident.ACC_CODE_R:
-                        statusCount[2] += 1;
-                        break;
-                    case Accident.ACC_CODE_C:
-                        statusCount[3] += 1;
-                        break;
-                }
+                statusCount = new Integer[]{0, 0, 0, 0}; //A G R C
+            }
+            switch (acc.getAccCode()) {
+                case Accident.ACC_CODE_A:
+                    statusCount[0] += 1;
+                    break;
+                case Accident.ACC_CODE_G:
+                    statusCount[1] += 1;
+                    break;
+                case Accident.ACC_CODE_R:
+                    statusCount[2] += 1;
+                    break;
+                case Accident.ACC_CODE_C:
+                    statusCount[3] += 1;
+                    break;
+            }
         }
         return statusCount;
     }
@@ -646,14 +671,15 @@ public class StatisticService {
 //        } finally {
 //            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
 //        }
-        for(Accident acc : AccidentService.getInstance().getBoundedAccidents()){
-            if(freqSeriesStrs == null){
+        for (Accident acc : AccidentService.getInstance().getBoundedAccidents()) {
+            if (freqSeriesStrs == null) {
                 freqSeriesStrs = new ArrayList<>();
             }
             freqSeriesStrs.add(acc.getTime());
         }
-        if(freqSeriesStrs != null){
-        freqSeries = getPeriodReportRequently(freqSeriesStrs);}
+        if (freqSeriesStrs != null) {
+            freqSeries = getPeriodReportRequently(freqSeriesStrs);
+        }
         return freqSeries;
     }
 
@@ -858,5 +884,25 @@ public class StatisticService {
         public void setAccType(byte accType) {
             this.accType = accType;
         }
+    }
+    
+    
+    private class DateTypeIncident{
+        private Date date;
+        private byte accType;
+        private int freqs;
+
+        public DateTypeIncident(Date date, byte accType, int freqs) {
+            this.date = date;
+            this.accType = accType;
+            this.freqs = freqs;
+        }
+
+        @Override
+        public String toString() {
+            return "DateTypeIncident{" + "date=" + date + ", accType=" + accType + ", freqs=" + freqs + '}';
+        }
+        
+        
     }
 }

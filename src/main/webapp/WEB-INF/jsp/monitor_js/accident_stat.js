@@ -11,10 +11,12 @@ var SEVLT_STATOPT_ACCGEO_WEEK = "statWeekAccGeo";
 var SEVLT_STATOPT_ACCGEO_PERIOD = "statPeriodAccGeo";
 var SEVLT_STATOPT_SPEC_WEEK_PERIOD = "statWeekendAcc";
 var SEVLT_STATOPT_CRASH_SPEED_ALL = "statSpeedDetected";
+var SEVLT_STATOPT_FREQ_BY_TYPE = "Statistic?opt=statAccFreqByType";
 /* Initialize Section */
 var incidentSeries = [];
 $.when($.getJSON({url: "Statistic?opt=" + SEVLT_STATOPT_SPEC_WEEK_PERIOD})).done(function (json) {
     $.each(json, function (index, element) {
+        console.log(element);
         labelsDate.push(index);
         seriesAccTimes.push(element);
         if (beginDate === undefined) {
@@ -237,7 +239,6 @@ function addSeries(incidentSeries, url) {
                 endDate = index;
             }
         });
-        console.log(tempSeries);
         incidentSeries.push(tempSeries);
     });
 }
@@ -252,7 +253,6 @@ function emptyMarker() {
 
 function setMarker(json) {
     $.each(json, function (index, element) {
-        console.log(element);
         var lat = element.latitude;
         var lng = element.longitude;
         var marker = new google.maps.Marker({
@@ -382,6 +382,17 @@ function  animate() {
     });
     ;
 }
+
+
+
+//----- statAccFreqByType
+$.ajax({
+    "url" : SEVLT_STATOPT_FREQ_BY_TYPE,
+    "data" : {bDate : "2017-10-05", eDate : "2017-11-05"},
+    "success" : function(result){
+        console.log(JSON.parse(result));
+    }
+});
 
 /* Other */
 
