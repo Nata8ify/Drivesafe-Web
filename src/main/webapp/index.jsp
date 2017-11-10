@@ -33,8 +33,8 @@
         <div class="form">
 
             <ul class="tab-group">
-                <li class="tab active"><a href="#signup">สมัครสมาชิก</a></li>
-                <li class="tab "><a href="#login">เข้าสู่ระบบ</a></li>
+                <li class="tab active"><a href="#signup">ลงทะเบียนผู้ใช้งานทั่วไป</a></li>
+                <li class="tab "><a href="#login">เข้าสู่ระบบ (เจ้าหน้าที่)</a></li>
 
 
             </ul>
@@ -42,8 +42,8 @@
             <div class="tab-content">                
 
                 <div id="signup">   
-                    <h1>สมัครสมาชิกสำหรับผู้ใช้งานทั่วไป </h1>
-                    <small>${msg}</small>
+                    <h1>สมัครสมาชิกสำหรับผู้ใช้งานทั่วไป </h1><br/>
+                    <h6>${msg}</h6>
                     <form action="Signup" method="post">
 
                         <div class="top-row">
