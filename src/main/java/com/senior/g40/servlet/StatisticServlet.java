@@ -45,7 +45,7 @@ public class StatisticServlet extends HttpServlet {
                         goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                         return;
                     case "statAccFreqByType":
-                        writer.print(new Gson().toJson(statService.getIncidentTypeByDatePeriod(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
+                        writer.print(new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(statService.getIncidentTypeByDatePeriod(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate")))));
                         writer.close();
                         return;
                     case "statSpecPeriodAcc":
@@ -106,14 +106,18 @@ public class StatisticServlet extends HttpServlet {
                     case "statWeekAccGeo":
                         String weekAccLatLngStatJSOn = statService
                                 .parseAccidentGeoCStatisticToJSON(statService.getWeekAccidentGeoStatistic());
-                        request.setAttribute("result", weekAccLatLngStatJSOn);
-                        goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
+                        writer.print(weekAccLatLngStatJSOn);
+                        writer.close();
+//                        request.setAttribute("result", weekAccLatLngStatJSOn);
+//                        goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                         break;
                     case "statPeriodAccGeo":
                         String periodAccLatLngStatJSON = statService
                                 .parseAccidentGeoCStatisticToJSON(statService.getByDatePeriodAccidentGeoStatistic(Date.valueOf(request.getParameter("bDate")), Date.valueOf(request.getParameter("eDate"))));
-                        request.setAttribute("result", periodAccLatLngStatJSON);
-                        goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
+                        writer.print(periodAccLatLngStatJSON);
+                        writer.close();
+//                        request.setAttribute("result", periodAccLatLngStatJSON);
+//                        goTo(App.Path.JSP_RESULT_DIR + "/result.jsp");
                         break;
                     case "statSpeedDetected":
                         String statSpeedDEtectedJSON = statService

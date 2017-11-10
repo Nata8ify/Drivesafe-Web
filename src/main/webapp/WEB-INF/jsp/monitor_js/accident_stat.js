@@ -386,13 +386,67 @@ function  animate() {
 
 
 //----- statAccFreqByType
-$.ajax({
-    "url" : SEVLT_STATOPT_FREQ_BY_TYPE,
-    "data" : {bDate : "2017-10-05", eDate : "2017-11-05"},
-    "success" : function(result){
-        console.log(JSON.parse(result));
-    }
-});
+
+//----- statAccFreqByType
+//var crashSeries = [];
+//var fireSeries = [];
+//var animalSeries = [];
+//var brawlSeries = [];
+//var patientSeries = [];
+//var otherSeries = [];
+//$.ajax({
+//    "url": SEVLT_STATOPT_FREQ_BY_TYPE,
+//    "data": {bDate: "2017-10-31", eDate: "2017-11-05"},
+//    "success": function (result) {
+//        var bDate = moment("2017-10-31");
+//        var eDate = moment("2017-11-05");
+////        var bDate = moment($('#input-b-date').val());
+////        var eDate = moment($('#input-e-date').val());
+//        console.log(bDate);
+//        console.log(eDate);
+//        var series = JSON.parse(result);
+//        for(var itrDate = moment(bDate) ; itrDate.diff(eDate, 'days') <= 0 ; itrDate.add(1, 'day')){
+//            console.log("itrDate");
+//        }
+//        $.each(series, function (index, value) {
+//            if (itrDate !== value.date || index === 0) {
+//                itrDate = value.date;
+//                crashSeries.push(0);
+//                fireSeries.push(0);
+//                animalSeries.push(0);
+//                brawlSeries.push(0);
+//                patientSeries.push(0);
+//                otherSeries.push(0);
+//            }
+//            switch (value.accType) {
+//                case 1 :
+//                    crashSeries[index] = value.freqs;
+//                    break;
+//                case 2 :
+//                    fireSeries[index] = value.freqs;
+//                    break;
+//                case 3 :
+//                    brawlSeries[index] = value.freqs;
+//                    break;
+//                case 4 :
+//                    animalSeries[index] = value.freqs;
+//                    break;
+//                case 5 :
+//                    patientSeries[index] = value.freqs;
+//                    break;
+//                case 99 :
+//                    otherSeries[index] = value.freqs;
+//                    break;
+//            }
+//        });
+//        console.log(crashSeries);
+//        console.log(fireSeries);
+//        console.log(animalSeries);
+//        console.log(brawlSeries);
+//        console.log(patientSeries);
+//        console.log(otherSeries);
+//    }
+//});
 
 /* Other */
 

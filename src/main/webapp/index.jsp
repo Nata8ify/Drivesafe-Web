@@ -16,18 +16,18 @@
         <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">-->
         <link rel="stylesheet" href="css/style.css">
 
-        
-        
+
+
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
 
     </head>
     <body>
         <header>
-            
-                
+
+
             <h4> WeeWorh System </h4>
-            
+
         </header>
 
         <div class="form">
@@ -35,15 +35,15 @@
             <ul class="tab-group">
                 <li class="tab active"><a href="#signup">สมัครสมาชิก</a></li>
                 <li class="tab "><a href="#login">เข้าสู่ระบบ</a></li>
-                
+
 
             </ul>
 
             <div class="tab-content">                
 
                 <div id="signup">   
-                    <h1>สมัครสมาชิกสำหรับผู้ใช้งานทั่วไป</h1>
-
+                    <h1>สมัครสมาชิกสำหรับผู้ใช้งานทั่วไป </h1>
+                    <small>${msg}</small>
                     <form action="Signup" method="post">
 
                         <div class="top-row">
@@ -51,50 +51,62 @@
                                 <label>
                                     ชื่อ<span class="req">*</span>
                                 </label>                                  
-                                <input name = "fname" type = "text" required = "" />                                                                                                                                     
+                                <input name = "fname" type = "text" required = "" maxlength="100"/>                                                                                                                                     
                             </div>
 
                             <div class="field-wrap">
                                 <label>
                                     นามสกุล<span class="req">*</span>                              
                                 </label>
-                                <input name = "lname" type = "text"  required = ""/>
+                                <input name = "lname" type = "text"  required = "" maxlength="100"/>
                             </div>
                         </div>
+                        <div class="field-wrap">
+                            <label>
+                                อายุ<span class="req">*</span>
+                            </label>
+                            <input name = "age" type = "number" required = "" min="0" max="200"/>
 
+                        </div>
                         <div class="field-wrap">
                             <label>
                                 รหัสประชาชน<span class="req">*</span>
                             </label>
-                            <input name = "pid" type = "number" required = "" />
+                            <input name = "pid" type = "number" required = ""   pattern="[0-9]{13}"/>
 
                         </div>
                         <div class="field-wrap">
                             <label>
                                 เบอร์โทรศัพท์<span class="req">*</span>
                             </label>
-                            <input name = "pid" type = "number" required = "" />
+                            <input name = "phone" type = "number" required = "" maxlength="14"/>
 
                         </div>
                         <div class="field-wrap">
                             <label>
                                 ที่อยู่<span class="req">*</span>
                             </label>
-                            <input name = "pid" type = "text" required = "" />
+                            <input name = "addr1" type = "text" required = "" />
+                        </div>
+                         <div class="field-wrap">
+                            <label>
+                                ที่อยู่รอง
+                            </label>
+                            <input name = "addr2" type = "text" />
 
                         </div>
                         <div class="field-wrap">
-                        <div class="sel">
-                            <select name="sex">
-                                <option value="" disabled>เพศ</option>
-                                <option value = "M"> ผู้ชาย </option>
-                                <option value = "F"> ผู้หญิง </option>
-                                <option value = "O"> ไม่เจาะจง </option>
-                            </select>
+                            <div class="sel">
+                                <select name="sex">
+                                    <option value="" disabled>เพศ</option>
+                                    <option value = "M"> ผู้ชาย </option>
+                                    <option value = "F"> ผู้หญิง </option>
+                                    <option value = "O"> ไม่เจาะจง </option>
+                                </select>
+                            </div>
                         </div>
-                        </div>
-                      
-                        
+
+
                         <h1> ระบุชื่อผู้ใช้และรหัสผ่าน </h1>
 
                         <div class="field-wrap">
@@ -110,37 +122,37 @@
                             <input name = "pswd" type = "password"  required = ""/>
                         </div>                       
                         <input name = "utyp" type = "hidden"  value = "M" required = ""/>
-                        
-                        
+
+
                         <button type="submit" class="button3 button-block">ยืนยัน</button>
                         <button type="reset" class="button2 button-block">รีเซ็ต</button>
-                        
-                        
+
+
                     </form>
 
                 </div>
                 <div id="login">   
-                    <h1>ส่วนเข้าใช้งานสำหรับสมาชิกหน่วยกู้ภัย ${msg}</h1>                  
+                    <h1>ส่วนเข้าใช้งานสำหรับสมาชิกหน่วยกู้ภัย</h1>                  
 
                     <form action="Login" method="post">
 
                         <div class="field-wrap">
-                            
-                            
+
+
                             <label>
                                 ชื่อผู้ใช้<span class="req">*</span>
                             </label>
-                            
+
                             <input name="usrn" type="text" required=""  autocomplete="off"/>                         
                         </div>
 
                         <div class="field-wrap">
-                             
-                            
+
+
                             <label>
                                 รหัสผ่าน<span class="req">*</span>
                             </label>
-                            
+
                             <input name="pswd" type="password"  required=""  autocomplete="off"/>
 
                         </div>
@@ -149,15 +161,15 @@
                                                 <p class="forgot"><a href="#">Forgot Password?</a></p>
                         -->
                         <center><button type="submit" class="button3 button-block"/>เข้าใช้งาน</button></center>
-                        
+
 
 
                     </form>
 
                 </div>
-                
-                
-                
+
+
+
             </div><!-- tab-content -->
 
         </div> 
