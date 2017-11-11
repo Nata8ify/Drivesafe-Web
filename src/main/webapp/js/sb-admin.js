@@ -380,7 +380,6 @@ function getFeeds() {
         data: {limit: 5},
         success: function (resultFeeds) {
             feeds = JSON.parse(resultFeeds);
-            console.log(resultFeeds);
             $("#append-feed").empty();
             if (feeds == null) {
                 $("#append-feed").prepend("<div style='text-align:center'><i  style='padding: 35px; font-size:16px;' >No Feed Available</i></div>");
@@ -596,4 +595,8 @@ function createMarker(place) {
         infowindow.setContent(place.name);
         infowindow.open(map, this);
     });
+}
+
+function getDateNow(){
+    return moment().format("YYYY-MM-DD");
 }

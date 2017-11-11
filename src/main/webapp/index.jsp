@@ -24,10 +24,7 @@
     </head>
     <body>
         <header>
-
-
             <h4> WeeWorh System </h4>
-
         </header>
 
         <div class="form">
@@ -35,8 +32,6 @@
             <ul class="tab-group">
                 <li class="tab active"><a href="#signup">ลงทะเบียนผู้ใช้งานทั่วไป</a></li>
                 <li class="tab "><a href="#login">เข้าสู่ระบบ (เจ้าหน้าที่)</a></li>
-
-
             </ul>
 
             <div class="tab-content">                

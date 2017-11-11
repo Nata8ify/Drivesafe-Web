@@ -589,41 +589,6 @@ public class StatisticService {
 
     public Integer[] getStatusPercentage(Date date) {
         Integer[] statusCount = null;
-//        Connection conn = ConnectionBuilder.getConnection();
-//        PreparedStatement pstm = null;
-//        ResultSet rs = null;
-//        try {
-//            String sqlCmd = "SELECT `accCode`, COUNT(`accCode`) FROM `accident` WHERE `date` = "
-//                    + (date == null ? "CURDATE()" : "?") + "  GROUP BY `accCode`;";
-//            pstm = conn.prepareStatement(sqlCmd);
-//            if (date != null) {
-//                pstm.setDate(1, date);
-//            }
-//            rs = pstm.executeQuery();
-//            while (rs.next()) {
-//                if (statusCount == null) {
-//                    statusCount = new Integer[]{0, 0, 0, 0}; //A G R C
-//                }
-//                switch (rs.getString(1).charAt(0)) {
-//                    case Accident.ACC_CODE_A:
-//                        statusCount[0] = rs.getInt(2);
-//                        break;
-//                    case Accident.ACC_CODE_G:
-//                        statusCount[1] = rs.getInt(2);
-//                        break;
-//                    case Accident.ACC_CODE_R:
-//                        statusCount[2] = rs.getInt(2);
-//                        break;
-//                    case Accident.ACC_CODE_C:
-//                        statusCount[3] = rs.getInt(2);
-//                        break;
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(StatisticService.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            ConnectionHandler.closeSQLProperties(conn, pstm, rs);
-//        }
         for (Accident acc : AccidentService.getInstance().getBoundedAccidents()) {
             if (statusCount == null) {
                 statusCount = new Integer[]{0, 0, 0, 0}; //A G R C

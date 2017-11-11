@@ -62,11 +62,9 @@ public class DashboardFeedServlet extends HttpServlet {
                     }
                     break;
                 default:
-                    out.print("err");
+                    out.print("default");
             }
-        } catch (Exception e) {
-            Logger.getLogger(ConnectionBuilder.class.getName()).log(Level.SEVERE, null, e);
-
+            out.close();
         }
     }
 

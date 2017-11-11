@@ -44,42 +44,53 @@ public class DashboardServlet extends HttpServlet {
         AccidentService as = AccidentService.getInstance();
         Gson gson = new Gson();
         //opt = "getDayOfWeekAccsFreq";
+        try(PrintWriter writer = response.getWriter()){
         switch (opt) {
             case "getTodayAccsInBound": //Today Inbounded Accident find by userId
-                request.setAttribute(App.Attr.RESULT, gson.toJson(as.getCurrentDateInBoundAccidents(getAsLong("userId"))));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(as.getCurrentDateInBoundAccidents(getAsLong("userId"))));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(as.getCurrentDateInBoundAccidents(getAsLong("userId"))));
                 break;
             case "getDayOfWeekAccsFreq": //Frequency of Accidents in a day of week that was occured can filter a result by month or year.
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayOFWeekAccidentFreq(getAsInteger("month"), getAsInteger("year"))));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayOFWeekAccidentFreq(getAsInteger("month"), getAsInteger("year"))));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(ss.getDayOFWeekAccidentFreq(getAsInteger("month"), getAsInteger("year"))));
                 break;
             case "getDayMonthlyAccsFreq": //Frequency of Accidents in a day of month that was occured can filter a result by year
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayMonthlyAccidentFreq(getAsInteger("year"))));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getDayMonthlyAccidentFreq(getAsInteger("year"))));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(ss.getDayMonthlyAccidentFreq(getAsInteger("year"))));
                 break;
             case "getTodayOnDutyRscrPf": //Get the total on duty rescuer by current date (on duty is not 'A')
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getOnDutyRescuerProfiles(null)));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getOnDutyRescuerProfiles(null)));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(ss.getOnDutyRescuerProfiles(null)));
                 break;
             case "getTotalAccidentLatLng": //Get Total Accident Latitude & Longitude (For Google Marker or another purpose) (Inbound Filter is Optional by userId)
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getTotalAccidentLatLng(getAsLong("userId"))));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getTotalAccidentLatLng(getAsLong("userId"))));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(ss.getTotalAccidentLatLng(getAsLong("userId"))));
                 break;
             case "getByDateAccidentLatLng": //Get Total Accident Latitude & Longitude By Date (For Google Marker or another purpose) (Date Filter is Optional by date) (Inbound Filter is Optional by userId)
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getByDateAccidentLatLng(getAsDate("date"), getAsLong("userId"))));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getByDateAccidentLatLng(getAsDate("date"), getAsLong("userId"))));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(ss.getByDateAccidentLatLng(getAsDate("date"), getAsLong("userId"))));
                 break;
             case "getReportFreqTimeSeries": //Get Report Time Series.
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getReportFreqSeries(getAsDate("date"))));
-                goTo(App.Path.JSP_RESULT_PAGE);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getReportFreqSeries(getAsDate("date"))));
+//                goTo(App.Path.JSP_RESULT_PAGE);
+                writer.print(gson.toJson(ss.getReportFreqSeries(getAsDate("date"))));
                 break;
             case "getStatusPercentage": // Get Percentage of Accident Status / Code order by "A G R C", Can be filtered by Specifically Date 
-                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getStatusPercentage(getAsDate("date"))));
-                goTo(App.Path.JSP_RESULT_PAGE_2);
+//                request.setAttribute(App.Attr.RESULT, gson.toJson(ss.getStatusPercentage(getAsDate("date"))));
+//                goTo(App.Path.JSP_RESULT_PAGE_2);
+                writer.print(gson.toJson(ss.getStatusPercentage(getAsDate("date"))));
                 break;
             default:
                 throw new IllegalStateException("No Such Option Available.");
         }
+        writer.close();
+        } 
         return;
     }
 

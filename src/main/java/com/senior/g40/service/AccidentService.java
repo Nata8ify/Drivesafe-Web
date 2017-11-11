@@ -419,7 +419,7 @@ public class AccidentService {
             }
             currentDateBoundedAccidents.clear();
             currentDateBoundedAccidents.addAll(accidents);
-            System.out.println(currentDateBoundedAccidents);
+            //System.out.println(currentDateBoundedAccidents);
             resetOP();
         } catch (SQLException ex) {
             Logger.getLogger(AccidentService.class.getName()).log(Level.SEVERE, null, ex);
@@ -668,7 +668,7 @@ public class AccidentService {
         if (currentDateAccidents == null) {
             return true;
         }
-        System.out.println(currentDateAccidents.toString());
+        //System.out.println(currentDateAccidents.toString());
         for (Accident accident : currentDateAccidents) {
             double dLat = DR * (accident.getLatitude() - latest.getLatitude());
             double dLng = DR * (accident.getLongitude() - latest.getLongitude());
@@ -677,8 +677,8 @@ public class AccidentService {
                     * (Math.sin(dLng / 2) * Math.sin(dLng / 2));
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             double distance = ((c * RADIAN_OF_EARTH_IN_M));
-            System.out.println("distance " + distance);
-            System.out.println("is NEAR_RANGE " + (distance < NEAR_RANGE));
+            //System.out.println("distance " + distance);
+            //System.out.println("is NEAR_RANGE " + (distance < NEAR_RANGE));
             if (distance < NEAR_RANGE) {
                 if (accType == accident.getAccType()) {
                     if (accident.getAccCode() == Accident.ACC_CODE_A || accident.getAccCode() == Accident.ACC_CODE_R || accident.getAccCode() == Accident.ACC_CODE_G) {
@@ -780,22 +780,22 @@ public class AccidentService {
 //            httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
 //            HttpResponse httpResponse = httpClient.execute(httpPost);
 //            result = new Result(true, httpResponse.toString());
-            System.out.println(message.toString());
+           // System.out.println(message.toString());
             int prevOrganizationId = -1;
             for (OperatingLocation location : (List<OperatingLocation>) settingService.getAllOpertingLocation().getObj()) {
                 if (prevOrganizationId == location.getOrganizationId()) {
                     continue;
                 }
                 prevOrganizationId = location.getOrganizationId();
-                System.out.println(location.getOrganizationId());
+                //System.out.println(location.getOrganizationId());
                 if (isBoundWithin(location.getUserId(), acc)) {
                     message.remove("to");
                     message.put("to", TOPIC_.concat(String.valueOf(location.getOrganizationId())));
                     httpPost.setEntity(new StringEntity(message.toString(), "UTF-8"));
                     httpClient.execute(httpPost);
-                    System.out.println("Bounded!! " + message.toString());
+                    //System.out.println("Bounded!! " + message.toString());
                 } else {
-                    System.out.println("Not Bounded!!");
+                    //System.out.println("Not Bounded!!");
                 }
             }
             return result;
