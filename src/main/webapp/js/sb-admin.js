@@ -377,7 +377,7 @@ function getFeeds() {
     feeds = [];
     $.ajax({
         url: "DashboardFeed?opt=get",
-        data: {limit: 5},
+        data: {limit: 5, date: getDateNow()},
         success: function (resultFeeds) {
             feeds = JSON.parse(resultFeeds);
             $("#append-feed").empty();
@@ -596,6 +596,7 @@ function createMarker(place) {
         infowindow.open(map, this);
     });
 }
+
 
 function getDateNow(){
     return moment().format("YYYY-MM-DD");

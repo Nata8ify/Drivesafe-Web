@@ -49,16 +49,16 @@ public class DashboardFeedServlet extends HttpServlet {
             switch (opt) {
                 case "get":
 //                    out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis()), getAsInteger("limit"))));
-                    out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis()), getAsInteger("limit"))));
+                    out.print(gson.toJson(fs.getFeeds(getAsDate("date"), getAsInteger("limit"))));
                     break;
                 case "getall":
                     out.print(gson.toJson(fs.getFeeds(null, null)));
                     break;
                 case "get_fordate":
                     if (getAsString("date") != null) {
-                        out.print(gson.toJson(fs.getFeeds(Date.valueOf(getAsString("date")), null)));
+                        out.print(gson.toJson(fs.getFeeds(getAsDate("date"), null)));
                     } else {
-                        out.print(gson.toJson(fs.getFeeds(new Date(System.currentTimeMillis()), getAsInteger("limit"))));
+                        out.print(gson.toJson(fs.getFeeds(getAsDate("date"), getAsInteger("limit"))));
                     }
                     break;
                 default:

@@ -169,7 +169,6 @@
                                         place = "การเชื่อมต่อผิดพลาด";
                                     }
                                     feedContent = $("<span href='#' class='list-group-item list-group-item-action'><div class='media'><img class='d-flex mr-3 rounded-circle' src='image/color/" + feed.updatedAccCode.toLowerCase() + ".PNG' width='50px' alt=''><div class='media-body'><strong>" + ((feed.updatedAccCode === 'A' || feed.updatedAccCode === 'U') ? feed.reporterName : feed.rscrName) + "</strong>" + feedBodyMessage + "<div class='text-muted smaller'>" + feed.timestamp + "</div></div></div> </span>");
-
                                     $("#append-feed").append(feedContent);
                                 }
                             });
