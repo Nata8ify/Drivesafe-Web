@@ -390,7 +390,7 @@ public class AccidentService {
 
     public List<Accident> getCurrentDateInBoundAccidents(long rescueSideUserId) {
         // means "get only accident that occured today"
-        Date today = new Date(System.currentTimeMillis());
+        //Date today = new Date(System.currentTimeMillis());
         List<Accident> accidents = null;
         Accident accident = null;
 

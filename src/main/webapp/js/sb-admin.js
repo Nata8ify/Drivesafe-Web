@@ -560,6 +560,7 @@ function updateIncidentMarkers(opMap) {
                     title: "ID " + acc.accidentId + " : " + acc.accCode,
                     icon: "image/markers/".concat(acc.accCode.toLowerCase().concat(".png"))
                 });
+                marker.addListener('click', function(){breifIncidentInfo(acc.userId)});
                 incidentMarkers.push(marker);
             });
         } catch(err){
@@ -567,6 +568,20 @@ function updateIncidentMarkers(opMap) {
             incidentTable.clear();
             incidentTable.draw();
         }
+        }
+    });
+}
+
+function breifIncidentInfo(reporterId){
+    $.ajax({
+        "url" : "RescuerIn?opt=get_userinfo",
+        "data" : {userId : reporterId},
+        "success" : function(info){
+            var pfInfo = JSON.parse(info);
+            alert("ผู้รายงาน : ".concat(pfInfo.firstName+" "+pfInfo.lastName).concat("\n")
+                    .concat("รหัสประจำตัวประชาชน : ").concat(pfInfo.personalId).concat("\n")
+                    .concat("เบอร์โทรศัพท์ติดต่อ : ".concat(pfInfo.phoneNumber)).concat("\n")
+                    .concat("ที่อยู่ของผู้รายงาน : ".concat(pfInfo.address1).concat(" ").concat(pfInfo.address2 !== ""?pfInfo.address2:" ")));
         }
     });
 }

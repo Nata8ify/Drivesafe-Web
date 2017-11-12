@@ -5,6 +5,7 @@
  */
 package com.senior.g40.servlet;
 
+import com.google.gson.Gson;
 import com.senior.g40.model.Accident;
 import com.senior.g40.model.Profile;
 import com.senior.g40.service.AccidentService;
@@ -23,86 +24,89 @@ import org.json.JSONArray;
  * @author PNattawut
  */
 public class MonitoringServlet extends HttpServlet {
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter writer = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             List<Accident> accidents;
             AccidentService accService = AccidentService.getInstance();
             String opt = request.getParameter("opt");
             Profile pf = (Profile) request.getSession(false).getAttribute("pf");
+            Gson gson = new Gson();
             switch (opt) {
                 case "quickacc":
-                    accidents = accService.getActiveAccidents();
-                    if (accidents != null) {
-                        JSONArray accsJson = null;
-                        for (Accident acc : accidents) {
-                            if (accsJson == null) {
-                                accsJson = new JSONArray();
-                            }
-                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
-                        }
-                        System.out.println(accsJson);
-                        request.setAttribute("result", accsJson);
-
-                    }
+//                    accidents = accService.getActiveAccidents();
+//                    if (accidents != null) {
+//                        JSONArray accsJson = null;
+//                        for (Accident acc : accidents) {
+//                            if (accsJson == null) {
+//                                accsJson = new JSONArray();
+//                            }
+//                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+//                        }
+//                        System.out.println(accsJson);
+//                        request.setAttribute("result", accsJson);
+//                        
+//                    }
+                    writer.print(gson.toJson(accService.getActiveAccidents()));
                     break;
                 case "currentDate":
                     //แสดงเฉพาะวันที่นั้นๆ
-                    accidents = accService.getCurrentDateAccidents();
-                    if (accidents != null) {
-                        JSONArray accsJson = null;
-                        for (Accident acc : accidents) {
-                            if (accsJson == null) {
-                                accsJson = new JSONArray();
-                            }
-                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
-                        }
-                        System.out.println(accsJson);
-                        request.setAttribute("result", accsJson);
-
-                    } else {
-                        request.setAttribute("result", "WOW");
-                    }
+//                    accidents = accService.getCurrentDateAccidents();
+//                    if (accidents != null) {
+//                        JSONArray accsJson = null;
+//                        for (Accident acc : accidents) {
+//                            if (accsJson == null) {
+//                                accsJson = new JSONArray();
+//                            }
+//                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+//                        }
+//                        request.setAttribute("result", accsJson);
+//                        
+//                    } else {
+//                        request.setAttribute("result", "WOW");
+//                    }
+                    writer.print(gson.toJson(accService.getCurrentDateAccidents()));
                     break;
                 case "currentDateInBoundReq":
                     //แสดงเฉพาะวันที่นั้นๆ
-                    accidents = accService.getCurrentDateInBoundAccidents(pf.getUserId());
-                    if (accidents != null) {
-                        JSONArray accsJson = null;
-                        for (Accident acc : accidents) {
-                            if (accsJson == null) {
-                                accsJson = new JSONArray();
-                            }
-                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
-                        }
-                        request.setAttribute("result", accsJson);
-
-                    } else {
-                        request.setAttribute("result", "WOW");
-                    }
+//                    accidents = accService.getCurrentDateInBoundAccidents(pf.getUserId());
+//                    if (accidents != null) {
+//                        JSONArray accsJson = null;
+//                        for (Accident acc : accidents) {
+//                            if (accsJson == null) {
+//                                accsJson = new JSONArray();
+//                            }
+//                            accsJson.put(accService.convertAccidentToJSONForMonitorTable(acc));
+//                        }
+//                        request.setAttribute("result", accsJson);
+//
+//                    } else {
+//                        request.setAttribute("result", "WOW");
+//                    }
+                    writer.print(gson.toJson(accService.getCurrentDateInBoundAccidents(pf.getUserId())));
                     break;
-                default : //TODO
+                default: //TODO
             }
-
-            getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
+            writer.close();
+            //getServletContext().getRequestDispatcher(App.Path.JSP_RESULT_DIR + "result.jsp").forward(request, response);
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
     @Override
     public String getServletInfo() {
         return "Short description";
